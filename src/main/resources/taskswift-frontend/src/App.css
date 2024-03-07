@@ -1,0 +1,8 @@
+.app-outer-div{
+  display: flex;
+}
+
+.outlet-div{
+  margin-top : 100px;
+  width: 100%;
+}

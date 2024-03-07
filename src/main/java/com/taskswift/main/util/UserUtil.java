@@ -1,0 +1,110 @@
+//$Id$
+package com.taskswift.main.util;
+
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.taskswift.main.entity.Authority;
+import com.taskswift.main.entity.User;
+import com.taskswift.main.exception.UserRegistrationExeception;
+import com.taskswift.main.model.UserRegistration;
+import com.taskswift.main.service.AuthorityService;
+import com.taskswift.main.service.RolesService;
+import com.taskswift.main.service.UserService;
+
+@Component
+@SuppressWarnings("unchecked")
+public class UserUtil {
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserUtil.class);
+	
+	private static UserService userService;
+	
+	private static AuthorityService authorityService;
+	
+	private static RolesService rolesService;
+
+	public UserUtil(UserService userService, AuthorityService authorityService, RolesService rolesService) {
+		logger.info(">>> Initializing UserUtil fields");
+		UserUtil.userService = userService;
+		UserUtil.authorityService = authorityService;
+		UserUtil.rolesService = rolesService;
+		logger.info(">>> Initialized UserUtil fields");
+	}
+		
+	public static JSONObject saveUser(UserRegistration userRegistration) {
+		JSONObject response = new JSONObject();
+		try {
+			validateInputs(userRegistration);
+			User user = new User();
+			user.setUsername(userRegistration.getUsername());
+			user.setPassword(userRegistration.getPassword());
+			user.setEmail(userRegistration.getEmail());
+			user.setEnabled(true);					
+			userService.saveUser(user);
+			
+			Authority authority = new Authority();
+			authority.setUsername(userRegistration.getUsername());
+			authority.setAuthority(userRegistration.getAuthority());
+			authorityService.saveAuthority(authority);
+			response.put(Constants.USER, "User Created Successfully");
+		}catch(Exception e) {
+			response.put(Constants.USER, e.getMessage());
+		}		
+		return response;
+	}
+	
+	public static List<String> getAllRoles(){
+		return rolesService.getAllRoles();
+	}
+	
+	public static void validateInputs(UserRegistration user) {
+		logger.info(">>> Validating inputs in User Registration payload");
+		String username = user.getUsername();
+		String password = user.getPassword();
+		String email = user.getEmail();
+		if(username.length() < 1 || username.length() > 20) {
+			logger.error(">>> Invalid username length");
+			throw new UserRegistrationExeception("Invalid username length");
+		}else if(password.length() < 1 || password.length() > 20) {
+			logger.error(">>> Invalid password length");
+			throw new UserRegistrationExeception("Invalid password length");
+		}else {
+			String usernameRegex = Constants.USERNAMEPATTERN;
+			Pattern pattern = Pattern.compile(usernameRegex);
+			Matcher matcher = pattern.matcher(username);
+			if(!matcher.matches()) {
+				logger.error(">>> Invalid Username");
+				throw new UserRegistrationExeception("Invalid Username");
+			}
+			matcher = pattern.matcher(password);
+			if(!matcher.matches()) {
+				logger.error(">>> Invalid Password");
+				throw new UserRegistrationExeception("Invalid Password");
+			}
+			
+			String passwordRegex = Constants.PASSWORDPATTERN;
+			pattern = Pattern.compile(passwordRegex);
+			matcher = pattern.matcher(password);
+			if(!matcher.matches()) {
+				logger.error(">>> Invalid Password");
+				throw new UserRegistrationExeception("Invalid Password");
+			}
+			
+			String emailRegex = Constants.EMAILPATTERN;
+			pattern = Pattern.compile(emailRegex);
+			matcher = pattern.matcher(email);
+			if(!matcher.matches()) {
+				logger.error(">>> Invalid Email");
+				throw new UserRegistrationExeception("Invalid Email");
+			}
+		}
+	}
+	
+}
