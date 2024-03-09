@@ -2,6 +2,7 @@
 package com.taskswift.main.util;
 
 import com.taskswift.main.entity.Authority;
+import com.taskswift.main.entity.Tenant;
 import com.taskswift.main.entity.User;
 import com.taskswift.main.exception.UserRegistrationExeception;
 import com.taskswift.main.model.UserRegistration;
@@ -46,8 +47,12 @@ public class UserUtil {
 	public static Long getCurrentUserId(){
 		if(currentUserId == null){
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String userName = ((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername();
-			return userService.getUserByName(userName).getUserid();
+			if("anonymousUser".equals(auth.getPrincipal())){
+				return null;
+			}else{
+				String userName = ((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername();
+				return userService.getUserByName(userName).getUserid();
+			}
 		}else{
 			return currentUserId;
 		}
@@ -58,12 +63,19 @@ public class UserUtil {
 		HttpStatus status = HttpStatus.OK;
 		try {
 			validateInputs(userRegistration);
+			Tenant tenant = TenantUtil.getTenantForNewUser();
 			User user = new User();
 			user.setUsername(userRegistration.getUsername());
 			user.setPassword(userRegistration.getPassword());
 			user.setEmail(userRegistration.getEmail());
+			user.setTenant(tenant);
 			user.setEnabled(true);					
 			userService.saveUser(user);
+
+			if(tenant.isActive()){
+				tenant.setActive(false);
+				TenantUtil.saveTenant(tenant);
+			}
 			
 			Authority authority = new Authority();
 			authority.setUsername(userRegistration.getUsername());

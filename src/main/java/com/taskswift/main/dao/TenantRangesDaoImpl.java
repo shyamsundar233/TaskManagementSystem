@@ -20,4 +20,9 @@ public class TenantRangesDaoImpl implements TenantRangesDao{
     public Long getTenantRangesCount() {
         return tenantRangesRepo.count();
     }
+
+    @Override
+    public Long getNextTenantId() {
+        return tenantRangesRepo.findFirstByIsActiveTrue().getRangeId();
+    }
 }

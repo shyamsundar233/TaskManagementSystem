@@ -9,4 +9,6 @@ public interface TenantRangesDao {
 
     public Long getTenantRangesCount();
 
+    public Long getNextTenantId();
+
 }

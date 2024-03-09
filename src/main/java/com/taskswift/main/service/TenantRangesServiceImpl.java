@@ -20,4 +20,9 @@ public class TenantRangesServiceImpl implements TenantRangesService{
     public Long getTenantRangesCount() {
         return tenantRangesDao.getTenantRangesCount();
     }
+
+    @Override
+    public Long getNextTenantId() {
+        return tenantRangesDao.getNextTenantId();
+    }
 }

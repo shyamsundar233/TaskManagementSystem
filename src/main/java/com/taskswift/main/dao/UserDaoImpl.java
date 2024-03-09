@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.taskswift.main.entity.User;
 import com.taskswift.main.repo.UserRepo;
 
+import java.util.Optional;
+
 @Repository
 @SuppressWarnings("null")
 public class UserDaoImpl implements UserDao {
@@ -24,9 +26,15 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void saveUser(User user) {		
+	public void saveUser(User user) {
+		user.setUserid(userRepo.findLastUserId() + 1);
 		userRepo.save(user);		
 		logger.info(">>> User saved to DB");
+	}
+
+	@Override
+	public User getUserById(Long userId) {
+		return userRepo.findByUserid(userId);
 	}
 
 }

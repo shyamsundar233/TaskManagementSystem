@@ -1,6 +1,6 @@
 package com.taskswift.main.service;
 
-import com.taskswift.main.entity.TenantRanges;
+import com.taskswift.main.entity.Tenant;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,20 +9,20 @@ import org.springframework.stereotype.Service;
 public class RangeGenerationService {
 
     @Autowired
-    private TenantRangesService tenantRangesService;
+    private TenantService tenantService;
 
     @Transactional
     public void generateAndInsertRanges() {
-        if(tenantRangesService.getTenantRangesCount() == 0) {
+        if(tenantService.getTenantCount() == 0) {
             long startRange = 1;
             long endRange = 5000000;
             long rangeSize = 100000;
 
             while (startRange < endRange && startRange + rangeSize <= endRange) {
-                TenantRanges tenantRanges = new TenantRanges();
-                tenantRanges.setStartRange(startRange);
-                tenantRanges.setEndRange(startRange + rangeSize);
-                tenantRangesService.addTenantRanges(tenantRanges);
+                Tenant tenant = new Tenant();
+                tenant.setStartRange(startRange);
+                tenant.setEndRange(startRange + rangeSize);
+                tenantService.addTenant(tenant);
                 startRange = startRange + rangeSize;
             }
         }

@@ -8,4 +8,6 @@ public interface TenantRangesService {
 
     public Long getTenantRangesCount();
 
+    public Long getNextTenantId();
+
 }

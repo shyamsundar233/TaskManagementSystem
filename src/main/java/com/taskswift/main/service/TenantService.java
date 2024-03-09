@@ -6,4 +6,8 @@ public interface TenantService {
 
     public void addTenant(Tenant tenant);
 
+    public Long getTenantCount();
+
+    public Tenant getNextActiveTenant();
+
 }

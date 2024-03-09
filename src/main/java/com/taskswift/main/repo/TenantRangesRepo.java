@@ -4,4 +4,5 @@ import com.taskswift.main.entity.TenantRanges;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TenantRangesRepo extends JpaRepository<TenantRanges, Long> {
+    TenantRanges findFirstByIsActiveTrue();
 }

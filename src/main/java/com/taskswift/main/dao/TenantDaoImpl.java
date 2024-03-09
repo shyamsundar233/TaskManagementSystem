@@ -15,4 +15,14 @@ public class TenantDaoImpl implements TenantDao{
     public void addTenant(Tenant tenant) {
         tenantRepo.save(tenant);
     }
+
+    @Override
+    public Long getTenantCount() {
+        return tenantRepo.count();
+    }
+
+    @Override
+    public Tenant getNextActiveTenant() {
+        return tenantRepo.findFirstByIsActiveTrue();
+    }
 }

@@ -15,4 +15,14 @@ public class TenantServiceImpl implements TenantService{
     public void addTenant(Tenant tenant) {
         tenantDao.addTenant(tenant);
     }
+
+    @Override
+    public Long getTenantCount() {
+        return tenantDao.getTenantCount();
+    }
+
+    @Override
+    public Tenant getNextActiveTenant() {
+        return tenantDao.getNextActiveTenant();
+    }
 }

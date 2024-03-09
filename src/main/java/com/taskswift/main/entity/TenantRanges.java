@@ -1,9 +1,6 @@
 package com.taskswift.main.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class TenantRanges {
@@ -15,6 +12,9 @@ public class TenantRanges {
     private Long startRange;
 
     private Long endRange;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean isActive;
 
     public Long getRangeId() {
         return rangeId;
@@ -40,12 +40,21 @@ public class TenantRanges {
         this.endRange = endRange;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     @Override
     public String toString() {
         return "TenantRanges{" +
                 "rangeId=" + rangeId +
                 ", startRange=" + startRange +
                 ", endRange=" + endRange +
+                ", isActive=" + isActive +
                 '}';
     }
 }
