@@ -29,11 +29,12 @@ public class AuthController {
 	}
 
 	@GetMapping("/login")
-	public String getLogin(HttpServletRequest request, Authentication auth) {		
+	public String getLogin(Authentication auth) {
 		if(auth == null) {
 			logger.info(">>> Redirecting to login page");
 			return "/authentication/login-page";
 		}else {
+			UserUtil.getCurrentUserId();
 			logger.info(">>> Redirecting to index page");
 			return "redirect:/";
 		}		

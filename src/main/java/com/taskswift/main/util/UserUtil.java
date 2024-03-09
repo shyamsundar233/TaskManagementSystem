@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,6 +33,8 @@ public class UserUtil {
 	
 	private static RolesService rolesService;
 
+	private static Long currentUserId;
+
 	public UserUtil(UserService userService, AuthorityService authorityService, RolesService rolesService) {
 		logger.info(">>> Initializing UserUtil fields");
 		UserUtil.userService = userService;
@@ -38,7 +42,17 @@ public class UserUtil {
 		UserUtil.rolesService = rolesService;
 		logger.info(">>> Initialized UserUtil fields");
 	}
-		
+
+	public static Long getCurrentUserId(){
+		if(currentUserId == null){
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String userName = ((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername();
+			return userService.getUserByName(userName).getUserid();
+		}else{
+			return currentUserId;
+		}
+	}
+
 	public static ResponseEntity<JSONObject> saveUser(UserRegistration userRegistration) {
 		JSONObject response = new JSONObject();
 		HttpStatus status = HttpStatus.OK;

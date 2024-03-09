@@ -17,7 +17,12 @@ public class UserDaoImpl implements UserDao {
 
 	@Autowired
 	private UserRepo userRepo;
-	
+
+	@Override
+	public User getUserByName(String name) {
+		return userRepo.getUserByName(name);
+	}
+
 	@Override
 	public void saveUser(User user) {		
 		userRepo.save(user);		
