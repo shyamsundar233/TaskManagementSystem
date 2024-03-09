@@ -1,5 +1,8 @@
 package com.taskswift.main;
 
+import com.taskswift.main.service.RangeGenerationService;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,8 +11,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin("http://localhost:3000/")
 public class TaskswiftApplication {
 
+	@Autowired
+	private RangeGenerationService rangeGenerationService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(TaskswiftApplication.class, args);
+	}
+
+	@PostConstruct
+	public void init() {
+		rangeGenerationService.generateAndInsertRanges();
 	}
 
 }
