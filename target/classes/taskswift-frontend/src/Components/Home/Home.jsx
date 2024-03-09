@@ -5,10 +5,11 @@ import React from 'react'
 
 const Home = () => {
   return (
-    <div>
-        <Link to="/create">Create</Link><br/>
-        <Link to="/list">List</Link>
-    </div>
+      <div>
+          <Link to="/ts/create">Create</Link><br/>
+          <Link to="/ts/list">List</Link><br/>
+          <Link to="/ts/addUser">Add User</Link>
+      </div>
   )
 }
 

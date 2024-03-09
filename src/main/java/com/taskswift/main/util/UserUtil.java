@@ -1,15 +1,6 @@
 //$Id$
 package com.taskswift.main.util;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
 import com.taskswift.main.entity.Authority;
 import com.taskswift.main.entity.User;
 import com.taskswift.main.exception.UserRegistrationExeception;
@@ -17,6 +8,16 @@ import com.taskswift.main.model.UserRegistration;
 import com.taskswift.main.service.AuthorityService;
 import com.taskswift.main.service.RolesService;
 import com.taskswift.main.service.UserService;
+import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 @SuppressWarnings("unchecked")
@@ -38,8 +39,9 @@ public class UserUtil {
 		logger.info(">>> Initialized UserUtil fields");
 	}
 		
-	public static JSONObject saveUser(UserRegistration userRegistration) {
+	public static ResponseEntity<JSONObject> saveUser(UserRegistration userRegistration) {
 		JSONObject response = new JSONObject();
+		HttpStatus status = HttpStatus.OK;
 		try {
 			validateInputs(userRegistration);
 			User user = new User();
@@ -56,8 +58,10 @@ public class UserUtil {
 			response.put(Constants.USER, "User Created Successfully");
 		}catch(Exception e) {
 			response.put(Constants.USER, e.getMessage());
-		}		
-		return response;
+			status = HttpStatus.NOT_ACCEPTABLE;
+		}
+		response.put("status", status.value());
+		return ResponseEntity.status(status).body(response);
 	}
 	
 	public static List<String> getAllRoles(){
