@@ -12,5 +12,7 @@ public interface AuthorityRepo extends JpaRepository<Authority, Long> {
 
 	@Query("SELECT DISTINCT u.authority FROM Authority u")
     List<String> findDistinctAuthorities();
+
+    Authority findByUsername(String username);
 	
 }

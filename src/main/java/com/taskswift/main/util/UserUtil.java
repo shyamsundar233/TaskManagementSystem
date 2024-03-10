@@ -34,27 +34,35 @@ public class UserUtil {
 	
 	private static RolesService rolesService;
 
-	private static Long currentUserId;
+	public static boolean isUserLoggedIn;
+
+	public static User currentUser;
+
+	public static Authority currentAuthority;
 
 	public UserUtil(UserService userService, AuthorityService authorityService, RolesService rolesService) {
 		logger.info(">>> Initializing UserUtil fields");
 		UserUtil.userService = userService;
 		UserUtil.authorityService = authorityService;
 		UserUtil.rolesService = rolesService;
+		UserUtil.currentUser = new User();
+		UserUtil.currentAuthority = new Authority();
 		logger.info(">>> Initialized UserUtil fields");
 	}
 
-	public static Long getCurrentUserId(){
-		if(currentUserId == null){
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if("anonymousUser".equals(auth.getPrincipal())){
-				return null;
-			}else{
-				String userName = ((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername();
-				return userService.getUserByName(userName).getUserid();
-			}
+	public static void loadCurrentUserdata(){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth == null || (Constants.ANONYMOUS_USER.equals(auth.getPrincipal()) && Constants.ANONYMOUS_ROLE.equals(auth.getAuthorities().toArray()[0].toString()))){
+			UserUtil.isUserLoggedIn = false;
+			UserUtil.currentUser = new User();
+			UserUtil.currentAuthority = new Authority();
+			TenantUtil.currentTenant = new Tenant();
 		}else{
-			return currentUserId;
+			UserUtil.isUserLoggedIn = true;
+			org.springframework.security.core.userdetails.User currentUserDetails = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			UserUtil.currentUser = userService.getUserByName(currentUserDetails.getUsername());
+			UserUtil.currentAuthority = authorityService.getAuthorityForUser(currentUserDetails.getUsername());
+			TenantUtil.currentTenant = UserUtil.currentUser.getTenant();
 		}
 	}
 

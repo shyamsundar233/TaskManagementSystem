@@ -12,5 +12,7 @@ public interface AuthorityService {
 	public List<Authority> getAuthorities();
 	
 	public List<String> getRoles();
+
+	public Authority getAuthorityForUser(String username);
 	
 }

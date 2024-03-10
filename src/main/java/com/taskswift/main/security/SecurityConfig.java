@@ -3,6 +3,8 @@ package com.taskswift.main.security;
 
 import javax.sql.DataSource;
 
+import com.taskswift.main.util.CustomLogoutSuccessHandler;
+import com.taskswift.main.util.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -30,13 +32,14 @@ public class SecurityConfig {
 					.anyRequest().authenticated()
 			)
 			.formLogin(form -> form
-					.loginPage("/login")							
-					.permitAll()		
-					.defaultSuccessUrl("/")	
+					.loginPage("/login")
+					.successHandler(new LoginSuccessHandler())
+					.permitAll()
 			)
 			.logout((logout) -> logout
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-					.logoutSuccessUrl("/login")								
+					.logoutSuccessHandler(new CustomLogoutSuccessHandler())
+					.logoutSuccessUrl("/login")
 			);
 		
 		return http.build();

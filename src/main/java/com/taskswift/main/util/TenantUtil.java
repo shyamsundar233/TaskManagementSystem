@@ -12,13 +12,16 @@ public class TenantUtil {
 
     private static UserService userService;
 
+    public static Tenant currentTenant;
+
     public TenantUtil(TenantService tenantService, UserService userService){
         TenantUtil.tenantService = tenantService;
         TenantUtil.userService = userService;
+        TenantUtil.currentTenant = new Tenant();
     }
 
     public static Tenant getTenantForNewUser(){
-        Long userId = UserUtil.getCurrentUserId();
+        Long userId = UserUtil.currentUser.getUserid();
         if(userId == null){
             return tenantService.getNextActiveTenant();
         }else{

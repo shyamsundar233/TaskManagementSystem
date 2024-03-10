@@ -34,7 +34,6 @@ public class AuthController {
 			logger.info(">>> Redirecting to login page");
 			return "/authentication/login-page";
 		}else {
-			UserUtil.getCurrentUserId();
 			logger.info(">>> Redirecting to index page");
 			return "redirect:/";
 		}		
