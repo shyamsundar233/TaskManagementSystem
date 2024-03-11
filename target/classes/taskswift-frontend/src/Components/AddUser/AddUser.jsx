@@ -111,7 +111,7 @@ const AddUser = () => {
                     </span>
                     </div>
                     <div>
-                        <select value={authority}>
+                        <select value={authority} onChange={e => setAuthority(e.target.value)}>
                             {authorities.map((auth) => {
                                 return <option key={auth} value={auth}>{auth}</option>
                             })}

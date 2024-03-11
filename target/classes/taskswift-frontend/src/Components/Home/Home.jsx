@@ -8,7 +8,8 @@ const Home = () => {
       <div>
           <Link to="/ts/create">Create</Link><br/>
           <Link to="/ts/list">List</Link><br/>
-          <Link to="/ts/addUser">Add User</Link>
+          <Link to="/ts/addUser">Add User</Link><br/>
+          <Link to="/logout">Logout</Link>
       </div>
   )
 }
