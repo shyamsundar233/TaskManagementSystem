@@ -71,7 +71,9 @@ public class UserUtil {
 		HttpStatus status = HttpStatus.OK;
 		try {
 			validateInputs(userRegistration);
+
 			Tenant tenant = getTenantForUser();
+
 			User user = new User();
 			user.setUsername(userRegistration.getUsername());
 			user.setPassword(userRegistration.getPassword());
@@ -79,21 +81,24 @@ public class UserUtil {
 			user.setTenant(tenant);
 			user.setEnabled(true);
 
+			Authority authority = new Authority();
+			authority.setUsername(userRegistration.getUsername());
+			authority.setAuthority(userRegistration.getAuthority());
+
 			if(isUserLoggedIn){
 				user.setUserid(TenantUtil.getNextUniqueId());
+				authority.setId(TenantUtil.getNextUniqueId());
 			}else{
 				user.setUserid(tenant.getCurrentUniqueId());
-				tenant.setCurrentUniqueId(tenant.getCurrentUniqueId() + 1);
+				authority.setId(tenant.getCurrentUniqueId() + 1);
+				tenant.setCurrentUniqueId(tenant.getCurrentUniqueId() + 2);
 				tenant.setActive(false);
 				TenantUtil.saveTenant(tenant);
 			}
 
 			userService.saveUser(user);
-			
-			Authority authority = new Authority();
-			authority.setUsername(userRegistration.getUsername());
-			authority.setAuthority(userRegistration.getAuthority());
 			authorityService.saveAuthority(authority);
+
 			response.put(Constants.USER, "User Created Successfully");
 		}catch(Exception e) {
 			response.put(Constants.USER, e.getMessage());

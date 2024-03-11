@@ -1,15 +1,19 @@
 package com.taskswift.main.service;
 
+import com.taskswift.main.entity.Roles;
 import com.taskswift.main.entity.Tenant;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RangeGenerationService {
+public class TransactionalService {
 
     @Autowired
     private TenantService tenantService;
+
+    @Autowired
+    private RolesService rolesService;
 
     @Transactional
     public void generateAndInsertRanges() {
@@ -29,4 +33,17 @@ public class RangeGenerationService {
             }
         }
     }
+
+    @Transactional
+    public void populateRoles(){
+        if(!rolesService.isRolesPopulated()){
+            String[] roles = { "ROLE_ADMINISTRATOR", "ROLE_PROJECT_MANAGER", "ROLE_TEAM_LEADER", "ROLE_DEVELOPER", "ROLE_TESTER", "ROLE_CLIENT", "ROLE_OBSERVER", "ROLE_CONTRIBUTOR", "ROLE_ANALYST", "ROLE_GUEST" };
+            for(String role : roles){
+                Roles rolesObj = new Roles();
+                rolesObj.setRoleName(role);
+                rolesService.saveRoles(rolesObj);
+            }
+        }
+    }
+
 }
