@@ -10,4 +10,6 @@ public interface TenantService {
 
     public Tenant getNextActiveTenant();
 
+    public Tenant getTenantById(Long tenantId);
+
 }

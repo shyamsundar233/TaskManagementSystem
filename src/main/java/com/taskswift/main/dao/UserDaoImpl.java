@@ -27,7 +27,6 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void saveUser(User user) {
-		user.setUserid(userRepo.findLastUserId() + 1);
 		userRepo.save(user);		
 		logger.info(">>> User saved to DB");
 	}

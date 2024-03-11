@@ -21,9 +21,11 @@ public class RangeGenerationService {
             while (startRange < endRange && startRange + rangeSize <= endRange) {
                 Tenant tenant = new Tenant();
                 tenant.setStartRange(startRange);
+                tenant.setCurrentUniqueId(startRange);
                 tenant.setEndRange(startRange + rangeSize);
+                tenant.setActive(true);
                 tenantService.addTenant(tenant);
-                startRange = startRange + rangeSize;
+                startRange = startRange + rangeSize + 1;
             }
         }
     }

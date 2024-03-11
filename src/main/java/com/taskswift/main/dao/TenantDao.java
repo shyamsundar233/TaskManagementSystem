@@ -10,4 +10,6 @@ public interface TenantDao {
 
     public Tenant getNextActiveTenant();
 
+    public Tenant getTenantById(Long tenantId);
+
 }

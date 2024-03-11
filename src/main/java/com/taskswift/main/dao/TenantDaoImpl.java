@@ -5,6 +5,8 @@ import com.taskswift.main.repo.TenantRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class TenantDaoImpl implements TenantDao{
 
@@ -23,6 +25,13 @@ public class TenantDaoImpl implements TenantDao{
 
     @Override
     public Tenant getNextActiveTenant() {
-        return tenantRepo.findFirstByIsActiveTrue();
+        Optional<Tenant> tenant = tenantRepo.findFirstByIsActiveTrue();
+        return tenant.orElse(null);
+    }
+
+    @Override
+    public Tenant getTenantById(Long tenantId) {
+        Optional<Tenant> tenant = tenantRepo.findById(tenantId);
+        return tenant.orElse(null);
     }
 }

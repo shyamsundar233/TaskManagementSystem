@@ -25,4 +25,9 @@ public class TenantServiceImpl implements TenantService{
     public Tenant getNextActiveTenant() {
         return tenantDao.getNextActiveTenant();
     }
+
+    @Override
+    public Tenant getTenantById(Long tenantId) {
+        return tenantDao.getTenantById(tenantId);
+    }
 }

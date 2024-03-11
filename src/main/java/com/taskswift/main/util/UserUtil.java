@@ -71,19 +71,24 @@ public class UserUtil {
 		HttpStatus status = HttpStatus.OK;
 		try {
 			validateInputs(userRegistration);
-			Tenant tenant = TenantUtil.getTenantForNewUser();
+			Tenant tenant = getTenantForUser();
 			User user = new User();
 			user.setUsername(userRegistration.getUsername());
 			user.setPassword(userRegistration.getPassword());
 			user.setEmail(userRegistration.getEmail());
 			user.setTenant(tenant);
-			user.setEnabled(true);					
-			userService.saveUser(user);
+			user.setEnabled(true);
 
-			if(tenant.isActive()){
+			if(isUserLoggedIn){
+				user.setUserid(TenantUtil.getNextUniqueId());
+			}else{
+				user.setUserid(tenant.getCurrentUniqueId());
+				tenant.setCurrentUniqueId(tenant.getCurrentUniqueId() + 1);
 				tenant.setActive(false);
 				TenantUtil.saveTenant(tenant);
 			}
+
+			userService.saveUser(user);
 			
 			Authority authority = new Authority();
 			authority.setUsername(userRegistration.getUsername());
@@ -107,10 +112,10 @@ public class UserUtil {
 		String username = user.getUsername();
 		String password = user.getPassword();
 		String email = user.getEmail();
-		if(username.length() < 1 || username.length() > 20) {
+		if(username.isEmpty() || username.length() > 20) {
 			logger.error(">>> Invalid username length");
 			throw new UserRegistrationExeception("Invalid username length");
-		}else if(password.length() < 1 || password.length() > 20) {
+		}else if(password.isEmpty() || password.length() > 20) {
 			logger.error(">>> Invalid password length");
 			throw new UserRegistrationExeception("Invalid password length");
 		}else {
@@ -142,6 +147,14 @@ public class UserUtil {
 				logger.error(">>> Invalid Email");
 				throw new UserRegistrationExeception("Invalid Email");
 			}
+		}
+	}
+
+	public static Tenant getTenantForUser(){
+		if(currentUser.getUserid() == null){
+			return TenantUtil.getNextActiveTenant();
+		}else{
+			return currentUser.getTenant();
 		}
 	}
 	
