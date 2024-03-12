@@ -21,9 +21,6 @@
 
 /* Create New Button */
 .create-new-button {
-    position: absolute;
-    top: 15px;
-    right: 300px;
     width: 125px;
     height: 35px;
     padding: 0 16px;
@@ -41,6 +38,13 @@
     border-radius: 4px;
     gap: 6px;
 }
+
+.create-new-button-pos {
+    position: absolute;
+    top: 15px;
+    right: 300px;
+}
+
 .create-new-button .icon {
     width: 20px;
     height: 20px;

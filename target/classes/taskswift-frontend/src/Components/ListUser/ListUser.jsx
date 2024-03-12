@@ -1,5 +1,5 @@
 import "./ListUser.css";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {TableContainer, Paper} from "@mui/material";
 import Table from "@mui/material/Table";
@@ -7,10 +7,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
+import {useNavigate} from "react-router-dom";
 
 const ListUser = () =>{
 
     const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get("/v1/api/users").then(resp => {
@@ -18,10 +20,15 @@ const ListUser = () =>{
         })
     }, []);
 
+    const handleCreate = () => {
+        navigate("/ts/addUser");
+    }
+
     return (
         <div className="parent-div-table">
+            <button className="create-new-button add-new-button-pos" onClick={handleCreate}> + ADD USER</button>
             <TableContainer component={Paper} className="list-user-container">
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="center" className="user-table-header">Username</TableCell>
