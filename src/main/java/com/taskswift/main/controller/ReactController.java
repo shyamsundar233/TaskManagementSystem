@@ -13,7 +13,8 @@ public class ReactController {
     		"",
     		"/create",
             "/list",
-            "/addUser"
+            "/addUser",
+            "/listUser"
     })
     public String goTest() {
         return "forward:/index.html";

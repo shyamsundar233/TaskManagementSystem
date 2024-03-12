@@ -20,6 +20,7 @@ const Home = () => {
           <Link to="/ts/create">Create</Link><br/>
           <Link to="/ts/list">List</Link><br/>
           <Link to="/ts/addUser">Add User</Link><br/>
+          <Link to="/ts/listUser">List User</Link><br/>
           <Button to="/logout" onClick={handleLogout}>Logout</Button>
       </div>
   )

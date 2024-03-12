@@ -3,6 +3,7 @@ package com.taskswift.main.controller;
 import com.taskswift.main.model.UserRegistration;
 import com.taskswift.main.util.UserUtil;
 import org.json.simple.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,12 @@ public class UserController {
     @PostMapping("/saveUser")
     public ResponseEntity<JSONObject> postUser(@RequestBody UserRegistration user){
         return UserUtil.saveUser(user);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<JSONObject> getAllUsers(){
+        JSONObject response = UserUtil.getAllUsers();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

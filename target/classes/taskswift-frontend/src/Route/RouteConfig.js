@@ -5,6 +5,7 @@ import Home from '../Components/Home/Home'
 import Create from '../Components/Create/Create'
 import List from "../Components/List/List";
 import AddUser from "../Components/AddUser/AddUser";
+import ListUser from "../Components/ListUser/ListUser";
 
 const RouteConfig = () => {
   return (
@@ -15,6 +16,7 @@ const RouteConfig = () => {
                 <Route path="create" element={<Create/>}/>
                 <Route path="list" element={<List/>}/>
                 <Route path="addUser" element={<AddUser/>}/>
+                <Route path="listUser" element={<ListUser/>}/>
             </Route>
         </Routes>
     </BrowserRouter>

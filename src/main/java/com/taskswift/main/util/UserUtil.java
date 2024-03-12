@@ -9,6 +9,7 @@ import com.taskswift.main.model.UserRegistration;
 import com.taskswift.main.service.AuthorityService;
 import com.taskswift.main.service.RolesService;
 import com.taskswift.main.service.UserService;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,6 +162,22 @@ public class UserUtil {
 		}else{
 			return currentUser.getTenant();
 		}
+	}
+
+	public static JSONObject getAllUsers(){
+		JSONObject response = new JSONObject();
+		List<User> users = userService.getAllUsers();
+		JSONArray usersArr = new JSONArray();
+		for(User user : users){
+			JSONObject userObj = new JSONObject();
+			userObj.put("userid", user.getUserid());
+			userObj.put("username", user.getUsername());
+			userObj.put("email", user.getEmail());
+			userObj.put("authority", authorityService.getAuthorityForUser(user.getUsername()).getAuthority());
+			usersArr.add(userObj);
+		}
+		response.put("Users", usersArr);
+		return response;
 	}
 	
 }
