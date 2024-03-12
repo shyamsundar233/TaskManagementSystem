@@ -1,0 +1,12 @@
+.parent-div-table{
+    display: flex;
+    justify-content: center;
+}
+
+.list-user-container{
+    width: 800px !important;
+}
+
+.user-table-header{
+    font-weight: bolder !important;
+}

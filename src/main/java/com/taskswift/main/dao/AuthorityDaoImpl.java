@@ -38,4 +38,9 @@ public class AuthorityDaoImpl implements AuthorityDao {
 		return authorityRepo.findDistinctAuthorities();
 	}
 
+	@Override
+	public Authority getAuthorityForUser(String username) {
+		return authorityRepo.findByUsername(username);
+	}
+
 }

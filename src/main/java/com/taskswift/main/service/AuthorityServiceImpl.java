@@ -37,4 +37,9 @@ public class AuthorityServiceImpl implements AuthorityService {
 		return authorityDao.getRoles();
 	}
 
+	@Override
+	public Authority getAuthorityForUser(String username) {
+		return authorityDao.getAuthorityForUser(username);
+	}
+
 }

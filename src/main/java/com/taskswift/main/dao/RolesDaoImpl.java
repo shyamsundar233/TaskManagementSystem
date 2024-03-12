@@ -3,6 +3,7 @@ package com.taskswift.main.dao;
 
 import java.util.List;
 
+import com.taskswift.main.entity.Roles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,15 @@ public class RolesDaoImpl implements RolesDao {
 		logger.info(">>> Roles fetched from DB");
 		return rolesRepo.getAllRoles();
 	}
+
+	@Override
+	public void saveRoles(Roles roles) {
+		rolesRepo.save(roles);
+	}
+
+	@Override
+	public boolean isRolesPopulated() {
+        return rolesRepo.count() != 0;
+    }
 
 }

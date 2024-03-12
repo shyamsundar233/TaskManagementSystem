@@ -8,10 +8,12 @@ export const useAlert = () => {
 }
 
 const alertSx = {
-  "width": "300px",
-  "position" : "absolute",
-  "right" : "15px",
-  "top" : "15px"
+  width: "300px",
+  position : "fixed",
+  right : "15px",
+  top : "15px",
+  zIndex: 1,
+  marginTop: "65px"
 }
 
 const CustomAlert = ({children}) => {

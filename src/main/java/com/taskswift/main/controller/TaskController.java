@@ -1,13 +1,12 @@
 //$Id$
 package com.taskswift.main.controller;
 
+import com.taskswift.main.entity.Task;
+import com.taskswift.main.util.TaskUtil;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-
-import com.taskswift.main.entity.Task;
-import com.taskswift.main.util.TaskUtil;
 
 @RestController
 @RequestMapping("/v1/api")
