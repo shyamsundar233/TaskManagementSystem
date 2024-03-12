@@ -3,6 +3,7 @@ import "./Home.css";
 import React from 'react'
 import {Button} from "@mui/material";
 import axios from "axios";
+import Notifications from "../Notifications/Notifications";
 
 const Home = () => {
 
@@ -16,7 +17,7 @@ const Home = () => {
 
   return (
       <div>
-          <Button to="/logout" onClick={handleLogout}>Logout</Button>
+          <Notifications/>
       </div>
   )
 }
