@@ -13,8 +13,11 @@
     text-align: left;
 }
 
-.title-text {
+.title-font {
     font-family: Epilogue, sans-serif;
+}
+
+.title-text {
     color: #00BDD6FF;
     margin-left: 20px;
 }

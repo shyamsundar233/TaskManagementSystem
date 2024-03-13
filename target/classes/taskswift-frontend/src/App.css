@@ -3,7 +3,23 @@
 }
 
 .outlet-div{
-  margin-top : 100px;
+  position: fixed;
+  margin-top : 60px;
   margin-left: 59px;
   width: 100%;
+}
+
+.display-center {
+  display: flex;
+  justify-content: center;
+}
+
+.scroll-div {
+  overflow-y: auto;
+  max-height: calc(100vh - 50px);
+  scrollbar-width: none;
+}
+
+.scroll-div::-webkit-scrollbar {
+  display: none;
 }
