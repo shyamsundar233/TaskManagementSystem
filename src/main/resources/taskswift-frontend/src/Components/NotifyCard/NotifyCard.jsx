@@ -11,7 +11,7 @@ const NotifyCard = ({user, status, title, body, userImage}) => {
         <div className="notify-card-cont-1">
             <div className="notify-card-cont-2">
                 <div className="notify-card-user-cont">
-                    <img src={userImage} alt="User Image Not Found"/>&nbsp;&nbsp;
+                    <img src={userImage} alt="User Not Found"/>&nbsp;&nbsp;
                     <span className="notify-card-user-text"> {user} </span> &nbsp; {status}
                 </div>
                 <div className="notify-card-title-cont">
