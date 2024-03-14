@@ -28,10 +28,6 @@ const Home = () => {
             tempArr.push(task.taskCategory);
             tempArr.push(task.taskRecurring);
             tasksArr.push(tempArr);
-            tasksArr.push(tempArr);
-            tasksArr.push(tempArr);
-            tasksArr.push(tempArr);
-            tasksArr.push(tempArr);
         })
         setTodayTask(tasksArr);
     }
