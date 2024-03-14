@@ -1,6 +1,7 @@
 //$Id$
 package com.taskswift.main.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.taskswift.main.util.TenantUtil;
@@ -53,6 +54,11 @@ public class TaskDaoImpl implements TaskDao {
 	public void deleteTaskById(Long taskId) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public List<Task> getTodayTask(LocalDate localDate) {
+		return taskRepo.findAllByDueDate(localDate);
 	}
 
 }

@@ -4,6 +4,7 @@ package com.taskswift.main.util;
 import com.taskswift.main.entity.Task;
 import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.service.TaskService;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,6 +79,17 @@ public class TaskUtil {
 			}
 		}
 		
+	}
+
+	public static JSONObject getAllTasksList(){
+		JSONObject response = new JSONObject();
+		List<Task> todaysTaskList = taskService.getTodayTask(LocalDate.now());
+		JSONArray taskArray = new JSONArray();
+		for(Task task : todaysTaskList){
+			JSONObject taskObj = new JSONObject();
+		}
+		response.put("todayTask", todaysTaskList);
+		return response;
 	}
 
 }

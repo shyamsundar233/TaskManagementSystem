@@ -5,7 +5,7 @@ import callIcon from "../../Assets/phone.svg";
 import notificationIcon from "../../Assets/bell.svg";
 import messageIcon from "../../Assets/msg-writing.svg";
 import noUser from "../../Assets/user.svg";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const Title = () => {
 
@@ -19,7 +19,7 @@ const Title = () => {
 
     return (
         <div className="title-container-1">
-            <div className="title-text title-font">Task Swift</div>
+            <Link to="/ts" className="link"><div className="title-text title-font">Task Swift</div></Link>
             <button className="create-new-button create-new-button-pos" onClick={handleCreate}> + CREATE NEW</button>
             <img src={searchIcon} className="search-button search-btn-pos" alt="Search Icon not found"/>
             <img src={callIcon} className="search-button call-btn-pos" alt="Call Icon not found"/>

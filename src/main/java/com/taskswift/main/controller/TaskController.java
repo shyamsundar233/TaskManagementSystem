@@ -27,4 +27,10 @@ public class TaskController {
 		return TaskUtil.saveTask(task);		
 	}
 
+	@GetMapping("/todayTask")
+	public JSONObject getTodayTask(){
+		logger.info(">>> In GET endpoint of Today Task API");
+		return TaskUtil.getAllTasksList();
+	}
+
 }

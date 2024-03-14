@@ -1,6 +1,7 @@
 //$Id$
 package com.taskswift.main.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -48,6 +49,11 @@ public class TaskServiceImpl implements TaskService {
 	public void deleteTaskById(Long taskId) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public List<Task> getTodayTask(LocalDate localDate) {
+		return taskDao.getTodayTask(localDate);
 	}
 
 }
