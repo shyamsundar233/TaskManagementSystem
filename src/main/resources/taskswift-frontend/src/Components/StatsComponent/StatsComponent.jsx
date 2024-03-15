@@ -9,7 +9,10 @@ const StatsComponent = ({title, className}) => {
   return (
       <div className={classList}>
           <div className="font-sub-heading"> {title} </div>
-          <GraphComponent/>
+          <div className="display-flex">
+              <div className="stats-comp-value-pos font-bold padd-20 stats-comp-value-font">430</div>
+              <GraphComponent />
+          </div>
       </div>
   );
 }

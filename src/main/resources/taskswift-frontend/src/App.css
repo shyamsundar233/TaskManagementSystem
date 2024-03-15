@@ -23,6 +23,11 @@
   flex-direction: column;
 }
 
+.display-right {
+  display: flex;
+  justify-content: right;
+}
+
 .padd-20 {
   padding: 20px;
 }
