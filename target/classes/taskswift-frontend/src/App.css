@@ -6,7 +6,7 @@
   position: fixed;
   margin-top : 60px;
   margin-left: 59px;
-  width: 100%;
+  width: 96%;
 }
 
 .display-center {
@@ -21,6 +21,11 @@
 .display-center-col {
   display: flex;
   flex-direction: column;
+}
+
+.display-right {
+  display: flex;
+  justify-content: right;
 }
 
 .padd-20 {
