@@ -43,7 +43,6 @@ const AddUser = () => {
             "authority" : authority
         }
         axios.post("/v1/api/saveUser", userDetails).then((resp) => {
-            debugger
             if(resp.data.status === 200){
                 showAlert(resp.data.User, "success");
                 return navigate("/ts");

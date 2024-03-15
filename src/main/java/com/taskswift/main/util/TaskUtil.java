@@ -94,7 +94,7 @@ public class TaskUtil {
 	public static JSONObject getAllCurrentWeekTasks(){
 		JSONObject response = new JSONObject();
 		List<LocalDate> currentWeek = getStartAndEndOfCurrentWeek();
-		response.put("todayTask", taskService.getCurrentWeekTasks(currentWeek.get(0), currentWeek.get(1)));
+		response.put("weeklyTasks", taskService.getCurrentWeekTasks(currentWeek.get(0), currentWeek.get(1)));
 		return response;
 	}
 

@@ -5,13 +5,19 @@ const GraphComponent = ({data, options, classList}) => {
 
     classList = classList + " graph-comp-cont-1"
 
-    data = [
-        { x: 1, y: 0 },
-        { x: 2, y: 3 },
-        { x: 3, y: 1 },
-        { x: 4, y: 2 },
-        { x: 5, y: 0 }
-    ];
+    if(!data || data.length < 1) {
+        data = [
+            { x: 1, y: 0 },
+            { x: 2, y: 3 },
+            { x: 3, y: 1 },
+            { x: 4, y: 2 },
+            { x: 5, y: 0 }
+        ];
+    }else {
+        data.forEach((tempData, index) => {
+            data[index].x = index+1;
+        })
+    }
 
     return (
         <div className={classList} id="graph-comp-cont">
