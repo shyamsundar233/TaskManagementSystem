@@ -19,5 +19,7 @@ public interface TaskService {
 	public void deleteTaskById(Long taskId);
 
 	public List<Task> getTodayTask(LocalDate localDate);
+
+	public List<Task> getCurrentWeekTasks(LocalDate fromDate, LocalDate toDate);
 	
 }

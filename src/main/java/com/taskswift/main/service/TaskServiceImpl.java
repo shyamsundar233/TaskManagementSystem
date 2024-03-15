@@ -56,4 +56,9 @@ public class TaskServiceImpl implements TaskService {
 		return taskDao.getTodayTask(localDate);
 	}
 
+	@Override
+	public List<Task> getCurrentWeekTasks(LocalDate fromDate, LocalDate toDate) {
+		return taskDao.getCurrentWeekTasks(fromDate, toDate);
+	}
+
 }

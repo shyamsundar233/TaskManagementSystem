@@ -30,7 +30,13 @@ public class TaskController {
 	@GetMapping("/todayTask")
 	public JSONObject getTodayTask(){
 		logger.info(">>> In GET endpoint of Today Task API");
-		return TaskUtil.getAllTasksList();
+		return TaskUtil.getAllTodayTasksList();
+	}
+
+	@GetMapping("/currentWeekTask")
+	public JSONObject getCurrentWeekTask(){
+		logger.info(">>> In GET endpoint of Current Week Task API");
+		return TaskUtil.getAllCurrentWeekTasks();
 	}
 
 }

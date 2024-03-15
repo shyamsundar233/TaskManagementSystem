@@ -11,7 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -81,15 +84,25 @@ public class TaskUtil {
 		
 	}
 
-	public static JSONObject getAllTasksList(){
+	public static JSONObject getAllTodayTasksList(){
 		JSONObject response = new JSONObject();
 		List<Task> todaysTaskList = taskService.getTodayTask(LocalDate.now());
-		JSONArray taskArray = new JSONArray();
-		for(Task task : todaysTaskList){
-			JSONObject taskObj = new JSONObject();
-		}
 		response.put("todayTask", todaysTaskList);
 		return response;
+	}
+
+	public static JSONObject getAllCurrentWeekTasks(){
+		JSONObject response = new JSONObject();
+		List<LocalDate> currentWeek = getStartAndEndOfCurrentWeek();
+		response.put("todayTask", taskService.getCurrentWeekTasks(currentWeek.get(0), currentWeek.get(1)));
+		return response;
+	}
+
+	private static List<LocalDate> getStartAndEndOfCurrentWeek() {
+		LocalDate currentDate = LocalDate.now();
+		LocalDate startDateOfWeek = currentDate.minusDays(currentDate.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue());
+		LocalDate endDateOfWeek = startDateOfWeek.plusDays(6);
+		return new ArrayList<>(Arrays.asList(startDateOfWeek, endDateOfWeek));
 	}
 
 }

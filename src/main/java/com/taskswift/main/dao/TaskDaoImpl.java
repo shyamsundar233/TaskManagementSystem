@@ -61,4 +61,9 @@ public class TaskDaoImpl implements TaskDao {
 		return taskRepo.findAllByDueDate(localDate);
 	}
 
+	@Override
+	public List<Task> getCurrentWeekTasks(LocalDate fromDate, LocalDate toDate) {
+		return taskRepo.findAllByDueDateBetween(fromDate, toDate);
+	}
+
 }
