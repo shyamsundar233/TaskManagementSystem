@@ -1,9 +1,6 @@
 package com.taskswift.main.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class TaskStatus {
@@ -11,13 +8,11 @@ public class TaskStatus {
     @Id
     private Long taskStatusId;
 
-    @OneToOne
+    private String statusTitle;
+
+    @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
-
-    @OneToOne
-    @JoinColumn(name = "details_id")
-    private StatusDetails statusDetails;
 
     public Long getTaskStatusId() {
         return taskStatusId;
@@ -35,20 +30,19 @@ public class TaskStatus {
         this.task = task;
     }
 
-    public StatusDetails getStatusDetails() {
-        return statusDetails;
+    public String getStatusTitle() {
+        return statusTitle;
     }
 
-    public void setStatusDetails(StatusDetails statusDetails) {
-        this.statusDetails = statusDetails;
+    public void setStatusTitle(String statusTitle) {
+        this.statusTitle = statusTitle;
     }
 
     @Override
     public String toString() {
         return "TaskStatus{" +
                 "taskStatusId=" + taskStatusId +
-                ", task=" + task +
-                ", statusDetails=" + statusDetails +
+                ", statusTitle=" + statusTitle +
                 '}';
     }
 }

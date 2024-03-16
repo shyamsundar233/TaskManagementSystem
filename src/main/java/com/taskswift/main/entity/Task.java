@@ -3,11 +3,9 @@ package com.taskswift.main.entity;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "task")
@@ -30,8 +28,12 @@ public class Task {
 	
 	private String taskRecurring;
 
-	@OneToOne(mappedBy = "task")
+	@OneToOne
+	@JoinColumn(name = "task_status")
 	private TaskStatus taskStatus;
+
+	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<TaskStatus> taskStatusList;
 
 	public Long getTaskId() {
 		return taskId;
@@ -105,6 +107,14 @@ public class Task {
 		this.taskStatus = taskStatus;
 	}
 
+	public List<TaskStatus> getTaskStatusList() {
+		return taskStatusList;
+	}
+
+	public void setTaskStatusList(List<TaskStatus> taskStatusList) {
+		this.taskStatusList = taskStatusList;
+	}
+
 	@Override
 	public String toString() {
 		return "Task{" +
@@ -117,6 +127,7 @@ public class Task {
 				", taskAttachment=" + taskAttachment +
 				", taskRecurring='" + taskRecurring + '\'' +
 				", taskStatus=" + taskStatus +
+				", taskStatusList=" + taskStatusList +
 				'}';
 	}
 }

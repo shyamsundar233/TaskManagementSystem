@@ -41,7 +41,8 @@ const Create = () => {
             "taskCategory" : category,
             "taskAttachment" : attachment,
             "taskRecurring" : recurring,
-            "taskStatus" : status
+            "taskStatus" : status,
+            "taskStatusList" : statusList
         };
         axios.post("/v1/api/tasks", payLoad, {withCredentials: true}).then((resp) => {
             let [message, severity] = constructMsg(resp.data.Task);
@@ -119,7 +120,7 @@ const Create = () => {
     const resetData = () => {
         setTitle('');
         setDescription('');
-        setDueDate('');
+        setDueDate(getTodayDate());
         setPriority('Low Priority');
         setCategory('Food');
         setAttachment(null);

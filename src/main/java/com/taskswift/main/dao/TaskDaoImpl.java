@@ -2,12 +2,11 @@
 package com.taskswift.main.dao;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.taskswift.main.entity.StatusDetails;
 import com.taskswift.main.entity.TaskStatus;
 import com.taskswift.main.model.TaskCreation;
-import com.taskswift.main.repo.StatusDetailsRepo;
 import com.taskswift.main.repo.TaskStatusRepo;
 import com.taskswift.main.util.TenantUtil;
 import org.slf4j.Logger;
@@ -29,9 +28,6 @@ public class TaskDaoImpl implements TaskDao {
 	@Autowired
 	private TaskStatusRepo taskStatusRepo;
 
-	@Autowired
-	private StatusDetailsRepo statusDetailsRepo;
-
 	@Override
 	public List<Task> getAllTasks() {
 		logger.info(">>> Tasks fetched from DB");
@@ -50,22 +46,23 @@ public class TaskDaoImpl implements TaskDao {
 		Task task = getTaskFromTaskCreation(taskCreation);
 
 		logger.info(">>> " + task.getTaskTitle() + " Task is getting saved to DB");
+		task.setTaskId(TenantUtil.getNextUniqueId());
+		taskRepo.save(task);
 
-		Long nextUniqueId = TenantUtil.getNextUniqueId();
-		task.setTaskId(nextUniqueId);
-
-		Task savedTask = taskRepo.save(task);
-
-		StatusDetails statusDetails = new StatusDetails();
-		statusDetails.setStatusId(TenantUtil.getNextUniqueId());
-		statusDetails.setStatusTitle(taskCreation.getTaskStatus());
-		StatusDetails savedStatusDetails = statusDetailsRepo.save(statusDetails);
-
-		TaskStatus taskStatus = new TaskStatus();
-		taskStatus.setTaskStatusId(TenantUtil.getNextUniqueId());
-		taskStatus.setTask(savedTask);
-		taskStatus.setStatusDetails(savedStatusDetails);
-		taskStatusRepo.save(taskStatus);
+		List<TaskStatus> statusList = new ArrayList<>();
+		for(String statusTitle : taskCreation.getTaskStatusList()){
+			TaskStatus taskStatus = new TaskStatus();
+			taskStatus.setTaskStatusId(TenantUtil.getNextUniqueId());
+			taskStatus.setStatusTitle(statusTitle);
+			taskStatus.setTask(task);
+			taskStatusRepo.save(taskStatus);
+			statusList.add(taskStatus);
+			if(statusTitle.equals(taskCreation.getTaskStatus())){
+				task.setTaskStatus(taskStatus);
+			}
+		}
+		task.setTaskStatusList(statusList);
+		taskRepo.save(task);
 		
 		logger.info(">>> " + task.getTaskId() + " Task is saved in DB");
 	}

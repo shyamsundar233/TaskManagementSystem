@@ -2,6 +2,7 @@ package com.taskswift.main.model;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.List;
 
 public class TaskCreation {
 
@@ -20,6 +21,8 @@ public class TaskCreation {
     private String taskRecurring;
 
     private String taskStatus;
+
+    private List<String> taskStatusList;
 
     public String getTaskTitle() {
         return taskTitle;
@@ -85,6 +88,14 @@ public class TaskCreation {
         this.taskStatus = taskStatus;
     }
 
+    public List<String> getTaskStatusList() {
+        return taskStatusList;
+    }
+
+    public void setTaskStatusList(List<String> taskStatusList) {
+        this.taskStatusList = taskStatusList;
+    }
+
     @Override
     public String toString() {
         return "TaskCreation{" +
@@ -96,6 +107,7 @@ public class TaskCreation {
                 ", taskAttachment=" + taskAttachment +
                 ", taskRecurring='" + taskRecurring + '\'' +
                 ", taskStatus='" + taskStatus + '\'' +
+                ", taskStatusList=" + taskStatusList +
                 '}';
     }
 }
