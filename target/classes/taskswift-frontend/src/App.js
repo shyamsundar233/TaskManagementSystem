@@ -11,7 +11,7 @@ function App() {
           <Title/>
           <SideBar/>
           <CustomAlert>
-              <div className="outlet-div">
+              <div className="outlet-div scroll-div">
                   <Outlet/>
               </div>
           </CustomAlert>

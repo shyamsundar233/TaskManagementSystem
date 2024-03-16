@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.taskswift.main.entity.Task;
+import com.taskswift.main.model.TaskCreation;
 
 public interface TaskService {
 	
@@ -12,7 +13,7 @@ public interface TaskService {
 	
 	public Task getTaskById(Long taskId);
 	
-	public void saveTask(Task task);
+	public void saveTask(TaskCreation task);
 	
 	public void deleteTask(Task task);
 	

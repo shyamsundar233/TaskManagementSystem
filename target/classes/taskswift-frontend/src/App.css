@@ -16,6 +16,7 @@
 
 .display-flex {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .display-center-col {
@@ -82,4 +83,8 @@
 .link {
   text-decoration: none;
   color: #000;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

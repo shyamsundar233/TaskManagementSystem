@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 public class StatusDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long statusId;
 
     private String statusTitle;

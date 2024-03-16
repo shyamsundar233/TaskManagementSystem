@@ -4,6 +4,11 @@ package com.taskswift.main.dao;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.taskswift.main.entity.StatusDetails;
+import com.taskswift.main.entity.TaskStatus;
+import com.taskswift.main.model.TaskCreation;
+import com.taskswift.main.repo.StatusDetailsRepo;
+import com.taskswift.main.repo.TaskStatusRepo;
 import com.taskswift.main.util.TenantUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +26,12 @@ public class TaskDaoImpl implements TaskDao {
 	@Autowired
 	private TaskRepo taskRepo;
 
+	@Autowired
+	private TaskStatusRepo taskStatusRepo;
+
+	@Autowired
+	private StatusDetailsRepo statusDetailsRepo;
+
 	@Override
 	public List<Task> getAllTasks() {
 		logger.info(">>> Tasks fetched from DB");
@@ -34,12 +45,27 @@ public class TaskDaoImpl implements TaskDao {
 	}
 
 	@Override
-	public void saveTask(Task task) {
-		
+	public void saveTask(TaskCreation taskCreation) {
+
+		Task task = getTaskFromTaskCreation(taskCreation);
+
 		logger.info(">>> " + task.getTaskTitle() + " Task is getting saved to DB");
-		Long taskId = TenantUtil.getNextUniqueId();
-		task.setTaskId(taskId);
-		taskRepo.save(task);
+
+		Long nextUniqueId = TenantUtil.getNextUniqueId();
+		task.setTaskId(nextUniqueId);
+
+		Task savedTask = taskRepo.save(task);
+
+		StatusDetails statusDetails = new StatusDetails();
+		statusDetails.setStatusId(TenantUtil.getNextUniqueId());
+		statusDetails.setStatusTitle(taskCreation.getTaskStatus());
+		StatusDetails savedStatusDetails = statusDetailsRepo.save(statusDetails);
+
+		TaskStatus taskStatus = new TaskStatus();
+		taskStatus.setTaskStatusId(TenantUtil.getNextUniqueId());
+		taskStatus.setTask(savedTask);
+		taskStatus.setStatusDetails(savedStatusDetails);
+		taskStatusRepo.save(taskStatus);
 		
 		logger.info(">>> " + task.getTaskId() + " Task is saved in DB");
 	}
@@ -64,6 +90,18 @@ public class TaskDaoImpl implements TaskDao {
 	@Override
 	public List<Task> getCurrentWeekTasks(LocalDate fromDate, LocalDate toDate) {
 		return taskRepo.findAllByDueDateBetween(fromDate, toDate);
+	}
+
+	private static Task getTaskFromTaskCreation(TaskCreation taskCreation){
+		Task task = new Task();
+		task.setTaskTitle(taskCreation.getTaskTitle());
+		task.setTaskDesc(taskCreation.getTaskDesc());
+		task.setTaskCategory(taskCreation.getTaskCategory());
+		task.setDueDate(taskCreation.getDueDate());
+		task.setTaskPriority(taskCreation.getTaskPriority());
+		task.setTaskRecurring(taskCreation.getTaskRecurring());
+		task.setTaskAttachment(taskCreation.getTaskAttachment());
+		return task;
 	}
 
 }

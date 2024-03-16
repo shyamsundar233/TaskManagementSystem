@@ -2,6 +2,7 @@
 package com.taskswift.main.controller;
 
 import com.taskswift.main.entity.Task;
+import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.util.TaskUtil;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ public class TaskController {
 	}
 
 	@PostMapping("/tasks")
-	public JSONObject postTasks(@RequestBody Task task) {
+	public JSONObject postTasks(@RequestBody TaskCreation task) {
 		logger.info(">>> In POST endpoint of Task API for task creation");
 		return TaskUtil.saveTask(task);		
 	}

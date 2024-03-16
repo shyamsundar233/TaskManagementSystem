@@ -3,6 +3,7 @@ package com.taskswift.main.util;
 
 import com.taskswift.main.entity.Task;
 import com.taskswift.main.exception.TaskException;
+import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.service.TaskService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -37,13 +38,13 @@ public class TaskUtil {
 		return response;
 	}
 	
-	public static JSONObject saveTask(Task task) {
+	public static JSONObject saveTask(TaskCreation taskCreation) {
 		JSONObject response = new JSONObject();
 		try {
 			logger.info(">>> Validating Task Inputs");
-			validateTask(task);
+			validateTask(taskCreation);
 			
-			taskService.saveTask(task);			
+			taskService.saveTask(taskCreation);
 			response.put("Task", "Task Created Successfully!!!");
 			
 		}catch(Exception e) {
@@ -53,7 +54,7 @@ public class TaskUtil {
 		return response;
 	}
 	
-	public static void validateTask(Task task) {
+	public static void validateTask(TaskCreation task) {
 		
 		String taskTitle = task.getTaskTitle();
 		String taskDesc = task.getTaskDesc();

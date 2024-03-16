@@ -5,13 +5,22 @@ import $ from 'jquery';
 import { useAlert } from '../CustomAlert/CustomAlert';
 import cancelIcon from "../../Assets/xmark.svg";
 
+const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 const Create = () => {
 
     const {showAlert} = useAlert();
 
+
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [dueDate, setDueDate] = useState('');
+    const [dueDate, setDueDate] = useState(getTodayDate());
     const [statusList, setStatusList] = useState([]);
     const [status, setStatus] = useState('');
     const [priority, setPriority] = useState('Low Priority');
@@ -31,9 +40,10 @@ const Create = () => {
             "taskPriority" : priority,
             "taskCategory" : category,
             "taskAttachment" : attachment,
-            "taskRecurring" : recurring
+            "taskRecurring" : recurring,
+            "taskStatus" : status
         };
-        axios.post("http://localhost:8080/v1/api/tasks", payLoad).then((resp) => {
+        axios.post("/v1/api/tasks", payLoad, {withCredentials: true}).then((resp) => {
             let [message, severity] = constructMsg(resp.data.Task);
             showAlert(message, severity);
             resetData();
@@ -114,6 +124,8 @@ const Create = () => {
         setCategory('Food');
         setAttachment(null);
         setRecurring('Daily');
+        setStatusList([]);
+        setStatus('');
     }
 
     return (
@@ -143,7 +155,7 @@ const Create = () => {
                     <div className="display-flex ">
                         {statusList.length > 0 && statusList.map((tempStatus, index) => {
                             return (
-                                <div style={{position: "relative"}}>
+                                <div style={{position: "relative"}} className="cursor-pointer">
                                     <img src={cancelIcon} alt="Cancel Icon not found" className="cancel-icon" onClick={e => handleRemoveStatus(index)}/>
                                     <div className="margin-10 status-span-cont" id={`status_${tempStatus}`}
                                          onClick={e => handleStatusClick(e, tempStatus)}>{tempStatus}</div>

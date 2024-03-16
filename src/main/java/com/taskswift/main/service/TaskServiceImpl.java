@@ -4,6 +4,7 @@ package com.taskswift.main.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.taskswift.main.model.TaskCreation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public void saveTask(Task task) {
+	public void saveTask(TaskCreation task) {
 		
 		taskDao.saveTask(task);
 
