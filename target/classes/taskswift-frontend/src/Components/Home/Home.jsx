@@ -71,7 +71,7 @@ const Home = () => {
     }
 
   return (
-      <div className="display-flex">
+      <div className="display-flex pos-fixed">
           <Notifications/>
           <div className="display-center-col">
               <div className="height-width-auto">
