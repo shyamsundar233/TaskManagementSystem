@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import "./Create.css";
 import axios from 'axios';
+import $ from 'jquery';
 import { useAlert } from '../CustomAlert/CustomAlert';
+import cancelIcon from "../../Assets/xmark.svg";
 
 const Create = () => {
 
@@ -10,10 +12,13 @@ const Create = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState('');
+    const [statusList, setStatusList] = useState([]);
+    const [status, setStatus] = useState('');
     const [priority, setPriority] = useState('Low Priority');
     const [category, setCategory] = useState('Food');
     const [attachment, setAttachment] = useState(null);
     const [recurring, setRecurring] = useState('Daily');
+    const [statusInput, setStatusInput] = useState('');
 
     const handleSubmit = () => {
         if(!validateInputs()){
@@ -54,6 +59,9 @@ const Create = () => {
         }else if(dueDate.length < 1){
             showAlert("Please set the Due Date","error")
             return false;
+        }else if(status.length < 1){
+            showAlert("Please add status for task","error")
+            return false;
         }else{
             var titleRegex = /^[^\s]+[a-zA-Z0-9\s]*[a-zA-Z0-9]$/;
             if(!titleRegex.test(title)){
@@ -62,6 +70,40 @@ const Create = () => {
             }
         }
         return true;
+    }
+
+    const handleStatusAdd = (event) => {
+        if(event.key === "Enter" && event.target.value && event.target.value.length > 0){
+            if(statusList.indexOf(event.target.value) === -1){
+                setStatusList(prevState => [...prevState, event.target.value]);
+                setStatusInput('');
+            }else{
+                showAlert("Duplicate Status Value Found","error")
+            }
+        }
+    }
+
+    const handleStatusClick = (event, tempStatus) => {
+        if(status === tempStatus){
+            setStatus('');
+            event.target.style.backgroundColor = "";
+        }else{
+            if(status !== ''){
+                $("#status_" + status)[0].style.backgroundColor = "";
+            }
+            setStatus(tempStatus);
+            event.target.style.backgroundColor = "#00BDD6FF";
+        }
+    }
+
+    const handleRemoveStatus = (index) => {
+        debugger
+        let tempStatus = statusList[index];
+        if(tempStatus === status){
+            setStatus('');
+            $("#status_" + status)[0].style.backgroundColor = "";
+        }
+        setStatusList(statusList.filter(status1 => status1 !== tempStatus));
     }
 
     const resetData = () => {
@@ -93,6 +135,26 @@ const Create = () => {
                 <label className="label" htmlFor='dueDate'>Due Date</label>
                 <input className="input-field" type='date' id='dueDate' value={dueDate}
                        onChange={(e) => setDueDate(e.target.value)}/>
+            </div>
+
+            <div className="input-group">
+                <label className="label" htmlFor='status'>Status</label>
+                <div className="margin-10 padd-20 status-cont-1">
+                    <div className="display-flex ">
+                        {statusList.length > 0 && statusList.map((tempStatus, index) => {
+                            return (
+                                <div style={{position: "relative"}}>
+                                    <img src={cancelIcon} alt="Cancel Icon not found" className="cancel-icon" onClick={e => handleRemoveStatus(index)}/>
+                                    <div className="margin-10 status-span-cont" id={`status_${tempStatus}`}
+                                         onClick={e => handleStatusClick(e, tempStatus)}>{tempStatus}</div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <input className="input-field status-input-field" type="text" id="status" value={statusInput}
+                           onChange={(e) => setStatusInput(e.target.value)}
+                           onKeyDown={(e) => handleStatusAdd(e)}/>
+                </div>
             </div>
 
             <div className="input-group">
