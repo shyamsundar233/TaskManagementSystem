@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,6 +29,9 @@ public class Task {
 	private File taskAttachment;
 	
 	private String taskRecurring;
+
+	@OneToOne(mappedBy = "task")
+	private TaskStatus taskStatus;
 
 	public Long getTaskId() {
 		return taskId;
@@ -93,9 +97,26 @@ public class Task {
 		this.taskRecurring = taskRecurring;
 	}
 
-	@Override
-	public String toString() {
-		return "Task [taskId=" + taskId + ", taskTitle=" + taskTitle + ", taskDesc=" + taskDesc + ", dueDate=" + dueDate + ", taskPriority=" + taskPriority + ", taskCategory=" + taskCategory + ", taskAttachment=" + taskAttachment + ", taskRecurring=" + taskRecurring + "]";
+	public TaskStatus getTaskStatus() {
+		return taskStatus;
 	}
 
+	public void setTaskStatus(TaskStatus taskStatus) {
+		this.taskStatus = taskStatus;
+	}
+
+	@Override
+	public String toString() {
+		return "Task{" +
+				"taskId=" + taskId +
+				", taskTitle='" + taskTitle + '\'' +
+				", taskDesc='" + taskDesc + '\'' +
+				", dueDate=" + dueDate +
+				", taskPriority='" + taskPriority + '\'' +
+				", taskCategory='" + taskCategory + '\'' +
+				", taskAttachment=" + taskAttachment +
+				", taskRecurring='" + taskRecurring + '\'' +
+				", taskStatus=" + taskStatus +
+				'}';
+	}
 }
