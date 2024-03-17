@@ -35,7 +35,7 @@ public class TaskUtil {
 
 	public static JSONObject getAllTasks(){
 		JSONObject response = new JSONObject();
-		response.put("Task", taskService.getAllTasks());
+		response.put("Task", constructJsonForTask(taskService.getAllTasks()).get("result"));
 		return response;
 	}
 	
