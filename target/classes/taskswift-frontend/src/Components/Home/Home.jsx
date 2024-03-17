@@ -37,15 +37,16 @@ const Home = () => {
 
     const constructTodayTask = (tasksList) => {
         let tasksArr = [];
-        tasksList.forEach(task => {
+        for (let index in tasksList) {
+            let task = tasksList[index];
             let tempArr = [];
             tempArr.push(task.taskTitle);
-            tempArr.push(task.taskDesc);
+            tempArr.push(task.taskStatus);
             tempArr.push(task.taskPriority);
             tempArr.push(task.taskCategory);
             tempArr.push(task.taskRecurring);
             tasksArr.push(tempArr);
-        })
+        }
         setTodayTask(tasksArr);
     }
 
@@ -86,7 +87,7 @@ const Home = () => {
                   <div className="title-font padd-20 margin-top-left-20 font-heading">
                       <div className="padd-20"> My Today's Tasks </div>
                       <TableComponent
-                          headerRow={["Task Title", "Description", "Priority", "Category", "Recurring"]}
+                          headerRow={["Task Title", "Status", "Priority", "Category", "Recurring"]}
                           bodyRow={todayTask}
                       />
                   </div>

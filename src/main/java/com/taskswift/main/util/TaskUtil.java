@@ -2,6 +2,7 @@
 package com.taskswift.main.util;
 
 import com.taskswift.main.entity.Task;
+import com.taskswift.main.entity.TaskStatus;
 import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.service.TaskService;
@@ -88,14 +89,17 @@ public class TaskUtil {
 	public static JSONObject getAllTodayTasksList(){
 		JSONObject response = new JSONObject();
 		List<Task> todaysTaskList = taskService.getTodayTask(LocalDate.now());
-		response.put("todayTask", todaysTaskList);
+		JSONObject taskJson = constructJsonForTask(todaysTaskList);
+		response.put("todayTask", taskJson.get("result"));
 		return response;
 	}
 
 	public static JSONObject getAllCurrentWeekTasks(){
 		JSONObject response = new JSONObject();
 		List<LocalDate> currentWeek = getStartAndEndOfCurrentWeek();
-		response.put("weeklyTasks", taskService.getCurrentWeekTasks(currentWeek.get(0), currentWeek.get(1)));
+		List<Task> currentWeekTasksList = taskService.getCurrentWeekTasks(currentWeek.get(0), currentWeek.get(1));
+		JSONObject tasksJson = constructJsonForTask(currentWeekTasksList);
+		response.put("weeklyTasks", tasksJson.get("result"));
 		return response;
 	}
 
@@ -104,6 +108,34 @@ public class TaskUtil {
 		LocalDate startDateOfWeek = currentDate.minusDays(currentDate.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue());
 		LocalDate endDateOfWeek = startDateOfWeek.plusDays(6);
 		return new ArrayList<>(Arrays.asList(startDateOfWeek, endDateOfWeek));
+	}
+
+	private static List<String> getTaskStatusList(List<TaskStatus> taskStatusList){
+		List<String> statusList = new ArrayList<>();
+		for(TaskStatus taskStatus : taskStatusList){
+			statusList.add(taskStatus.getStatusTitle());
+		}
+		return statusList;
+	}
+
+	private static JSONObject constructJsonForTask(List<Task> tasksList){
+		JSONObject resultTaskJson= new JSONObject();
+		JSONArray taskArrJson = new JSONArray();
+		for(Task task : tasksList){
+			JSONObject taskObj = new JSONObject();
+			taskObj.put("taskTitle", task.getTaskTitle());
+			taskObj.put("taskDesc", task.getTaskDesc());
+			taskObj.put("dueDate", task.getDueDate());
+			taskObj.put("taskPriority", task.getTaskPriority());
+			taskObj.put("taskCategory", task.getTaskCategory());
+			taskObj.put("taskAttachment", task.getTaskAttachment());
+			taskObj.put("taskRecurring", task.getTaskRecurring());
+			taskObj.put("taskStatus", task.getTaskStatus().getStatusTitle());
+			taskObj.put("taskStatusList", getTaskStatusList(task.getTaskStatusList()));
+			taskArrJson.add(taskObj);
+		}
+		resultTaskJson.put("result", taskArrJson);
+		return resultTaskJson;
 	}
 
 }
