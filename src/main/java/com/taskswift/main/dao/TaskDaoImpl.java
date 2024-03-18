@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.entity.TaskStatus;
 import com.taskswift.main.model.TaskCreation;
+import com.taskswift.main.repo.TaskCategoryRepo;
 import com.taskswift.main.repo.TaskStatusRepo;
 import com.taskswift.main.util.TenantUtil;
 import org.slf4j.Logger;
@@ -28,6 +30,9 @@ public class TaskDaoImpl implements TaskDao {
 	@Autowired
 	private TaskStatusRepo taskStatusRepo;
 
+	@Autowired
+	private TaskCategoryRepo taskCategoryRepo;
+
 	@Override
 	public List<Task> getAllTasks() {
 		logger.info(">>> Tasks fetched from DB");
@@ -44,6 +49,8 @@ public class TaskDaoImpl implements TaskDao {
 	public void saveTask(TaskCreation taskCreation) {
 
 		Task task = getTaskFromTaskCreation(taskCreation);
+
+		taskCategoryRepo.save(task.getTaskCategory());
 
 		logger.info(">>> " + task.getTaskTitle() + " Task is getting saved to DB");
 		task.setTaskId(TenantUtil.getNextUniqueId());
@@ -93,11 +100,14 @@ public class TaskDaoImpl implements TaskDao {
 		Task task = new Task();
 		task.setTaskTitle(taskCreation.getTaskTitle());
 		task.setTaskDesc(taskCreation.getTaskDesc());
-		task.setTaskCategory(taskCreation.getTaskCategory());
 		task.setDueDate(taskCreation.getDueDate());
 		task.setTaskPriority(taskCreation.getTaskPriority());
 		task.setTaskRecurring(taskCreation.getTaskRecurring());
 		task.setTaskAttachment(taskCreation.getTaskAttachment());
+		TaskCategory taskCategory = new TaskCategory();
+		taskCategory.setCategoryId(TenantUtil.getNextUniqueId());
+		taskCategory.setCategoryTitle(taskCreation.getTaskCategory());
+		task.setTaskCategory(taskCategory);
 		return task;
 	}
 

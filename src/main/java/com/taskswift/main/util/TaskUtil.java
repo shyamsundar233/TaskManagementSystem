@@ -127,7 +127,6 @@ public class TaskUtil {
 			taskObj.put("taskDesc", task.getTaskDesc());
 			taskObj.put("dueDate", task.getDueDate());
 			taskObj.put("taskPriority", task.getTaskPriority());
-			taskObj.put("taskCategory", task.getTaskCategory());
 			taskObj.put("taskAttachment", task.getTaskAttachment());
 			taskObj.put("taskRecurring", task.getTaskRecurring());
 			taskObj.put("taskStatus", task.getTaskStatus().getStatusTitle());

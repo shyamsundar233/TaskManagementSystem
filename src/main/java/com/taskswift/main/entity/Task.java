@@ -22,8 +22,6 @@ public class Task {
 	
 	private String taskPriority;
 	
-	private String taskCategory;
-	
 	private File taskAttachment;
 	
 	private String taskRecurring;
@@ -34,6 +32,10 @@ public class Task {
 
 	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TaskStatus> taskStatusList;
+
+	@OneToOne
+	@JoinColumn(name = "task_category")
+	private TaskCategory taskCategory;
 
 	public Long getTaskId() {
 		return taskId;
@@ -75,14 +77,6 @@ public class Task {
 		this.taskPriority = taskPriority;
 	}
 
-	public String getTaskCategory() {
-		return taskCategory;
-	}
-
-	public void setTaskCategory(String taskCategory) {
-		this.taskCategory = taskCategory;
-	}
-
 	public File getTaskAttachment() {
 		return taskAttachment;
 	}
@@ -115,6 +109,14 @@ public class Task {
 		this.taskStatusList = taskStatusList;
 	}
 
+	public TaskCategory getTaskCategory() {
+		return taskCategory;
+	}
+
+	public void setTaskCategory(TaskCategory taskCategory) {
+		this.taskCategory = taskCategory;
+	}
+
 	@Override
 	public String toString() {
 		return "Task{" +
@@ -123,11 +125,11 @@ public class Task {
 				", taskDesc='" + taskDesc + '\'' +
 				", dueDate=" + dueDate +
 				", taskPriority='" + taskPriority + '\'' +
-				", taskCategory='" + taskCategory + '\'' +
 				", taskAttachment=" + taskAttachment +
 				", taskRecurring='" + taskRecurring + '\'' +
 				", taskStatus=" + taskStatus +
 				", taskStatusList=" + taskStatusList +
+				", taskCategory=" + taskCategory +
 				'}';
 	}
 }
