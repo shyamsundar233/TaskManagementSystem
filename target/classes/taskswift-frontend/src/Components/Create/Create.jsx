@@ -50,7 +50,6 @@ const Create = () => {
 
     useEffect(() => {
         axios.get("/v1/api/taskCategory").then(resp => {
-            debugger
             setCategoryList(resp.data.TaskCategory);
         })
     }, []);
@@ -134,7 +133,6 @@ const Create = () => {
     }
 
     const handleRemoveStatus = (index) => {
-        debugger
         let tempStatus = statusList[index];
         if(tempStatus === status){
             setStatus('');
@@ -252,7 +250,7 @@ const Create = () => {
                             <MenuItem value={category.categoryTitle}>{category.categoryTitle}</MenuItem>
                         );
                     })}
-                    <Button className="catg-create-btn margin-10" onClick={handleCatgDialog}>Create New</Button>
+                    <Button className="catg-create-btn margin-10 btn-1" onClick={handleCatgDialog}>Create New</Button>
                 </Select>
             </div>
 
@@ -273,21 +271,14 @@ const Create = () => {
             </div>
 
             <div className="input-group">
-                <button className="button" onClick={handleSubmit}>Submit</button>
+                <button className="button btn-1" onClick={handleSubmit}>Submit</button>
             </div>
 
             <Dialog
                 open={dialogOpen}
                 TransitionComponent={Transition}
                 PaperProps={{
-                    component: 'form',
-                    onSubmit: (event) => {
-                        event.preventDefault();
-                        const formData = new FormData(event.currentTarget);
-                        const formJson = Object.fromEntries(formData.entries());
-                        const email = formJson.email;
-                        console.log(email);
-                    },
+                    component: 'form'
                 }}
             >
                 <DialogTitle className="font-heading">Create New Category</DialogTitle>
@@ -305,8 +296,8 @@ const Create = () => {
                         </div>
                     </DialogContentText>
                     <DialogActions>
-                        <Button onClick={handleCatgDialog}>Cancel</Button>
-                        <Button type="submit" onClick={saveCategory}>Save</Button>
+                        <Button className="btn-1" onClick={handleCatgDialog}>Cancel</Button>
+                        <Button className="btn-1" type="submit" onClick={saveCategory}>Save</Button>
                     </DialogActions>
                 </DialogContent>
             </Dialog>
