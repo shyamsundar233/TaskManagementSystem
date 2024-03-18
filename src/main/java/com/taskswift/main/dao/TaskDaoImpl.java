@@ -63,14 +63,16 @@ public class TaskDaoImpl implements TaskDao {
 			taskStatus.setTaskStatusId(TenantUtil.getNextUniqueId());
 			taskStatus.setStatusTitle(statusTitle);
 			taskStatus.setTask(task);
+			if(statusTitle.equals(taskCreation.getTaskStatus())){
+				taskStatus.setSelected(true);
+			}
 			taskStatusRepo.save(taskStatus);
 			statusList.add(taskStatus);
-			if(statusTitle.equals(taskCreation.getTaskStatus())){
-				task.setTaskStatus(taskStatus);
-			}
 		}
+
 		task.setTaskStatusList(statusList);
 		taskRepo.save(task);
+
 		
 		logger.info(">>> " + task.getTaskId() + " Task is saved in DB");
 	}

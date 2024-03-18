@@ -144,12 +144,21 @@ public class TaskUtil {
 			taskObj.put("taskCategory", task.getTaskCategory().getCategoryTitle());
 			taskObj.put("taskAttachment", task.getTaskAttachment());
 			taskObj.put("taskRecurring", task.getTaskRecurring());
-			taskObj.put("taskStatus", task.getTaskStatus().getStatusTitle());
+			taskObj.put("taskStatus", getSelectedStatus(task.getTaskStatusList()).getStatusTitle());
 			taskObj.put("taskStatusList", getTaskStatusList(task.getTaskStatusList()));
 			taskArrJson.add(taskObj);
 		}
 		resultTaskJson.put("result", taskArrJson);
 		return resultTaskJson;
+	}
+
+	public static TaskStatus getSelectedStatus(List<TaskStatus> statusList){
+		for(TaskStatus taskStatus : statusList){
+			if(taskStatus.isSelected()){
+				return taskStatus;
+			}
+		}
+		return null;
 	}
 
 }

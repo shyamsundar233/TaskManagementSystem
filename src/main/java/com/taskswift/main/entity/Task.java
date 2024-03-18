@@ -26,10 +26,6 @@ public class Task {
 	
 	private String taskRecurring;
 
-	@OneToOne
-	@JoinColumn(name = "task_status")
-	private TaskStatus taskStatus;
-
 	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TaskStatus> taskStatusList;
 
@@ -93,14 +89,6 @@ public class Task {
 		this.taskRecurring = taskRecurring;
 	}
 
-	public TaskStatus getTaskStatus() {
-		return taskStatus;
-	}
-
-	public void setTaskStatus(TaskStatus taskStatus) {
-		this.taskStatus = taskStatus;
-	}
-
 	public List<TaskStatus> getTaskStatusList() {
 		return taskStatusList;
 	}
@@ -127,7 +115,6 @@ public class Task {
 				", taskPriority='" + taskPriority + '\'' +
 				", taskAttachment=" + taskAttachment +
 				", taskRecurring='" + taskRecurring + '\'' +
-				", taskStatus=" + taskStatus +
 				", taskStatusList=" + taskStatusList +
 				", taskCategory=" + taskCategory +
 				'}';

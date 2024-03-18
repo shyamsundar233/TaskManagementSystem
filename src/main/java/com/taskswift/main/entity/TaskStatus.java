@@ -10,6 +10,8 @@ public class TaskStatus {
 
     private String statusTitle;
 
+    private boolean isSelected;
+
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
@@ -38,11 +40,20 @@ public class TaskStatus {
         this.statusTitle = statusTitle;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     @Override
     public String toString() {
         return "TaskStatus{" +
                 "taskStatusId=" + taskStatusId +
-                ", statusTitle=" + statusTitle +
+                ", statusTitle='" + statusTitle + '\'' +
+                ", isSelected=" + isSelected +
                 '}';
     }
 }
