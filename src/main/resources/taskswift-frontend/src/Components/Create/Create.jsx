@@ -117,6 +117,14 @@ const Create = () => {
         setStatusList(statusList.filter(status1 => status1 !== tempStatus));
     }
 
+    const handleCancelIcon = (index, isVisible) => {
+        if(isVisible){
+            $("#cancelIcon_" + index)[0].style.display = "block";
+        }else{
+            $("#cancelIcon_" + index)[0].style.display = "none";
+        }
+    }
+
     const resetData = () => {
         setTitle('');
         setDescription('');
@@ -133,45 +141,48 @@ const Create = () => {
         <div className="container">
             <h1 className="heading">Create Task</h1>
             <div className="input-group">
-                <label className="label" htmlFor='title'>Title</label>
+                <label className="font-sub-heading" htmlFor='title'>Title</label>
                 <input className="input-field" type='text' id='title' value={title}
                        onChange={(e) => setTitle(e.target.value)}/>
             </div>
 
             <div className="input-group">
-                <label className="label" htmlFor='description'>Description</label>
+                <label className="font-sub-heading" htmlFor='description'>Description</label>
                 <input className="input-field" type='text' id='description' value={description}
                        onChange={(e) => setDescription(e.target.value)}/>
             </div>
 
             <div className="input-group">
-                <label className="label" htmlFor='dueDate'>Due Date</label>
+                <label className="font-sub-heading" htmlFor='dueDate'>Due Date</label>
                 <input className="input-field" type='date' id='dueDate' value={dueDate}
                        onChange={(e) => setDueDate(e.target.value)}/>
             </div>
 
             <div className="input-group">
-                <label className="label" htmlFor='status'>Status</label>
-                <div className="margin-10 padd-20 status-cont-1">
-                    <div className="display-flex ">
-                        {statusList.length > 0 && statusList.map((tempStatus, index) => {
-                            return (
-                                <div style={{position: "relative"}} className="cursor-pointer">
-                                    <img src={cancelIcon} alt="Cancel Icon not found" className="cancel-icon" onClick={e => handleRemoveStatus(index)}/>
-                                    <div className="margin-10 status-span-cont" id={`status_${tempStatus}`}
-                                         onClick={e => handleStatusClick(e, tempStatus)}>{tempStatus}</div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <input className="input-field status-input-field" type="text" id="status" value={statusInput}
-                           onChange={(e) => setStatusInput(e.target.value)}
-                           onKeyDown={(e) => handleStatusAdd(e)}/>
+                <label className="font-sub-heading" htmlFor='status'>Status</label>
+                <input className="input-field" type="text" id="status" value={statusInput}
+                       onChange={(e) => setStatusInput(e.target.value)}
+                       onKeyDown={(e) => handleStatusAdd(e)}/>
+                <div className="display-flex ">
+                    {statusList.length > 0 && statusList.map((tempStatus, index) => {
+                        return (
+                            <div style={{position: "relative"}} className="cursor-pointer"
+                                 onMouseOver={e => handleCancelIcon(index, true)}
+                                 onMouseLeave={e => handleCancelIcon(index, false)}
+                            >
+                                <img id={`cancelIcon_${index}`} src={cancelIcon} alt="Cancel Icon not found"
+                                     className="cancel-icon" onClick={e => handleRemoveStatus(index)}/>
+                                <div className="margin-10 status-span-cont" id={`status_${tempStatus}`}
+                                     onClick={e => handleStatusClick(e, tempStatus)}
+                                >{tempStatus}</div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
             <div className="input-group">
-                <label className="label" htmlFor='priority'>Priority</label>
+                <label className="font-sub-heading" htmlFor='priority'>Priority</label>
                 <select className="select-field" id='priority' value={priority}
                         onChange={(e) => setPriority(e.target.value)}>
                     <option value="Low Priority">Low Priority</option>
@@ -181,7 +192,7 @@ const Create = () => {
             </div>
 
             <div className="input-group">
-                <label className="label" htmlFor='category'>Category</label>
+                <label className="font-sub-heading" htmlFor='category'>Category</label>
                 <select className="select-field" id='category' value={category}
                         onChange={(e) => setCategory(e.target.value)}>
                     <option value="Food">Food</option>
@@ -191,13 +202,13 @@ const Create = () => {
             </div>
 
             <div className="input-group file-field">
-                <label className="label" htmlFor="attachment">Attach</label>
+                <label className="font-sub-heading" htmlFor="attachment">Attach</label>
                 <input className="input-field" type='file' id="attachment" value={attachment}
                        onChange={(e) => setAttachment(e.target.files[0])}/>
             </div>
 
             <div className="input-group">
-                <label className="label" htmlFor='recurring'>Recurring</label>
+                <label className="font-sub-heading" htmlFor='recurring'>Recurring</label>
                 <select className="select-field" id='recurring' value={recurring}
                         onChange={(e) => setRecurring(e.target.value)}>
                     <option value="Daily">Daily</option>
