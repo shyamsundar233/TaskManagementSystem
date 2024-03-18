@@ -91,12 +91,12 @@ public class TaskDaoImpl implements TaskDao {
 
 	@Override
 	public List<Task> getTodayTask(LocalDate localDate) {
-		return taskRepo.findAllByDueDate(localDate);
+		return taskRepo.findAllByDueDateAndTaskIdIsBetween(localDate, TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
 	}
 
 	@Override
 	public List<Task> getCurrentWeekTasks(LocalDate fromDate, LocalDate toDate) {
-		return taskRepo.findAllByDueDateBetween(fromDate, toDate);
+		return taskRepo.findAllByDueDateBetweenAndTaskIdIsBetween(fromDate, toDate, TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
 	}
 
 	@Override

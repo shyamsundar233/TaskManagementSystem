@@ -11,9 +11,9 @@ import java.util.List;
 public interface TaskRepo extends JpaRepository<Task, Long> {
 
     List<Task> findAllByTaskIdIsBetween(Long startRange, Long endRange);
+    
+    List<Task> findAllByDueDateAndTaskIdIsBetween(LocalDate date, Long startRange, Long endRange);
 
-    List<Task> findAllByDueDate(LocalDate date);
-
-    List<Task> findAllByDueDateBetween(LocalDate fromDate, LocalDate toDate);
+    List<Task> findAllByDueDateBetweenAndTaskIdIsBetween(LocalDate fromDate, LocalDate toDate, Long startRange, Long endRange);
 
 }
