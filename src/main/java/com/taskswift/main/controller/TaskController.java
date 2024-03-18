@@ -2,6 +2,7 @@
 package com.taskswift.main.controller;
 
 import com.taskswift.main.entity.Task;
+import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.util.TaskUtil;
 import org.json.simple.JSONObject;
@@ -38,6 +39,16 @@ public class TaskController {
 	public JSONObject getCurrentWeekTask(){
 		logger.info(">>> In GET endpoint of Current Week Task API");
 		return TaskUtil.getAllCurrentWeekTasks();
+	}
+
+	@GetMapping("/taskCategory")
+	public JSONObject getTaskCategory(){
+		return TaskUtil.getAllTaskCategory();
+	}
+
+	@PostMapping("/taskCategory")
+	public JSONObject postTaskCategory(@RequestBody TaskCategory taskCategory){
+		return TaskUtil.saveTaskCategory(taskCategory);
 	}
 
 }

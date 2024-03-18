@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.taskswift.main.entity.Task;
+import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.model.TaskCreation;
 
 public interface TaskDao {
@@ -22,5 +23,11 @@ public interface TaskDao {
 	public List<Task> getTodayTask(LocalDate localDate);
 
 	public List<Task> getCurrentWeekTasks(LocalDate fromDate, LocalDate toDate);
+
+	public void saveCategory(TaskCategory taskCategory);
+
+	public TaskCategory getTaskCategoryByTitle(String taskTitle);
+
+	public List<TaskCategory> getAllTaskCategory();
 	
 }

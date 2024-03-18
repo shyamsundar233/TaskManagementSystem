@@ -50,7 +50,8 @@ public class TaskDaoImpl implements TaskDao {
 
 		Task task = getTaskFromTaskCreation(taskCreation);
 
-		taskCategoryRepo.save(task.getTaskCategory());
+		TaskCategory taskCategory = getTaskCategoryByTitle(taskCreation.getTaskCategory());
+		task.setTaskCategory(taskCategory);
 
 		logger.info(">>> " + task.getTaskTitle() + " Task is getting saved to DB");
 		task.setTaskId(TenantUtil.getNextUniqueId());
@@ -96,6 +97,22 @@ public class TaskDaoImpl implements TaskDao {
 		return taskRepo.findAllByDueDateBetween(fromDate, toDate);
 	}
 
+	@Override
+	public void saveCategory(TaskCategory taskCategory) {
+		taskCategory.setCategoryId(TenantUtil.getNextUniqueId());
+		taskCategoryRepo.save(taskCategory);
+	}
+
+	@Override
+	public TaskCategory getTaskCategoryByTitle(String taskTitle) {
+		return taskCategoryRepo.findByCategoryTitleAndCategoryIdRange(taskTitle, TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+	}
+
+	@Override
+	public List<TaskCategory> getAllTaskCategory() {
+		return taskCategoryRepo.findAllByCategoryIdIsBetween(TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+	}
+
 	private static Task getTaskFromTaskCreation(TaskCreation taskCreation){
 		Task task = new Task();
 		task.setTaskTitle(taskCreation.getTaskTitle());
@@ -104,10 +121,6 @@ public class TaskDaoImpl implements TaskDao {
 		task.setTaskPriority(taskCreation.getTaskPriority());
 		task.setTaskRecurring(taskCreation.getTaskRecurring());
 		task.setTaskAttachment(taskCreation.getTaskAttachment());
-		TaskCategory taskCategory = new TaskCategory();
-		taskCategory.setCategoryId(TenantUtil.getNextUniqueId());
-		taskCategory.setCategoryTitle(taskCreation.getTaskCategory());
-		task.setTaskCategory(taskCategory);
 		return task;
 	}
 

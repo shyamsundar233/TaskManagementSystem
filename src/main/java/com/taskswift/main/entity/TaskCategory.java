@@ -1,5 +1,6 @@
 package com.taskswift.main.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -9,6 +10,7 @@ public class TaskCategory {
     @Id
     private Long categoryId;
 
+    @Column(unique = true)
     private String categoryTitle;
 
     private String categoryDesc;

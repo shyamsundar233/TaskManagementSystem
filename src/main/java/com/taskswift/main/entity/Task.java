@@ -33,7 +33,7 @@ public class Task {
 	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TaskStatus> taskStatusList;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "task_category")
 	private TaskCategory taskCategory;
 

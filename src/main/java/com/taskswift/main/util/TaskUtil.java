@@ -2,6 +2,7 @@
 package com.taskswift.main.util;
 
 import com.taskswift.main.entity.Task;
+import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.entity.TaskStatus;
 import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.model.TaskCreation;
@@ -103,6 +104,19 @@ public class TaskUtil {
 		return response;
 	}
 
+	public static JSONObject saveTaskCategory(TaskCategory taskCategory) {
+		JSONObject response = new JSONObject();
+		taskService.saveCategory(taskCategory);
+		response.put("SUCCESS", " Task Category Created Successfully!!!");
+		return response;
+	}
+
+	public static JSONObject getAllTaskCategory(){
+		JSONObject response = new JSONObject();
+		response.put("TaskCategory", taskService.getAllTaskCategory());
+		return response;
+	}
+
 	private static List<LocalDate> getStartAndEndOfCurrentWeek() {
 		LocalDate currentDate = LocalDate.now();
 		LocalDate startDateOfWeek = currentDate.minusDays(currentDate.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue());
@@ -127,6 +141,7 @@ public class TaskUtil {
 			taskObj.put("taskDesc", task.getTaskDesc());
 			taskObj.put("dueDate", task.getDueDate());
 			taskObj.put("taskPriority", task.getTaskPriority());
+			taskObj.put("taskCategory", task.getTaskCategory().getCategoryTitle());
 			taskObj.put("taskAttachment", task.getTaskAttachment());
 			taskObj.put("taskRecurring", task.getTaskRecurring());
 			taskObj.put("taskStatus", task.getTaskStatus().getStatusTitle());

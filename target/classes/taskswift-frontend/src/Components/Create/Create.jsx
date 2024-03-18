@@ -1,9 +1,24 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import "./Create.css";
 import axios from 'axios';
 import $ from 'jquery';
 import { useAlert } from '../CustomAlert/CustomAlert';
 import cancelIcon from "../../Assets/xmark.svg";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    MenuItem,
+    Select, Slide, TextField
+} from "@mui/material";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+});
+
 
 const getTodayDate = () => {
     const today = new Date();
@@ -28,6 +43,17 @@ const Create = () => {
     const [attachment, setAttachment] = useState(null);
     const [recurring, setRecurring] = useState('Daily');
     const [statusInput, setStatusInput] = useState('');
+    const [categoryTitle, setCategoryTitle] = useState('');
+    const [categoryDesc, setCategoryDesc] = useState('');
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [categoryList, setCategoryList] = useState([]);
+
+    useEffect(() => {
+        axios.get("/v1/api/taskCategory").then(resp => {
+            debugger
+            setCategoryList(resp.data.TaskCategory);
+        })
+    }, []);
 
     const handleSubmit = () => {
         if(!validateInputs()){
@@ -125,6 +151,23 @@ const Create = () => {
         }
     }
 
+    const saveCategory = () => {
+        let data = {
+            "categoryTitle" : categoryTitle,
+            "categoryDesc" : categoryDesc
+        }
+        axios.post("/v1/api/taskCategory", data).then(resp => {
+            axios.get("/v1/api/taskCategory").then(resp => {
+                setCategoryList(resp.data.TaskCategory);
+                handleCatgDialog();
+            })
+        })
+    }
+
+    const handleCatgDialog = () => {
+        setDialogOpen(!dialogOpen);
+    }
+
     const resetData = () => {
         setTitle('');
         setDescription('');
@@ -193,12 +236,24 @@ const Create = () => {
 
             <div className="input-group">
                 <label className="font-sub-heading" htmlFor='category'>Category</label>
-                <select className="select-field" id='category' value={category}
-                        onChange={(e) => setCategory(e.target.value)}>
-                    <option value="Food">Food</option>
-                    <option value="Fuel">Fuel</option>
-                    <option value="Party">Party</option>
-                </select>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="category"
+                    value={category}
+                    className="dropdown-field MuiSelect-filled"
+                    onChange={(e) => {
+                        if(e.target.value) {
+                            setCategory(e.target.value)
+                        }
+                    }}
+                >
+                    {categoryList.length > 0 && categoryList.map((category, index) => {
+                        return (
+                            <MenuItem value={category.categoryTitle}>{category.categoryTitle}</MenuItem>
+                        );
+                    })}
+                    <Button className="catg-create-btn margin-10" onClick={handleCatgDialog}>Create New</Button>
+                </Select>
             </div>
 
             <div className="input-group file-field">
@@ -220,6 +275,42 @@ const Create = () => {
             <div className="input-group">
                 <button className="button" onClick={handleSubmit}>Submit</button>
             </div>
+
+            <Dialog
+                open={dialogOpen}
+                TransitionComponent={Transition}
+                PaperProps={{
+                    component: 'form',
+                    onSubmit: (event) => {
+                        event.preventDefault();
+                        const formData = new FormData(event.currentTarget);
+                        const formJson = Object.fromEntries(formData.entries());
+                        const email = formJson.email;
+                        console.log(email);
+                    },
+                }}
+            >
+                <DialogTitle className="font-heading">Create New Category</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        <div className="input-group">
+                            <label className="font-sub-heading" htmlFor='cat_title'>Category Title</label>
+                            <input className="input-field" type='text' id='cat_title' value={categoryTitle}
+                                   onChange={(e) => setCategoryTitle(e.target.value)}/>
+                        </div>
+                        <div className="input-group">
+                            <label className="font-sub-heading" htmlFor='cat_desc'>Category Description</label>
+                            <input className="input-field" type='text' id='cat_desc' value={categoryDesc}
+                                   onChange={(e) => setCategoryDesc(e.target.value)}/>
+                        </div>
+                    </DialogContentText>
+                    <DialogActions>
+                        <Button onClick={handleCatgDialog}>Cancel</Button>
+                        <Button type="submit" onClick={saveCategory}>Save</Button>
+                    </DialogActions>
+                </DialogContent>
+            </Dialog>
+
         </div>
     );
 }

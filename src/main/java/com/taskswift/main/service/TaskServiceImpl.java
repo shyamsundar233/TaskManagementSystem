@@ -4,6 +4,7 @@ package com.taskswift.main.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.model.TaskCreation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,16 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public List<Task> getCurrentWeekTasks(LocalDate fromDate, LocalDate toDate) {
 		return taskDao.getCurrentWeekTasks(fromDate, toDate);
+	}
+
+	@Override
+	public void saveCategory(TaskCategory taskCategory) {
+		taskDao.saveCategory(taskCategory);
+	}
+
+	@Override
+	public List<TaskCategory> getAllTaskCategory() {
+		return taskDao.getAllTaskCategory();
 	}
 
 }
