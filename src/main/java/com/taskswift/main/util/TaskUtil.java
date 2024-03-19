@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +38,17 @@ public class TaskUtil {
 	public static JSONObject getAllTasks(){
 		JSONObject response = new JSONObject();
 		response.put("Task", constructJsonForTask(taskService.getAllTasks()).get("result"));
+		return response;
+	}
+
+	public static JSONObject getTaskById(Long taskId){
+		JSONObject response = new JSONObject();
+		Task task = taskService.getTaskById(taskId);
+		if(task != null){
+			response.put("Task", constructJsonForTask(new ArrayList<>(Arrays.asList(task))).get("result"));
+		}else{
+			response.put("Task", new ArrayList<>());
+		}
 		return response;
 	}
 	
@@ -62,7 +74,7 @@ public class TaskUtil {
 		String taskDesc = task.getTaskDesc();
 		LocalDate taskDueDate = task.getDueDate();
 		
-		if(taskTitle.isEmpty() || taskTitle.length() > 20) {
+		if(taskTitle.isEmpty() || taskTitle.length() > 200) {
 			logger.info(">>> Task title has invalid number of characters");
 			throw new TaskException(HttpMethod.POST + " :: Invalid Task title length");
 		}else if(taskDesc.isEmpty() || taskDesc.length() > 200) {
@@ -137,6 +149,7 @@ public class TaskUtil {
 		JSONArray taskArrJson = new JSONArray();
 		for(Task task : tasksList){
 			JSONObject taskObj = new JSONObject();
+			taskObj.put("taskId", task.getTaskId());
 			taskObj.put("taskTitle", task.getTaskTitle());
 			taskObj.put("taskDesc", task.getTaskDesc());
 			taskObj.put("dueDate", task.getDueDate());

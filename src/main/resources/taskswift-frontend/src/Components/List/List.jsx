@@ -9,9 +9,10 @@ import Paper from '@mui/material/Paper';
 import axios from "axios";
 import {useEffect, useState} from "react";
 import ListFilter from "../ListFilter/ListFilter";
+import {Link} from "react-router-dom";
 
-const createData = (title, desc, dueDate, priority, category, recurring) => {
-    return { title, desc, dueDate, priority, category, recurring };
+const createData = (id, title, desc, dueDate, priority, category, recurring) => {
+    return { id, title, desc, dueDate, priority, category, recurring };
 }
 
 const constructTasksList = (tasksList) => {
@@ -21,7 +22,7 @@ const constructTasksList = (tasksList) => {
     let futureTasks = [];
 
     tasksList.forEach(task => {
-        let taskData = createData(task.taskTitle, task.taskDesc, task.dueDate, task.taskPriority, task.taskCategory, task.taskRecurring)
+        let taskData = createData(task.taskId, task.taskTitle, task.taskDesc, task.dueDate, task.taskPriority, task.taskCategory, task.taskRecurring)
 
         if(currentDate > taskData.dueDate){
             pastTasks.push(taskData);
@@ -78,7 +79,7 @@ const List = () => {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {row.title}
+                                    <Link className="link" to={`/ts/view/${row.id}`} >{row.title}</Link>
                                 </TableCell>
                                 <TableCell align="right">{row.desc}</TableCell>
                                 <TableCell align="right">{row.dueDate}</TableCell>
@@ -99,7 +100,7 @@ const List = () => {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {row.title}
+                                    <Link className="link" to={`/ts/view/${row.id}`} >{row.title}</Link>
                                 </TableCell>
                                 <TableCell align="right">{row.desc}</TableCell>
                                 <TableCell align="right">{row.dueDate}</TableCell>

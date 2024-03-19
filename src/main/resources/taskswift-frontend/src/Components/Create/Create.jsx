@@ -89,7 +89,7 @@ const Create = () => {
     }
 
     const validateInputs = () => {
-        if(title.length < 1 || title.length > 20){
+        if(title.length < 1 || title.length > 200){
             showAlert("Please check the Title length", "error");
             return false;
         }else if(description.length < 1 || description.length > 200){

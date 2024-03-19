@@ -29,6 +29,12 @@ public class TaskController {
 		return TaskUtil.saveTask(task);		
 	}
 
+	@GetMapping("/tasks/{taskId}")
+	public JSONObject getTaskById(@PathVariable Long taskId){
+		logger.info(">>> In POST endpoint of Task By Id API for task creation");
+		return TaskUtil.getTaskById(taskId);
+	}
+
 	@GetMapping("/todayTask")
 	public JSONObject getTodayTask(){
 		logger.info(">>> In GET endpoint of Today Task API");

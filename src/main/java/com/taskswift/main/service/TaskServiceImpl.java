@@ -30,8 +30,8 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public Task getTaskById(Long taskId) {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info(">>> {} tasks are getting fetched from DB", taskId);
+		return taskDao.getTaskById(taskId);
 	}
 
 	@Override

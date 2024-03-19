@@ -4,6 +4,7 @@ package com.taskswift.main.dao;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.entity.TaskStatus;
@@ -42,8 +43,9 @@ public class TaskDaoImpl implements TaskDao {
 	@Override
 	public Task getTaskById(Long taskId) {
 		logger.info(">>> " + taskId + " Task is getting fetched from DB");
-		return null;
-	}
+		Optional<Task> task = taskRepo.findByTaskIdAndTaskIdIsBetween(taskId, TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+        return task.orElse(null);
+    }
 
 	@Override
 	public void saveTask(TaskCreation taskCreation) {
