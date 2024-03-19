@@ -15,6 +15,12 @@
   
 .input-group {
   margin-bottom: 15px;
+    min-height: 75px;
+}
+
+.sub-btn-1 {
+    margin-top: 30px;
+    margin-bottom: 15px;
 }
 
 .label {
@@ -94,6 +100,10 @@
 
 .catg-create-btn {
     
+}
+
+.label-spac {
+    margin-bottom: 5px;
 }
 
   

@@ -51,6 +51,9 @@ const Create = () => {
     useEffect(() => {
         axios.get("/v1/api/taskCategory").then(resp => {
             setCategoryList(resp.data.TaskCategory);
+            if(resp.data.TaskCategory && resp.data.TaskCategory.length > 0){
+                setCategory(resp.data.TaskCategory[0].categoryTitle);
+            }
         })
     }, []);
 
@@ -182,25 +185,33 @@ const Create = () => {
         <div className="container">
             <h1 className="heading">Create Task</h1>
             <div className="input-group">
-                <label className="font-sub-heading" htmlFor='title'>Title</label>
+                <div className="label-spac">
+                    <label className="font-sub-heading" htmlFor='title'>Title</label>
+                </div>
                 <input className="input-field" type='text' id='title' value={title}
                        onChange={(e) => setTitle(e.target.value)}/>
             </div>
 
             <div className="input-group">
-                <label className="font-sub-heading" htmlFor='description'>Description</label>
+                <div className="label-spac">
+                    <label className="font-sub-heading" htmlFor='description'>Description</label>
+                </div>
                 <input className="input-field" type='text' id='description' value={description}
                        onChange={(e) => setDescription(e.target.value)}/>
             </div>
 
             <div className="input-group">
-                <label className="font-sub-heading" htmlFor='dueDate'>Due Date</label>
-                <input className="input-field" type='date' id='dueDate' value={dueDate}
+                <div className="label-spac">
+                    <label className="font-sub-heading" htmlFor='dueDate'>Due Date</label>
+                </div>
+                <input className="input-field title-font" type='date' id='dueDate' value={dueDate}
                        onChange={(e) => setDueDate(e.target.value)}/>
             </div>
 
             <div className="input-group">
-                <label className="font-sub-heading" htmlFor='status'>Status</label>
+                <div className="label-spac">
+                    <label className="font-sub-heading" htmlFor='status'>Status</label>
+                </div>
                 <input className="input-field" type="text" id="status" value={statusInput}
                        onChange={(e) => setStatusInput(e.target.value)}
                        onKeyDown={(e) => handleStatusAdd(e)}/>
@@ -223,17 +234,26 @@ const Create = () => {
             </div>
 
             <div className="input-group">
-                <label className="font-sub-heading" htmlFor='priority'>Priority</label>
-                <select className="select-field" id='priority' value={priority}
-                        onChange={(e) => setPriority(e.target.value)}>
-                    <option value="Low Priority">Low Priority</option>
-                    <option value="Medium Priority">Medium Priority</option>
-                    <option value="High Priority">High Priority</option>
-                </select>
+                <div className="label-spac">
+                    <label className="font-sub-heading" htmlFor='priority'>Priority</label>
+                </div>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="priority"
+                    value={priority}
+                    className="dropdown-field MuiSelect-filled"
+                    onChange={(e) => setPriority(e.target.value)}
+                >
+                    <MenuItem value="Low Priority">Low Priority</MenuItem>
+                    <MenuItem value="Medium Priority">Medium Priority</MenuItem>
+                    <MenuItem value="High Priority">High Priority</MenuItem>
+                </Select>
             </div>
 
             <div className="input-group">
-                <label className="font-sub-heading" htmlFor='category'>Category</label>
+                <div className="label-spac">
+                    <label className="font-sub-heading" htmlFor='category'>Category</label>
+                </div>
                 <Select
                     labelId="demo-simple-select-label"
                     id="category"
@@ -255,22 +275,31 @@ const Create = () => {
             </div>
 
             <div className="input-group file-field">
-                <label className="font-sub-heading" htmlFor="attachment">Attach</label>
+                <div className="label-spac">
+                    <label className="font-sub-heading" htmlFor="attachment">Attach</label>
+                </div>
                 <input className="input-field" type='file' id="attachment" value={attachment}
                        onChange={(e) => setAttachment(e.target.files[0])}/>
             </div>
 
             <div className="input-group">
-                <label className="font-sub-heading" htmlFor='recurring'>Recurring</label>
-                <select className="select-field" id='recurring' value={recurring}
-                        onChange={(e) => setRecurring(e.target.value)}>
-                    <option value="Daily">Daily</option>
-                    <option value="Weekly">Weekly</option>
-                    <option value="Yearly">Yearly</option>
-                </select>
+                <div className="label-spac">
+                    <label className="font-sub-heading" htmlFor='recurring'>Recurring</label>
+                </div>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="recurring"
+                    value={recurring}
+                    className="dropdown-field MuiSelect-filled"
+                    oonChange={(e) => setRecurring(e.target.value)}
+                >
+                    <MenuItem value="Daily">Daily</MenuItem>
+                    <MenuItem value="Weekly">Weekly</MenuItem>
+                    <MenuItem value="Yearly">Yearly</MenuItem>
+                </Select>
             </div>
 
-            <div className="input-group">
+            <div className="sub-btn-1">
                 <button className="button btn-1" onClick={handleSubmit}>Submit</button>
             </div>
 
