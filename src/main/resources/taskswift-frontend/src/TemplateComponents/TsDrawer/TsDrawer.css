@@ -1,0 +1,5 @@
+.ts-drawer-root {
+    width: fit-content;
+    margin-left: calc(50% - 270px);
+    border-radius: 0 4px 10px 10px;
+}

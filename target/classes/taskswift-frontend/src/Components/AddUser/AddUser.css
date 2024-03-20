@@ -99,3 +99,15 @@ select {
     transform: translateY(-50%);
     cursor: pointer;
 }
+
+.add-user-cancel-icon {
+    position: absolute;
+    right: calc(50% - 245px);
+    top: 20px;
+    border-radius: 5px;
+}
+
+.add-user-cancel-icon:hover {
+    color: white;
+    background: #00BDD6FF;
+}

@@ -13,7 +13,6 @@ public class ReactController {
     		"",
     		"/create",
             "/list",
-            "/addUser",
             "/listUser",
             "/view/**"
     })

@@ -4,25 +4,37 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import TsCard from "../../TemplateComponents/TsCard/TsCard";
 import {Avatar} from "@mui/material";
+import TsDrawer from "../../TemplateComponents/TsDrawer/TsDrawer";
+import AddUser from "../AddUser/AddUser";
 
 const ListUser = () =>{
 
     const [users, setUsers] = useState([]);
+    const [openAddUser, setOpenAddUser] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("/v1/api/users").then(resp => {
-            setUsers(resp.data.Users);
-        })
+        updateUsers();
     }, []);
 
     const handleCreate = () => {
-        navigate("/ts/addUser");
+        setOpenAddUser(true);
+    }
+
+    const handleCloseCreate = () => {
+        setOpenAddUser(false);
+    }
+
+    const updateUsers = () => {
+        axios.get("/v1/api/users").then(resp => {
+            setUsers(resp.data.Users);
+            handleCloseCreate();
+        })
     }
 
     return (
         <div className="parent-div-table">
-            <div className="font-heading display-flex">
+            <div className="font-heading display-flex pa-1">
                 Users
                 <button className="create-new-button add-new-button-pos cursor-pointer" onClick={handleCreate}> + ADD USER</button>
             </div>
@@ -80,6 +92,14 @@ const ListUser = () =>{
                     );
                 })}
             </div>
+            <TsDrawer
+                open={openAddUser}
+                anchor="top"
+                body={
+                    <AddUser closeAddUser={handleCloseCreate} updateUsersList={updateUsers}/>
+                }
+                drawerClass="add-user-drawer"
+            />
         </div>
     );
 

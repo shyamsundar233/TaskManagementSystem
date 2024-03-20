@@ -11,6 +11,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
+    width: fit-content;
 }
 
 .view-cont-3 {
@@ -28,7 +29,7 @@
 }
 
 .cont-2-col-2 {
-    width: 450px !important;
+    width: 300px !important;
 }
 
 .priority-div {
@@ -44,4 +45,13 @@
 
 .comm-head {
     margin-top: 25px;
+}
+
+.time-line-parent {
+    width: calc(100% - 1090px);
+    box-shadow: -13px 0px 42px -31px rgba(0,0,0,0.45);
+}
+
+.view-par-cont-1{
+    height: 100%;
 }

@@ -3,12 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './AddUser.css';
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import {useAlert} from "../CustomAlert/CustomAlert";
+import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 
-const AddUser = () => {
+const AddUser = ({updateUsersList, closeAddUser}) => {
     const {showAlert} = useAlert();
-    const navigate = useNavigate();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -45,7 +44,8 @@ const AddUser = () => {
         axios.post("/v1/api/saveUser", userDetails).then((resp) => {
             if(resp.data.status === 200){
                 showAlert(resp.data.User, "success");
-                return navigate("/ts/listUser");
+                updateUsersList();
+                closeAddUser();
             }else{
                 showAlert(resp.data.User, "error");
             }
@@ -88,6 +88,7 @@ const AddUser = () => {
         <div className="registration-container-1">
             <div className="registration-container">
                 <h1>Add User</h1>
+                <ClearTwoToneIcon className="add-user-cancel-icon cursor-pointer" onClick={closeAddUser}/>
                 <form onSubmit={validateForm}>
                     <div className={`errorDiv ${errorMessage ? '' : 'dN'}`} id="customErrorDiv">{errorMessage}</div>
                     <div>
@@ -116,7 +117,7 @@ const AddUser = () => {
                             })}
                         </select>
                     </div>
-                    <input type="submit" value="Add User"/>
+                    <input className="btn-1" type="submit" value="Add User"/>
                 </form>
             </div>
         </div>

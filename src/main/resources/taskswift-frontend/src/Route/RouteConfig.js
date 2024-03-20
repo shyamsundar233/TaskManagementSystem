@@ -18,7 +18,6 @@ const RouteConfig = () => {
                 <Route path="list" element={<List/>}/>
                 <Route path="view" element={<Navigate to="/ts/list"/>}/>
                 <Route path="view/:taskId" element={<View/>}/>
-                <Route path="addUser" element={<AddUser/>}/>
                 <Route path="listUser" element={<ListUser/>}/>
             </Route>
         </Routes>

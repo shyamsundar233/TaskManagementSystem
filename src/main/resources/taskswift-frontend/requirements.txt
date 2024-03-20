@@ -4,3 +4,5 @@ npm install nodemon --save-dev
 npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
 npm install chart.js react-chartjs-2
 npm install jquery
+npm install @mui/icons-material
+npm install @mui/styles
