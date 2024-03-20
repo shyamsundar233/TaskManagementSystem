@@ -17,6 +17,11 @@
 .display-flex {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+.display-grid {
+  display: grid;
 }
 
 .display-center-col {

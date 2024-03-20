@@ -1,12 +1,10 @@
 .parent-div-table{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+    margin-top: 50px;
+    margin-left: 50px;
 }
 
 .add-new-button-pos {
-    margin-left: 46.5%;
+    margin-left: 50px;
 }
 
 .list-user-container{
@@ -16,4 +14,31 @@
 
 .user-table-header{
     font-weight: bolder !important;
+}
+
+.user-card-dim {
+    width: fit-content;
+    height: fit-content;
+    margin: 20px;
+}
+
+.user-card-header-1 {
+    height: fit-content;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+}
+
+.user-card-cont-1 {
+    height: fit-content;
+}
+
+.user-card-actions-1 {
+    height: fit-content;
+}
+
+.left-col-1 {
+    width: 150px;
+}
+
+.left-row-1 {
+    margin-bottom: 20px !important;
 }

@@ -45,7 +45,7 @@ const AddUser = () => {
         axios.post("/v1/api/saveUser", userDetails).then((resp) => {
             if(resp.data.status === 200){
                 showAlert(resp.data.User, "success");
-                return navigate("/ts");
+                return navigate("/ts/listUser");
             }else{
                 showAlert(resp.data.User, "error");
             }

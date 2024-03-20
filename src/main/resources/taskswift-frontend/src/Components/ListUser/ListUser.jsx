@@ -1,13 +1,9 @@
 import "./ListUser.css";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {TableContainer, Paper} from "@mui/material";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
 import {useNavigate} from "react-router-dom";
+import TsCard from "../../TemplateComponents/TsCard/TsCard";
+import {Avatar} from "@mui/material";
 
 const ListUser = () =>{
 
@@ -26,29 +22,64 @@ const ListUser = () =>{
 
     return (
         <div className="parent-div-table">
-            <button className="create-new-button add-new-button-pos" onClick={handleCreate}> + ADD USER</button>
-            <TableContainer component={Paper} className="list-user-container">
-                <Table sx={{minWidth: 650}} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="center" className="user-table-header">Username</TableCell>
-                            <TableCell align="center" className="user-table-header">Email</TableCell>
-                            <TableCell align="center" className="user-table-header">Authority</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users.length > 0 && users.map(user => {
-                            return (
-                                <TableRow>
-                                    <TableCell align="center">{user.username}</TableCell>
-                                    <TableCell align="center">{user.email}</TableCell>
-                                    <TableCell align="center">{user.authority}</TableCell>
-                                </TableRow>
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <div className="font-heading display-flex">
+                Users
+                <button className="create-new-button add-new-button-pos cursor-pointer" onClick={handleCreate}> + ADD USER</button>
+            </div>
+            <div className="padd-20 display-flex">
+                {users.length > 0 && users.map(user => {
+                    return (
+                        <TsCard
+                            header={
+                                <div className="font-sub-heading">{user.username}</div>
+                            }
+                            headerAvatar={
+                                <Avatar sx={{bgcolor : "#00BDD6FF", marginLeft: "15px"}} aria-label="recipe">
+                                    {user.username.charAt(0)}
+                                </Avatar>
+                            }
+                            content={
+                                <div>
+                                    <div className="margin-10 display-flex left-row-1">
+                                        <div className="left-col-1">
+                                            <label className="font-bold" htmlFor="userEmail">Email: </label>
+                                        </div>
+                                        <div id="userEmail" className="left-col-2"> {user.email} </div>
+                                    </div>
+                                    <div className="margin-10 display-flex left-row-1">
+                                        <div className="left-col-1">
+                                            <label className="font-bold" htmlFor="userAuth">Authority: </label>
+                                        </div>
+                                        <div id="userAuth" className="left-col-2"> {user.authority} </div>
+                                    </div>
+                                    <div className="margin-10 display-flex left-row-1">
+                                        <div className="left-col-1">
+                                            <label className="font-bold" htmlFor="userPhone">Phone: </label>
+                                        </div>
+                                        <div id="userPhone" className="left-col-2"> +91-99988-22233</div>
+                                    </div>
+                                    <div className="margin-10 display-flex left-row-1">
+                                        <div className="left-col-1">
+                                            <label className="font-bold" htmlFor="userLoc">Location: </label>
+                                        </div>
+                                        <div id="userLoc" className="left-col-2"> Chennai</div>
+                                    </div>
+                                    <div className="margin-10 display-flex left-row-1">
+                                        <div className="left-col-1">
+                                            <label className="font-bold" htmlFor="userCreatedOn">Created On: </label>
+                                        </div>
+                                        <div id="userCreatedOn" className="left-col-2"> 20-03-2024 07:23:09 AM</div>
+                                    </div>
+                                </div>
+                            }
+
+                            cardClass="user-card-dim"
+                            headerClass="user-card-header-1"
+                            contentClass="user-card-cont-1"
+                        />
+                    );
+                })}
+            </div>
         </div>
     );
 
