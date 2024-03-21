@@ -48,7 +48,7 @@ public class TaskDaoImpl implements TaskDao {
     }
 
 	@Override
-	public void saveTask(TaskCreation taskCreation) {
+	public Task saveTask(TaskCreation taskCreation) {
 
 		Task task = getTaskFromTaskCreation(taskCreation);
 
@@ -73,10 +73,8 @@ public class TaskDaoImpl implements TaskDao {
 		}
 
 		task.setTaskStatusList(statusList);
-		taskRepo.save(task);
-
-		
 		logger.info(">>> " + task.getTaskId() + " Task is saved in DB");
+		return taskRepo.save(task);
 	}
 
 	@Override

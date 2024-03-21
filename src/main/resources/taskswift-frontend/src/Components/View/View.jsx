@@ -100,7 +100,7 @@ const View = ({data}) => {
         </div>
 
         <div className="time-line-parent">
-          <TimeLine/>
+          <TimeLine taskId={taskId}/>
         </div>
 
       </div>

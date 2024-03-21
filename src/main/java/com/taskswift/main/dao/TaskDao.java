@@ -14,7 +14,7 @@ public interface TaskDao {
 	
 	public Task getTaskById(Long taskId);
 	
-	public void saveTask(TaskCreation task);
+	public Task saveTask(TaskCreation task);
 	
 	public void deleteTask(Task task);
 	

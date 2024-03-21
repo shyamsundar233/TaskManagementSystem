@@ -2,10 +2,13 @@
 package com.taskswift.main.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.model.TaskCreation;
+import com.taskswift.main.util.TimelineUtil;
+import com.taskswift.main.util.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +40,9 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public void saveTask(TaskCreation task) {
 		
-		taskDao.saveTask(task);
+		Task taskObj = taskDao.saveTask(task);
+		String message = "Task Created by " + UserUtil.currentUser.getUsername() + " On " + LocalDateTime.now();
+		TimelineUtil.addActivityToTimeline(message, taskObj.getTaskId());
 
 	}
 
