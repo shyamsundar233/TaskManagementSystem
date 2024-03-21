@@ -23,24 +23,27 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception{
-		
 		http
-			.csrf(csrf -> csrf.disable())
-			.authorizeHttpRequests(req -> req
+				.csrf(csrf -> csrf.disable())
+				.httpBasic(Customizer.withDefaults())
+				.authorizeHttpRequests(req -> req
 					.requestMatchers(new AntPathRequestMatcher("/register")).permitAll()
 					.requestMatchers(new AntPathRequestMatcher("/test")).permitAll()
 					.anyRequest().authenticated()
-			)
-			.formLogin(form -> form
-					.loginPage("/login")
-					.successHandler(new LoginSuccessHandler())
-					.permitAll()
-			)
-			.logout((logout) -> logout
-					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-					.logoutSuccessHandler(new CustomLogoutSuccessHandler())
-					.logoutSuccessUrl("/login")
-			);
+				)
+				.formLogin(form -> form
+						.loginPage("/login")
+						.successHandler(new LoginSuccessHandler())
+						.permitAll()
+				)
+				.logout((logout) -> logout
+						.logoutUrl("/logout")
+						.logoutSuccessHandler(new CustomLogoutSuccessHandler())
+						.logoutSuccessUrl("/login")
+						.invalidateHttpSession(true)
+						.deleteCookies("JSESSIONID")
+						.permitAll()
+				);
 		
 		return http.build();
 	}
