@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User getUserById(Long userId) {
-		return userRepo.findByUserid(userId);
+		return userRepo.findUserByUseridWithinRange(userId, TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
 	}
 
 	@Override

@@ -14,7 +14,8 @@ public interface UserRepo extends JpaRepository<User, String> {
     @Query("SELECT u from User u WHERE u.username=?1")
     User getUserByName(String username);
 
-    User findByUserid(Long userId);
+    @Query("SELECT u FROM User u WHERE u.userid = ?1 AND u.userid BETWEEN ?2 AND ?3")
+    User findUserByUseridWithinRange(Long userIdToFind, Long startRange, Long endRange);
 
     List<User> findAllByUseridBetween(Long startRange, Long endRange);
 

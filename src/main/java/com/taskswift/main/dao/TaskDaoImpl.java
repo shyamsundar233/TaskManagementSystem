@@ -12,6 +12,7 @@ import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.repo.TaskCategoryRepo;
 import com.taskswift.main.repo.TaskStatusRepo;
 import com.taskswift.main.util.TenantUtil;
+import com.taskswift.main.util.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,6 +126,7 @@ public class TaskDaoImpl implements TaskDao {
 		task.setTaskPriority(taskCreation.getTaskPriority());
 		task.setTaskRecurring(taskCreation.getTaskRecurring());
 		task.setTaskAttachment(taskCreation.getTaskAttachment());
+		task.setUser(UserUtil.getUserById(taskCreation.getUserId()));
 		return task;
 	}
 

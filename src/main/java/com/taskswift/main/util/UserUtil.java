@@ -179,5 +179,9 @@ public class UserUtil {
 		response.put("Users", usersArr);
 		return response;
 	}
+
+	public static User getUserById(Long userId){
+		return userService.getUserById(userId);
+	}
 	
 }

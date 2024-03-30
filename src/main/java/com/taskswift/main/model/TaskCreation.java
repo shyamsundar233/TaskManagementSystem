@@ -24,6 +24,8 @@ public class TaskCreation {
 
     private List<String> taskStatusList;
 
+    private Long userId;
+
     public String getTaskTitle() {
         return taskTitle;
     }
@@ -96,6 +98,14 @@ public class TaskCreation {
         this.taskStatusList = taskStatusList;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "TaskCreation{" +
@@ -108,6 +118,7 @@ public class TaskCreation {
                 ", taskRecurring='" + taskRecurring + '\'' +
                 ", taskStatus='" + taskStatus + '\'' +
                 ", taskStatusList=" + taskStatusList +
+                ", userId=" + userId +
                 '}';
     }
 }

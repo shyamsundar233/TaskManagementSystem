@@ -47,12 +47,21 @@ const Create = () => {
     const [categoryDesc, setCategoryDesc] = useState('');
     const [dialogOpen, setDialogOpen] = useState(false);
     const [categoryList, setCategoryList] = useState([]);
+    const [userId, setUserId] = useState(null);
+    const [usersList, setUsersList] = useState([]);
 
     useEffect(() => {
         axios.get("/v1/api/taskCategory").then(resp => {
             setCategoryList(resp.data.TaskCategory);
             if(resp.data.TaskCategory && resp.data.TaskCategory.length > 0){
                 setCategory(resp.data.TaskCategory[0].categoryTitle);
+            }
+        })
+        axios.get("/v1/api/users").then(resp => {
+            debugger
+            setUsersList(resp.data.Users);
+            if(resp.data.Users.length > 0){
+                setUserId(resp.data.Users[0].userid);
             }
         })
     }, []);
@@ -70,7 +79,8 @@ const Create = () => {
             "taskAttachment" : attachment,
             "taskRecurring" : recurring,
             "taskStatus" : status,
-            "taskStatusList" : statusList
+            "taskStatusList" : statusList,
+            "userId" : userId
         };
         axios.post("/v1/api/tasks", payLoad, {withCredentials: true}).then((resp) => {
             let [message, severity] = constructMsg(resp.data.Task);
@@ -260,7 +270,7 @@ const Create = () => {
                     value={category}
                     className="dropdown-field MuiSelect-filled"
                     onChange={(e) => {
-                        if(e.target.value) {
+                        if (e.target.value) {
                             setCategory(e.target.value)
                         }
                     }}
@@ -291,11 +301,29 @@ const Create = () => {
                     id="recurring"
                     value={recurring}
                     className="dropdown-field MuiSelect-filled"
-                    oonChange={(e) => setRecurring(e.target.value)}
+                    onChange={(e) => setRecurring(e.target.value)}
                 >
                     <MenuItem value="Daily">Daily</MenuItem>
                     <MenuItem value="Weekly">Weekly</MenuItem>
                     <MenuItem value="Yearly">Yearly</MenuItem>
+                </Select>
+            </div>
+            <div className="input-group">
+                <div className="label-spac">
+                    <label className="font-sub-heading" htmlFor='user'>Task For</label>
+                </div>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="user"
+                    value={userId}
+                    className="dropdown-field MuiSelect-filled"
+                    onChange={(e) => setUserId(e.target.value)}
+                >
+                    {usersList.length > 0 && usersList.map(user => {
+                        return (
+                            <MenuItem value={user.userid}>{user.username}</MenuItem>
+                        );
+                    })}
                 </Select>
             </div>
 

@@ -33,6 +33,10 @@ public class Task {
 	@JoinColumn(name = "task_category")
 	private TaskCategory taskCategory;
 
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
 	public Long getTaskId() {
 		return taskId;
 	}
@@ -103,6 +107,14 @@ public class Task {
 
 	public void setTaskCategory(TaskCategory taskCategory) {
 		this.taskCategory = taskCategory;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
