@@ -3,12 +3,13 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-import {MenuItem, Select, TextField} from "@mui/material";
+import {Drawer, MenuItem, Select, TextField} from "@mui/material";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
+import CloseIcon from "../../Assets/xmark.svg";
 import React from "react";
 
-const ListFilter = () => {
+const ListFilter = ({openDrawer, handleClose}) => {
 
     const handleFilterChange = () =>{
 
@@ -16,90 +17,97 @@ const ListFilter = () => {
 
     return (
         <div style={listFilterParent}>
-            <TableContainer component={Paper}>
+            <Drawer
+                open={openDrawer}
+            >
+                <div className="margin-10 display-right">
+                    <img src={CloseIcon} alt="Close Icon not found" className="cursor-pointer" onClick={handleClose}/>
+                </div>
+                <TableContainer component={Paper}>
                 <Table>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>
-                                Title
-                            </TableCell>
-                            <TableCell>
-                                {filterOptionsDropdown(handleFilterChange)}
-                            </TableCell>
-                            <TableCell>
-                                <TextField id="standard-basic" variant="standard" />
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>
-                                Description
-                            </TableCell>
-                            <TableCell>
-                                {filterOptionsDropdown(handleFilterChange)}
-                            </TableCell>
-                            <TableCell>
-                                <TextField id="standard-basic" variant="standard" />
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>
-                                Due Date
-                            </TableCell>
-                            <TableCell>
-                                {filterOptionsDropdown(handleFilterChange)}
-                            </TableCell>
-                            <TableCell>
-                                <input style={dateFieldListFilter} type="date"/>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>
-                                Priority
-                            </TableCell>
-                            <TableCell>
-                                {filterOptionsDropdown(handleFilterChange)}
-                            </TableCell>
-                            <TableCell>
-                                <select className="select-field" id='priority' value={"Low Priority"}>
-                                    <option value="Low Priority">Low Priority</option>
-                                    <option value="Medium Priority">Medium Priority</option>
-                                    <option value="High Priority">High Priority</option>
-                                </select>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>
-                                Category
-                            </TableCell>
-                            <TableCell>
-                                {filterOptionsDropdown(handleFilterChange)}
-                            </TableCell>
-                            <TableCell>
-                                <select className="select-field" id='category' value="Food">
-                                    <option value="Food">Food</option>
-                                    <option value="Fuel">Fuel</option>
-                                    <option value="Party">Party</option>
-                                </select>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>
-                                Recurring
-                            </TableCell>
-                            <TableCell>
-                                {filterOptionsDropdown(handleFilterChange)}
-                            </TableCell>
-                            <TableCell>
-                                <select className="select-field" id='recurring' value="Daily">
-                                    <option value="Daily">Daily</option>
-                                    <option value="Weekly">Weekly</option>
-                                    <option value="Yearly">Yearly</option>
-                                </select>
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>
+                                    Title
+                                </TableCell>
+                                <TableCell>
+                                    {filterOptionsDropdown(handleFilterChange)}
+                                </TableCell>
+                                <TableCell>
+                                    <TextField id="standard-basic" variant="standard" />
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    Description
+                                </TableCell>
+                                <TableCell>
+                                    {filterOptionsDropdown(handleFilterChange)}
+                                </TableCell>
+                                <TableCell>
+                                    <TextField id="standard-basic" variant="standard" />
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    Due Date
+                                </TableCell>
+                                <TableCell>
+                                    {filterOptionsDropdown(handleFilterChange)}
+                                </TableCell>
+                                <TableCell>
+                                    <input style={dateFieldListFilter} type="date"/>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    Priority
+                                </TableCell>
+                                <TableCell>
+                                    {filterOptionsDropdown(handleFilterChange)}
+                                </TableCell>
+                                <TableCell>
+                                    <select className="select-field" id='priority' value={"Low Priority"}>
+                                        <option value="Low Priority">Low Priority</option>
+                                        <option value="Medium Priority">Medium Priority</option>
+                                        <option value="High Priority">High Priority</option>
+                                    </select>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    Category
+                                </TableCell>
+                                <TableCell>
+                                    {filterOptionsDropdown(handleFilterChange)}
+                                </TableCell>
+                                <TableCell>
+                                    <select className="select-field" id='category' value="Food">
+                                        <option value="Food">Food</option>
+                                        <option value="Fuel">Fuel</option>
+                                        <option value="Party">Party</option>
+                                    </select>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    Recurring
+                                </TableCell>
+                                <TableCell>
+                                    {filterOptionsDropdown(handleFilterChange)}
+                                </TableCell>
+                                <TableCell>
+                                    <select className="select-field" id='recurring' value="Daily">
+                                        <option value="Daily">Daily</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Yearly">Yearly</option>
+                                    </select>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Drawer>
         </div>
     );
 }

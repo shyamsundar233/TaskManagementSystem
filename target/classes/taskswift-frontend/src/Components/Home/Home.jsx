@@ -89,6 +89,7 @@ const Home = () => {
                       <TableComponent
                           headerRow={["Task Title", "Status", "Priority", "Category", "Recurring"]}
                           bodyRow={todayTask}
+                          classList="home-tab-dim"
                       />
                   </div>
               </div>

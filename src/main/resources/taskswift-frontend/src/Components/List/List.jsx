@@ -1,15 +1,9 @@
 import "./List.css";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import axios from "axios";
 import {useEffect, useState} from "react";
 import ListFilter from "../ListFilter/ListFilter";
-import {Link} from "react-router-dom";
+import FilterIcon from "../../Assets/filter.svg";
+import TableComponent from "../TableComponent/TableComponent";
 
 const createData = (id, title, desc, dueDate, priority, category, recurring) => {
     return { id, title, desc, dueDate, priority, category, recurring };
@@ -35,122 +29,86 @@ const constructTasksList = (tasksList) => {
     return [pastTasks, todayTasks, futureTasks];
 }
 
+const constructTaskDataForTable = (taskList) => {
+    const resultArr = [];
+    taskList.forEach(task => {
+        const taskData = [];
+        taskData.push(task.title);
+        taskData.push(task.desc);
+        taskData.push(task.dueDate);
+        taskData.push(task.priority);
+        taskData.push(task.category);
+        taskData.push(task.recurring);
+        resultArr.push(taskData);
+    })
+    return resultArr;
+}
+
 const List = () => {
 
     const [pastData, setPastData] = useState([]);
     const [todayData, setTodayData] = useState([]);
     const [futureData, setFutureData] = useState([]);
+    const [openFilter, setOpenFilter] = useState(false);
 
     useEffect(() => {
         axios.get("/v1/api/tasks").then((resp) => {
             let allTasks = resp.data.Task;
             let taskList = constructTasksList(allTasks);
-            setPastData(taskList[0]);
-            setTodayData(taskList[1]);
-            setFutureData(taskList[2]);
+            setPastData(constructTaskDataForTable(taskList[0]));
+            setTodayData(constructTaskDataForTable(taskList[1]));
+            setFutureData(constructTaskDataForTable(taskList[2]));
         })
     }, []);
 
+    const handleFilterClose = () => {
+        setOpenFilter(false);
+    }
+
     return (
-        <div style={parentDivSx}>
-            <ListFilter></ListFilter><br/>
-            <TableContainer component={Paper} sx={tableContainerSx}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Task Title</TableCell>
-                            <TableCell align="right">Description</TableCell>
-                            <TableCell align="right">Due Date</TableCell>
-                            <TableCell align="right">Priority</TableCell>
-                            <TableCell align="right">Category</TableCell>
-                            <TableCell align="right">Recurring</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow
-                            key="Past Tasks"
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row" colSpan={6} sx={TableInnerHeadingSx}>Past Tasks</TableCell>
-                        </TableRow>
-                        {pastData.map((row) => (
-                            <TableRow
-                                key={row.title}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    <Link className="link" to={`/ts/view/${row.id}`} >{row.title}</Link>
-                                </TableCell>
-                                <TableCell align="right">{row.desc}</TableCell>
-                                <TableCell align="right">{row.dueDate}</TableCell>
-                                <TableCell align="right">{row.priority}</TableCell>
-                                <TableCell align="right">{row.category}</TableCell>
-                                <TableCell align="right">{row.recurring}</TableCell>
-                            </TableRow>
-                        ))}
-                        <TableRow
-                            key="Past Tasks"
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row" colSpan={6} sx={TableInnerHeadingSx}>Today's Tasks</TableCell>
-                        </TableRow>
-                        {todayData.map((row) => (
-                            <TableRow
-                                key={row.title}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    <Link className="link" to={`/ts/view/${row.id}`} >{row.title}</Link>
-                                </TableCell>
-                                <TableCell align="right">{row.desc}</TableCell>
-                                <TableCell align="right">{row.dueDate}</TableCell>
-                                <TableCell align="right">{row.priority}</TableCell>
-                                <TableCell align="right">{row.category}</TableCell>
-                                <TableCell align="right">{row.recurring}</TableCell>
-                            </TableRow>
-                        ))}
-                        <TableRow
-                            key="Past Tasks"
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row" colSpan={6} sx={TableInnerHeadingSx}>Future Tasks</TableCell>
-                        </TableRow>
-                        {futureData.map((row) => (
-                            <TableRow
-                                key={row.title}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row.title}
-                                </TableCell>
-                                <TableCell align="right">{row.desc}</TableCell>
-                                <TableCell align="right">{row.dueDate}</TableCell>
-                                <TableCell align="right">{row.priority}</TableCell>
-                                <TableCell align="right">{row.category}</TableCell>
-                                <TableCell align="right">{row.recurring}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+        <div>
+            <ListFilter openDrawer={openFilter} handleClose={handleFilterClose}></ListFilter>
+            <div className="font-heading padd-20 display-flex">
+                Past Tasks &nbsp;&nbsp;&nbsp;
+                <img src={FilterIcon} alt="Filter Icon not found" className="cursor-pointer" onClick={e => setOpenFilter(true)}/>
+            </div>
+            {pastData.length > 0 ? (
+                <TableComponent
+                    headerRow={["Task Title", "Description", "Due Date", "Priority", "Category", "Recurring"]}
+                    bodyRow={pastData}
+                    classList="list-tab-dim"
+                />
+            ) : (
+                <div className="padd-20 font-bold">No Data Found</div>
+            )}
+            <div className="font-heading padd-20 display-flex">
+                Today Tasks &nbsp;&nbsp;&nbsp;
+                <img src={FilterIcon} alt="Filter Icon not found" className="cursor-pointer" onClick={e => setOpenFilter(!openFilter)}/>
+            </div>
+            {todayData.length > 0 ? (
+                <TableComponent
+                    headerRow={["Task Title", "Description", "Due Date", "Priority", "Category", "Recurring"]}
+                    bodyRow={todayData}
+                    classList="list-tab-dim"
+                />
+            ) : (
+                <div className="padd-20 font-bold">No Data Found</div>
+            )}
+            <div className="font-heading padd-20 display-flex">
+                Future Tasks &nbsp;&nbsp;&nbsp;
+                <img src={FilterIcon} alt="Filter Icon not found" className="cursor-pointer" onClick={e => setOpenFilter(!openFilter)}/>
+            </div>
+            {futureData.length > 0 ? (
+                <TableComponent
+                    headerRow={["Task Title", "Description", "Due Date", "Priority", "Category", "Recurring"]}
+                    bodyRow={futureData}
+                    classList="list-tab-dim"
+                />
+            ) : (
+                <div className="padd-20 font-bold">No Data Found</div>
+            )}
         </div>
     );
-}
-
-const parentDivSx = {
-    display : "flex",
-    justifyContent : "center"
-}
-
-const tableContainerSx = {
-    width : "1000px",
-    marginLeft: "400px"
-}
-
-const TableInnerHeadingSx = {
-    fontWeight : "bolder",
-    fontSize : "20px",
-    textAlign : "center"
 }
 
 export default List;

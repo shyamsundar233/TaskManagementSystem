@@ -14,7 +14,7 @@ const TableComponent = ({headerRow, bodyRow, classList}) => {
           <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                   <TableRow>
-                      {headerRow.map(row => {
+                      {headerRow && headerRow.length > 0 && headerRow.map(row => {
                           return (
                               <TableCell className="font-bold">{row}</TableCell>
                           );
@@ -22,7 +22,7 @@ const TableComponent = ({headerRow, bodyRow, classList}) => {
                   </TableRow>
               </TableHead>
               <TableBody className="scroll-div">
-                  {bodyRow.map(row => {
+                  {bodyRow && bodyRow.length > 0 && bodyRow.map(row => {
                       return (
                           <TableRow>
                               {row.map(col => {
