@@ -26,6 +26,7 @@ public class SecurityConfig {
 		
 		http
 			.csrf(csrf -> csrf.disable())
+				.httpBasic(Customizer.withDefaults())
 			.authorizeHttpRequests(req -> req
 					.requestMatchers(new AntPathRequestMatcher("/register")).permitAll()
 					.requestMatchers(new AntPathRequestMatcher("/test")).permitAll()
