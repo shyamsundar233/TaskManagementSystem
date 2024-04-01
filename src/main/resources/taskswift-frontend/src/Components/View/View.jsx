@@ -17,7 +17,7 @@ const priorityCss = {
   }
 }
 
-const View = ({data}) => {
+const View = () => {
 
   const { taskId } = useParams();
   const [taskTitle, setTaskTitle] = useState('');

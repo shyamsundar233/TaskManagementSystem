@@ -15,6 +15,7 @@ const RouteConfig = () => {
             <Route path="/ts" element={<App/>}>
                 <Route index element={<Home/>}/>
                 <Route path="create" element={<Create/>}/>
+                <Route path="edit/:taskId" element={<Create/>}/>
                 <Route path="list" element={<List/>}/>
                 <Route path="view" element={<Navigate to="/ts/list"/>}/>
                 <Route path="view/:taskId" element={<View/>}/>

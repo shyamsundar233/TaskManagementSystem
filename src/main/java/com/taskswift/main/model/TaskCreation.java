@@ -6,6 +6,8 @@ import java.util.List;
 
 public class TaskCreation {
 
+    private Long taskId;
+
     private String taskTitle;
 
     private String taskDesc;
@@ -25,6 +27,14 @@ public class TaskCreation {
     private List<String> taskStatusList;
 
     private Long userId;
+
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
+    }
 
     public String getTaskTitle() {
         return taskTitle;
@@ -109,7 +119,8 @@ public class TaskCreation {
     @Override
     public String toString() {
         return "TaskCreation{" +
-                "taskTitle='" + taskTitle + '\'' +
+                "taskId=" + taskId +
+                ", taskTitle='" + taskTitle + '\'' +
                 ", taskDesc='" + taskDesc + '\'' +
                 ", dueDate=" + dueDate +
                 ", taskPriority='" + taskPriority + '\'' +

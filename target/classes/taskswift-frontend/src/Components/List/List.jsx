@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import ListFilter from "../ListFilter/ListFilter";
 import FilterIcon from "../../Assets/filter.svg";
 import TableComponent from "../TableComponent/TableComponent";
+import {Link} from "react-router-dom";
 
 const createData = (id, title, desc, dueDate, priority, category, recurring) => {
     return { id, title, desc, dueDate, priority, category, recurring };
@@ -33,7 +34,7 @@ const constructTaskDataForTable = (taskList) => {
     const resultArr = [];
     taskList.forEach(task => {
         const taskData = [];
-        taskData.push(task.title);
+        taskData.push(<Link to={`/ts/edit/${task.id}`} className="link">{task.title}</Link>);
         taskData.push(task.desc);
         taskData.push(task.dueDate);
         taskData.push(task.priority);

@@ -14,6 +14,7 @@ import {
     MenuItem,
     Select, Slide, TextField
 } from "@mui/material";
+import {useParams} from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -31,6 +32,7 @@ const getTodayDate = () => {
 const Create = () => {
 
     const {showAlert} = useAlert();
+    const {taskId} = useParams();
 
 
     const [title, setTitle] = useState('');
@@ -64,6 +66,23 @@ const Create = () => {
                 setUserId(resp.data.Users[0].userid);
             }
         })
+        if(taskId){
+            axios.get("/v1/api/tasks/" + taskId).then(resp => {
+                debugger
+                let taskObj = resp.data.Task[0];
+                setTitle(taskObj.taskTitle);
+                setDescription(taskObj.taskDesc);
+                setDueDate(taskObj.dueDate);
+                setStatusList(taskObj.taskStatusList);
+                setStatus(taskObj.taskStatus);
+                setTimeout(() => {
+                    document.getElementById("status_" + taskObj.taskStatus).style.backgroundColor = "#00BDD6FF";
+                },100)
+                setPriority(taskObj.taskPriority);
+                setAttachment(taskObj.taskAttachment);
+                setRecurring(taskObj.taskRecurring);
+            })
+        }
     }, []);
 
     const handleSubmit = () => {
@@ -82,6 +101,9 @@ const Create = () => {
             "taskStatusList" : statusList,
             "userId" : userId
         };
+        if(taskId){
+            payLoad.taskId = taskId;
+        }
         axios.post("/v1/api/tasks", payLoad, {withCredentials: true}).then((resp) => {
             let [message, severity] = constructMsg(resp.data.Task);
             showAlert(message, severity);
