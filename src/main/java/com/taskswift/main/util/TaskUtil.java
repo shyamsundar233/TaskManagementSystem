@@ -57,14 +57,27 @@ public class TaskUtil {
 		try {
 			logger.info(">>> Validating Task Inputs");
 			validateTask(taskCreation);
-			
-			taskService.saveTask(taskCreation);
-			response.put("Task", "Task Created Successfully!!!");
+
+			if(taskCreation.getTaskId() == null){
+				taskService.saveTask(taskCreation);
+				response.put("Task", "Task Created Successfully!!!");
+			}else{
+				taskService.updateTask(taskCreation);
+				response.put("Task", "Task Updated Successfully!!!");
+			}
 			
 		}catch(Exception e) {
 			response.put("Task", e.getMessage());
 		}		
 		
+		return response;
+	}
+
+	public static JSONObject deleteTaskById(Long taskId) {
+		JSONObject response = new JSONObject();
+		Task task = taskService.getTaskById(taskId);
+		taskService.deleteTask(task);
+		response.put("Task", "Task Deleted Successfully");
 		return response;
 	}
 	
@@ -159,6 +172,7 @@ public class TaskUtil {
 			taskObj.put("taskRecurring", task.getTaskRecurring());
 			taskObj.put("taskStatus", getSelectedStatus(task.getTaskStatusList()).getStatusTitle());
 			taskObj.put("taskStatusList", getTaskStatusList(task.getTaskStatusList()));
+			taskObj.put("userId", task.getUser().getUserid());
 			taskArrJson.add(taskObj);
 		}
 		resultTaskJson.put("result", taskArrJson);

@@ -26,7 +26,7 @@ public class Task {
 	
 	private String taskRecurring;
 
-	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "task")
 	private List<TaskStatus> taskStatusList;
 
 	@ManyToOne(fetch = FetchType.LAZY)

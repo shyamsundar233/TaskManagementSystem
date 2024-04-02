@@ -64,6 +64,19 @@
   background-color: #0056b3;
 }
 
+.del-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.del-button:hover {
+    background-color: #0056b3;
+}
+
 .status-input-field {
   width: 200px !important;
 }

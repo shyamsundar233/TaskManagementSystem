@@ -35,6 +35,12 @@ public class TaskController {
 		return TaskUtil.getTaskById(taskId);
 	}
 
+	@DeleteMapping("/tasks/{taskId}")
+	public JSONObject deleteTaskById(@PathVariable Long taskId){
+		logger.info(">>> In DELETE endpoint of Task By Id API for task deletion");
+		return TaskUtil.deleteTaskById(taskId);
+	}
+
 	@GetMapping("/todayTask")
 	public JSONObject getTodayTask(){
 		logger.info(">>> In GET endpoint of Today Task API");

@@ -12,6 +12,7 @@ public class ReactController {
     @GetMapping(value = {
     		"",
     		"/create",
+            "/edit/**",
             "/list",
             "/listUser",
             "/view/**"

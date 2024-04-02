@@ -12,9 +12,9 @@ import {
     DialogContentText,
     DialogTitle,
     MenuItem,
-    Select, Slide, TextField
+    Select, Slide
 } from "@mui/material";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -33,7 +33,8 @@ const Create = () => {
 
     const {showAlert} = useAlert();
     const {taskId} = useParams();
-
+    const navigate = useNavigate();
+    let taskData;
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -60,7 +61,6 @@ const Create = () => {
             }
         })
         axios.get("/v1/api/users").then(resp => {
-            debugger
             setUsersList(resp.data.Users);
             if(resp.data.Users.length > 0){
                 setUserId(resp.data.Users[0].userid);
@@ -68,19 +68,20 @@ const Create = () => {
         })
         if(taskId){
             axios.get("/v1/api/tasks/" + taskId).then(resp => {
-                debugger
-                let taskObj = resp.data.Task[0];
-                setTitle(taskObj.taskTitle);
-                setDescription(taskObj.taskDesc);
-                setDueDate(taskObj.dueDate);
-                setStatusList(taskObj.taskStatusList);
-                setStatus(taskObj.taskStatus);
+                taskData = resp.data.Task[0];
+                setTitle(taskData.taskTitle);
+                setDescription(taskData.taskDesc);
+                setDueDate(taskData.dueDate);
+                setStatusList(taskData.taskStatusList);
+                setStatus(taskData.taskStatus);
                 setTimeout(() => {
-                    document.getElementById("status_" + taskObj.taskStatus).style.backgroundColor = "#00BDD6FF";
+                    document.getElementById("status_" + taskData.taskStatus).style.backgroundColor = "#00BDD6FF";
                 },100)
-                setPriority(taskObj.taskPriority);
-                setAttachment(taskObj.taskAttachment);
-                setRecurring(taskObj.taskRecurring);
+                setPriority(taskData.taskPriority);
+                setAttachment(taskData.taskAttachment);
+                setRecurring(taskData.taskRecurring);
+                setCategory(taskData.taskCategory);
+                setUserId(taskData.userId);
             })
         }
     }, []);
@@ -107,7 +108,16 @@ const Create = () => {
         axios.post("/v1/api/tasks", payLoad, {withCredentials: true}).then((resp) => {
             let [message, severity] = constructMsg(resp.data.Task);
             showAlert(message, severity);
-            resetData();
+            if(!taskId){
+                resetData();
+            }
+        })
+    }
+
+    const handleDelete = () => {
+        axios.delete("/v1/api/tasks/" + taskId).then(resp => {
+            showAlert(resp.data.Task, 'success');
+            navigate("/ts/list");
         })
     }
 
@@ -350,7 +360,10 @@ const Create = () => {
             </div>
 
             <div className="sub-btn-1">
-                <button className="button btn-1" onClick={handleSubmit}>Submit</button>
+                <Button variant="contained" className="btn-1" onClick={handleSubmit}> Submit </Button> &nbsp;&nbsp;&nbsp;
+                {taskId &&
+                    <Button variant="outlined" color="error" onClick={handleDelete}> Delete </Button>
+                }
             </div>
 
             <Dialog

@@ -42,9 +42,13 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public void deleteTask(Task task) {
-		// TODO Auto-generated method stub
+	public void updateTask(TaskCreation taskCreation) {
+		taskDao.updateTask(taskCreation);
+	}
 
+	@Override
+	public void deleteTask(Task task) {
+		taskDao.deleteTask(task);
 	}
 
 	@Override

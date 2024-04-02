@@ -8,11 +8,13 @@ import java.util.Optional;
 
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.entity.TaskStatus;
+import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.repo.TaskCategoryRepo;
 import com.taskswift.main.repo.TaskStatusRepo;
 import com.taskswift.main.util.TenantUtil;
 import com.taskswift.main.util.UserUtil;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import com.taskswift.main.entity.Task;
 import com.taskswift.main.repo.TaskRepo;
 
 @Repository
+@Transactional
 public class TaskDaoImpl implements TaskDao {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TaskDaoImpl.class);
@@ -53,23 +56,13 @@ public class TaskDaoImpl implements TaskDao {
 
 		Task task = getTaskFromTaskCreation(taskCreation);
 
-		TaskCategory taskCategory = getTaskCategoryByTitle(taskCreation.getTaskCategory());
-		task.setTaskCategory(taskCategory);
-
 		logger.info(">>> " + task.getTaskTitle() + " Task is getting saved to DB");
 		task.setTaskId(TenantUtil.getNextUniqueId());
 		taskRepo.save(task);
 
 		List<TaskStatus> statusList = new ArrayList<>();
 		for(String statusTitle : taskCreation.getTaskStatusList()){
-			TaskStatus taskStatus = new TaskStatus();
-			taskStatus.setTaskStatusId(TenantUtil.getNextUniqueId());
-			taskStatus.setStatusTitle(statusTitle);
-			taskStatus.setTask(task);
-			if(statusTitle.equals(taskCreation.getTaskStatus())){
-				taskStatus.setSelected(true);
-			}
-			taskStatusRepo.save(taskStatus);
+			TaskStatus taskStatus = saveTaskStatus(statusTitle, task, taskCreation.getTaskStatus());
 			statusList.add(taskStatus);
 		}
 
@@ -81,9 +74,22 @@ public class TaskDaoImpl implements TaskDao {
 	}
 
 	@Override
-	public void deleteTask(Task task) {
-		// TODO Auto-generated method stub
+	public void updateTask(TaskCreation taskCreation) {
+		Optional<Task> taskOptional = taskRepo.findById(taskCreation.getTaskId());
+		if(taskOptional.isEmpty()){
+			logger.error("Task not found to update :: TaskId: " + taskCreation.getTaskId());
+			throw new TaskException("Task not found to update :: TaskId: " + taskCreation.getTaskId());
+		}else{
+			Task task = getTaskFromTaskCreation(taskCreation);
+			updateExistingTaskStatus(task, taskCreation);
+			taskRepo.save(task);
+		}
+	}
 
+	@Override
+	public void deleteTask(Task task) {
+		taskStatusRepo.deleteAll(task.getTaskStatusList());
+		taskRepo.delete(task);
 	}
 
 	@Override
@@ -118,8 +124,9 @@ public class TaskDaoImpl implements TaskDao {
 		return taskCategoryRepo.findAllByCategoryIdIsBetween(TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
 	}
 
-	private static Task getTaskFromTaskCreation(TaskCreation taskCreation){
+	private Task getTaskFromTaskCreation(TaskCreation taskCreation){
 		Task task = new Task();
+		task.setTaskId(taskCreation.getTaskId());
 		task.setTaskTitle(taskCreation.getTaskTitle());
 		task.setTaskDesc(taskCreation.getTaskDesc());
 		task.setDueDate(taskCreation.getDueDate());
@@ -127,7 +134,51 @@ public class TaskDaoImpl implements TaskDao {
 		task.setTaskRecurring(taskCreation.getTaskRecurring());
 		task.setTaskAttachment(taskCreation.getTaskAttachment());
 		task.setUser(UserUtil.getUserById(taskCreation.getUserId()));
+		TaskCategory taskCategory = getTaskCategoryByTitle(taskCreation.getTaskCategory());
+		task.setTaskCategory(taskCategory);
 		return task;
+	}
+
+	private void updateExistingTaskStatus(Task task, TaskCreation taskCreation) {
+		List<TaskStatus> existingTaskStatusList = taskStatusRepo.findAllByTaskAndTaskStatusIdBetween(task, TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+		List<TaskStatus> updatedTaskStatus = new ArrayList<>();
+		for(String statusTitle : taskCreation.getTaskStatusList()){
+			TaskStatus taskStatus = isPresent(statusTitle, existingTaskStatusList);
+			if(taskStatus != null){
+				if(taskStatus.isSelected() && !(taskStatus.getStatusTitle().equals(taskCreation.getTaskStatus()))){
+					taskStatus.setSelected(false);
+					taskStatusRepo.save(taskStatus);
+				}
+				existingTaskStatusList.remove(taskStatus);
+			}else{
+				TaskStatus newStatus = saveTaskStatus(statusTitle, task, taskCreation.getTaskStatus());
+			}
+			updatedTaskStatus.add(taskStatus);
+		}
+		taskStatusRepo.deleteAll(existingTaskStatusList);
+		task.setTaskStatusList(updatedTaskStatus);
+		taskRepo.save(task);
+	}
+
+	private TaskStatus isPresent(String statusTitle, List<TaskStatus> statusList){
+		for(TaskStatus taskStatus : statusList){
+			if(taskStatus.getStatusTitle().equals(statusTitle)){
+				return taskStatus;
+			}
+		}
+		return null;
+	}
+
+	private TaskStatus saveTaskStatus(String statusTitle, Task task, String selectedStatus){
+		TaskStatus taskStatus = new TaskStatus();
+		taskStatus.setTaskStatusId(TenantUtil.getNextUniqueId());
+		taskStatus.setStatusTitle(statusTitle);
+		taskStatus.setTask(task);
+		if(statusTitle.equals(selectedStatus)){
+			taskStatus.setSelected(true);
+		}
+		taskStatusRepo.save(taskStatus);
+		return taskStatus;
 	}
 
 }
