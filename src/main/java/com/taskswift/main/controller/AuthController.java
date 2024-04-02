@@ -32,7 +32,7 @@ public class AuthController {
 	public String getLogin(Authentication auth) {
 		if(auth == null) {
 			logger.info(">>> Redirecting to login page");
-			return "login-page";
+			return "/authentication/login-page";
 		}else {
 			logger.info(">>> Redirecting to index page");
 			return "redirect:/";
@@ -45,7 +45,7 @@ public class AuthController {
 			logger.info(">>> Redirecting to User Registration Page");
 			theModel.addAttribute("User", new UserRegistration());
 			theModel.addAttribute("Authorities", UserUtil.getAllRoles());
-			return "register-page";
+			return "/authentication/register-page";
 		}else {
 			logger.info(">>> Redirecting to home page from /register as the user is already logged in");
 			return "redirect:/";
