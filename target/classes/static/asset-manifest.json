@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.415a3e1e.css",
-    "main.js": "/static/js/main.76bd888a.js",
+    "main.js": "/static/js/main.422d5bb2.js",
     "static/js/453.b245d083.chunk.js": "/static/js/453.b245d083.chunk.js",
     "static/media/gear-2.svg": "/static/media/gear-2.4f4fa4c95d741456affd869c81ab7f83.svg",
     "static/media/nodes.svg": "/static/media/nodes.270b3eadc0dcb50b5402f1c9286c1a74.svg",
@@ -11,6 +11,7 @@
     "static/media/msg-writing.svg": "/static/media/msg-writing.b46c075542d259431c663caf2c1cae7b.svg",
     "static/media/tasks-2.svg": "/static/media/tasks-2.7e5c87a10528c31493f0627a49a1cef0.svg",
     "static/media/bell.svg": "/static/media/bell.18ecbf5e9003ba6653d5c701d848bd7e.svg",
+    "static/media/pen-3.svg": "/static/media/pen-3.1e8b000bb6c7eb70ce9d41000adabe91.svg",
     "static/media/pin-tack.svg": "/static/media/pin-tack.acfedf17cad1e9d0f67463f02563ae2f.svg",
     "static/media/phone.svg": "/static/media/phone.ad0b64343428da8f6a3c04debc7766b3.svg",
     "static/media/house-2.svg": "/static/media/house-2.1e64ad36c525f6a2ab95cf3a50bb1877.svg",
@@ -20,11 +21,11 @@
     "static/media/xmark.svg": "/static/media/xmark.ab0ca6a6625cc33eef7fbfa63b7deab6.svg",
     "static/media/filter.svg": "/static/media/filter.2ac44f8bb35bf03d0d35d301974c762e.svg",
     "main.415a3e1e.css.map": "/static/css/main.415a3e1e.css.map",
-    "main.76bd888a.js.map": "/static/js/main.76bd888a.js.map",
+    "main.422d5bb2.js.map": "/static/js/main.422d5bb2.js.map",
     "453.b245d083.chunk.js.map": "/static/js/453.b245d083.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.415a3e1e.css",
-    "static/js/main.76bd888a.js"
+    "static/js/main.422d5bb2.js"
   ]
 }

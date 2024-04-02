@@ -34,7 +34,7 @@ const constructTaskDataForTable = (taskList) => {
     const resultArr = [];
     taskList.forEach(task => {
         const taskData = [];
-        taskData.push(<Link to={`/ts/edit/${task.id}`} className="link">{task.title}</Link>);
+        taskData.push(<Link to={`/ts/view/${task.id}`} className="link">{task.title}</Link>);
         taskData.push(task.desc);
         taskData.push(task.dueDate);
         taskData.push(task.priority);
@@ -44,6 +44,8 @@ const constructTaskDataForTable = (taskList) => {
     })
     return resultArr;
 }
+
+const headerRow = ["Task Title", "Description", "Due Date", "Priority", "Category", "Recurring"];
 
 const List = () => {
 
@@ -75,7 +77,7 @@ const List = () => {
             </div>
             {pastData.length > 0 ? (
                 <TableComponent
-                    headerRow={["Task Title", "Description", "Due Date", "Priority", "Category", "Recurring"]}
+                    headerRow={headerRow}
                     bodyRow={pastData}
                     classList="list-tab-dim"
                 />
@@ -88,7 +90,7 @@ const List = () => {
             </div>
             {todayData.length > 0 ? (
                 <TableComponent
-                    headerRow={["Task Title", "Description", "Due Date", "Priority", "Category", "Recurring"]}
+                    headerRow={headerRow}
                     bodyRow={todayData}
                     classList="list-tab-dim"
                 />
@@ -101,7 +103,7 @@ const List = () => {
             </div>
             {futureData.length > 0 ? (
                 <TableComponent
-                    headerRow={["Task Title", "Description", "Due Date", "Priority", "Category", "Recurring"]}
+                    headerRow={headerRow}
                     bodyRow={futureData}
                     classList="list-tab-dim"
                 />

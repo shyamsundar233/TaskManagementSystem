@@ -1,8 +1,9 @@
 import "./View.css";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import TimeLine from "../TimeLine/TimeLine";
+import editIcon from "../../Assets/pen-3.svg";
 
 const priorityCss = {
   "High Priority" : {
@@ -19,6 +20,7 @@ const priorityCss = {
 
 const View = () => {
 
+  const navigate = useNavigate();
   const { taskId } = useParams();
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
@@ -50,11 +52,18 @@ const View = () => {
     setTaskRecurring(taskDetails.taskRecurring);
   }
 
+  const handleEdit = () => {
+    navigate("/ts/edit/" + taskId);
+  }
+
   return (
       <div className="display-flex view-par-cont-1">
         <div className="padd-20 view-cont-1">
-          <div className="width-100 font-heading view-title-1">
-            <span>{taskTitle}</span>
+          <div className="width-100 font-heading view-title-1 display-center-col">
+            <span>
+              {taskTitle} &nbsp;&nbsp;&nbsp;
+              <img src={editIcon} alt="Edit Icon not found" className="cursor-pointer" onClick={handleEdit}/>
+            </span>
           </div>
 
           <div className="view-cont-2">
