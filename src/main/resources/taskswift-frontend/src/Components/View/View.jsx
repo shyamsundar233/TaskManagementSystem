@@ -60,9 +60,9 @@ const View = () => {
       <div className="display-flex view-par-cont-1">
         <div className="padd-20 view-cont-1">
           <div className="width-100 font-heading view-title-1 display-center-col">
-            <span>
+            <span className="display-flex">
               {taskTitle} &nbsp;&nbsp;&nbsp;
-              <img src={editIcon} alt="Edit Icon not found" className="cursor-pointer" onClick={handleEdit}/>
+              <img src={editIcon} alt="Edit Icon not found" className="cursor-pointer edit-icon-dim" onClick={handleEdit}/>
             </span>
           </div>
 
