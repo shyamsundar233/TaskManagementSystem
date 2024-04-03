@@ -42,7 +42,7 @@ const Create = () => {
     const [statusList, setStatusList] = useState([]);
     const [status, setStatus] = useState('');
     const [priority, setPriority] = useState('Low Priority');
-    const [category, setCategory] = useState('Food');
+    const [category, setCategory] = useState('');
     const [attachment, setAttachment] = useState(null);
     const [recurring, setRecurring] = useState('Daily');
     const [statusInput, setStatusInput] = useState('');
@@ -142,6 +142,9 @@ const Create = () => {
             return false;
         }else if(status.length < 1){
             showAlert("Please add status for task","error")
+            return false;
+        }else if(!category){
+            showAlert("Please add category for task","error")
             return false;
         }else{
             var titleRegex = /^[^\s]+[a-zA-Z0-9\s]*[a-zA-Z0-9]$/;
