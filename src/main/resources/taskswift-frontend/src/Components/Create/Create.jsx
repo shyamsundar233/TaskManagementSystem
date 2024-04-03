@@ -197,7 +197,8 @@ const Create = () => {
         }
     }
 
-    const saveCategory = () => {
+    const saveCategory = (event) => {
+        event.preventDefault();
         let data = {
             "categoryTitle" : categoryTitle,
             "categoryDesc" : categoryDesc
@@ -392,7 +393,7 @@ const Create = () => {
                     </DialogContentText>
                     <DialogActions>
                         <Button className="btn-1" onClick={handleCatgDialog}>Cancel</Button>
-                        <Button className="btn-1" type="submit" onClick={saveCategory}>Save</Button>
+                        <Button className="btn-1" type="submit" onClick={event => saveCategory(event)}>Save</Button>
                     </DialogActions>
                 </DialogContent>
             </Dialog>
