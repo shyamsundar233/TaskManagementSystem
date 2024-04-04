@@ -15,4 +15,6 @@ public interface UserService {
 
 	public List<User> getAllUsers();
 
+	public List<User> getAllUsersInDB();
+
 }

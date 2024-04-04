@@ -43,4 +43,9 @@ public class UserDaoImpl implements UserDao {
 		return userRepo.findAllByUseridBetween(TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
 	}
 
+	@Override
+	public List<User> getAllUsersInDB() {
+		return userRepo.findAll();
+	}
+
 }

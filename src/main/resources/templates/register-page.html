@@ -126,14 +126,14 @@
         Already have an account? <a href="/login">Log in</a>
     </div>
 </div>
-<script>
+<script th:inline="javascript">
 
 	function validateForm(){  
 		
 		var errorDiv = $("#customErrorDiv")[0];		
 		
-		var inputRegex = /^[^\s]+[a-zA-Z0-9]+$/;
-        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+\\\|\[\]{};:'",.<>?]).{8,}$/;
+		var inputRegex = /^[^\s]+[a-zA-Z0-9\s]+$/;
+        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[^\s]{8,}$/;
 		
         var toggleErrorDiv = (isVisible) => {
         	if(isVisible){
@@ -163,17 +163,23 @@
 		var userName = document.getElementById("username").value;
 		var password = document.getElementById("password").value;
 		var confirmPassword = document.getElementById("confirmPassword").value;
+        var existingUsers = /*[[${ExistingUsers}]]*/ '';
 		
 		if(userName.length < 1 || userName.length > 20 ){
             showAlert("Please check the Username length");
 			return false;
-		}else if(password.length < 1 || password.length > 20){
+		}
+        else if(existingUsers.indexOf(userName) > -1){
+            showAlert("Username already taken");
+            return false;
+        }
+        else if(password.length < 1 || password.length > 20){
             showAlert("Please check the Password length");
 			return false;
 		}else if(password !== confirmPassword){
             showAlert("Password mismatch");
             return false;
-        }else if(!validateInputs(userName) || !validateInputs(password)){
+        }else if(!validateInputs(userName)){
             showAlert("Invalid Username");
 			return false;
 		}else if(!passwordValidation(password)){

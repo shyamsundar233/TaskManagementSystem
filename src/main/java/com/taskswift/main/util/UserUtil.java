@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -132,11 +133,6 @@ public class UserUtil {
 				logger.error(">>> Invalid Username");
 				throw new UserRegistrationExeception("Invalid Username");
 			}
-			matcher = pattern.matcher(password);
-			if(!matcher.matches()) {
-				logger.error(">>> Invalid Password");
-				throw new UserRegistrationExeception("Invalid Password");
-			}
 			
 			String passwordRegex = Constants.PASSWORDPATTERN;
 			pattern = Pattern.compile(passwordRegex);
@@ -178,6 +174,15 @@ public class UserUtil {
 		}
 		response.put("Users", usersArr);
 		return response;
+	}
+
+	public static List<String> getExistingUsers(){
+		List<User> users = userService.getAllUsersInDB();
+		List<String> userNameList = new ArrayList<>();
+		for(User user : users){
+			userNameList.add(user.getUsername());
+		}
+		return userNameList;
 	}
 
 	public static User getUserById(Long userId){
