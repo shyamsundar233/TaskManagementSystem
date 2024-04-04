@@ -45,6 +45,7 @@ public class AuthController {
 			logger.info(">>> Redirecting to User Registration Page");
 			theModel.addAttribute("User", new UserRegistration());
 			theModel.addAttribute("Authorities", UserUtil.getAllRoles());
+			theModel.addAttribute("ExistingUsers", UserUtil.getExistingUsers());
 			return "register-page";
 		}else {
 			logger.info(">>> Redirecting to home page from /register as the user is already logged in");
