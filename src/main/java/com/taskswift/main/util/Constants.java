@@ -1,6 +1,9 @@
 //$Id$
 package com.taskswift.main.util;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Constants {
 	
 	public static final String USER = "User";	
@@ -13,5 +16,7 @@ public class Constants {
 	public static final String ANONYMOUS_USER = "anonymousUser";
 
 	public static final String ANONYMOUS_ROLE = "ROLE_ANONYMOUS";
+
+	public static final List<String> STATUS_LIST = Arrays.asList("To Do", "In Progress", "On Hold", "Blocked", "Completed", "Cancelled", "Reinitiated");
 
 }

@@ -3,7 +3,6 @@ package com.taskswift.main.util;
 
 import com.taskswift.main.entity.Task;
 import com.taskswift.main.entity.TaskCategory;
-import com.taskswift.main.entity.TaskStatus;
 import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.service.TaskService;
@@ -19,7 +18,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -155,14 +153,6 @@ public class TaskUtil {
 		return new ArrayList<>(Arrays.asList(startDateOfWeek, endDateOfWeek));
 	}
 
-	private static List<String> getTaskStatusList(List<TaskStatus> taskStatusList){
-		List<String> statusList = new ArrayList<>();
-		for(TaskStatus taskStatus : taskStatusList){
-			statusList.add(taskStatus.getStatusTitle());
-		}
-		return statusList;
-	}
-
 	private static JSONObject constructJsonForTask(List<Task> tasksList){
 		JSONObject resultTaskJson= new JSONObject();
 		JSONArray taskArrJson = new JSONArray();
@@ -176,22 +166,12 @@ public class TaskUtil {
 			taskObj.put("taskCategory", task.getTaskCategory().getCategoryTitle());
 			taskObj.put("taskAttachment", task.getTaskAttachment());
 			taskObj.put("taskRecurring", task.getTaskRecurring());
-			taskObj.put("taskStatus", getSelectedStatus(task.getTaskStatusList()).getStatusTitle());
-			taskObj.put("taskStatusList", getTaskStatusList(task.getTaskStatusList()));
+			taskObj.put("taskStatus", task.getTaskStatus());
 			taskObj.put("userId", task.getUser().getUserid());
 			taskArrJson.add(taskObj);
 		}
 		resultTaskJson.put("result", taskArrJson);
 		return resultTaskJson;
-	}
-
-	public static TaskStatus getSelectedStatus(List<TaskStatus> statusList){
-		for(TaskStatus taskStatus : statusList){
-			if(taskStatus.isSelected()){
-				return taskStatus;
-			}
-		}
-		return null;
 	}
 
 }
