@@ -10,6 +10,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -18,16 +21,24 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String fromMail;
 
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
+
     @Async
-    public void sendMail(String to, String subject, String body) throws MessagingException {
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+    public void sendMail(String to, String subject, String body) {
+        executorService.submit(() -> {
+            try {
+                MimeMessage mimeMessage = mailSender.createMimeMessage();
+                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
 
-        mimeMessageHelper.setFrom(fromMail);
-        mimeMessageHelper.setTo(to);
-        mimeMessageHelper.setSubject(subject);
-        mimeMessageHelper.setText(body, false);
+                mimeMessageHelper.setFrom(fromMail);
+                mimeMessageHelper.setTo(to);
+                mimeMessageHelper.setSubject(subject);
+                mimeMessageHelper.setText(body, false);
 
-        mailSender.send(mimeMessage);
+                mailSender.send(mimeMessage);
+            }catch (Exception exception){
+                throw new RuntimeException(exception.getMessage());
+            }
+        });
     }
 }
