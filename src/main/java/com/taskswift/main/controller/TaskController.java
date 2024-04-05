@@ -53,6 +53,12 @@ public class TaskController {
 		return TaskUtil.getAllCurrentWeekTasks();
 	}
 
+	@GetMapping("/homePage")
+	public JSONObject getAllHomePageElements() {
+		logger.info(">>> In GET endpoint of Home Page Task API");
+		return TaskUtil.getHomePageElements();
+	}
+
 	@GetMapping("/totalTask")
 	public JSONObject getTotalTask() {
 		return TaskUtil.getAllTasksForCurrentUser();

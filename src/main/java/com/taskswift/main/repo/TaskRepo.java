@@ -22,4 +22,8 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
 
     List<Task> findAllByUserAndTaskIdIsBetween(User user, Long startRange, Long endRange);
 
+    List<Task> findByTaskStatusAndTaskIdIsBetween(String taskStatus, Long startRange, Long endRange);
+
+    List<Task> findByTaskPriorityAndTaskIdIsBetween(String taskPriority, Long startRange, Long endRange);
+
 }

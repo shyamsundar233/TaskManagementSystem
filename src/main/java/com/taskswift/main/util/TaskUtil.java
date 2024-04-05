@@ -146,6 +146,15 @@ public class TaskUtil {
 		return response;
 	}
 
+	public static JSONObject getHomePageElements() {
+		JSONObject response = new JSONObject();
+		response.put("toDoTasks", constructJsonForTask(taskService.getToDoTasks()).get("result"));
+		response.put("weeklyTasks", getAllCurrentWeekTasks().get("weeklyTasks"));
+		response.put("highPriorityTasks", constructJsonForTask(taskService.getHighPriorityTasks()).get("result"));
+		response.put("todayTask", getAllTodayTasksList().get("todayTask"));
+		return response;
+	}
+
 	private static List<LocalDate> getStartAndEndOfCurrentWeek() {
 		LocalDate currentDate = LocalDate.now();
 		LocalDate startDateOfWeek = currentDate.minusDays(currentDate.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue());

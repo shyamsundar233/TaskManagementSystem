@@ -70,9 +70,6 @@ const Create = () => {
                 setDescription(taskData.taskDesc);
                 setDueDate(taskData.dueDate);
                 setStatus(taskData.taskStatus);
-                setTimeout(() => {
-                    document.getElementById("status_" + taskData.taskStatus).style.backgroundColor = "#00BDD6FF";
-                },100)
                 setPriority(taskData.taskPriority);
                 setAttachment(taskData.taskAttachment);
                 setRecurring(taskData.taskRecurring);
