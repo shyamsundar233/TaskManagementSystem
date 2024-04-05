@@ -5,16 +5,19 @@ import Notifications from "../Notifications/Notifications";
 import StatsComponent from "../StatsComponent/StatsComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 const requestsUrl = [
     "/v1/api/todayTask",
-    "/v1/api/currentWeekTask"
+    "/v1/api/currentWeekTask",
+    "/v1/api/totalTask"
 ]
 
 const Home = () => {
 
     const [todayTask, setTodayTask] = useState([]);
     const [weeklyTasksCount, setWeeklyTasksCount] = useState(0);
+    const [totalTasks, setTotalTasks] = useState(0);
     const [weeklyTasks, setWeeklyTasks] = useState([]);
 
     const requests = requestsUrl.map(url => axios.get(url));
@@ -29,6 +32,9 @@ const Home = () => {
                 setWeeklyTasksCount(responses[1].data.weeklyTasks.length);
                 constructWeeklyTask(responses[1].data.weeklyTasks);
             }
+            if(responses[2].data.totalTasks){
+                setTotalTasks(responses[2].data.totalTasks.length > 0 ? responses[2].data.totalTasks.length : 0);
+            }
         }).catch(
             error => {
                 console.error('Error:', error);
@@ -40,7 +46,7 @@ const Home = () => {
         for (let index in tasksList) {
             let task = tasksList[index];
             let tempArr = [];
-            tempArr.push(task.taskTitle);
+            tempArr.push(<Link to={`/ts/view/${task.taskId}`} className="link">{task.taskTitle}</Link>);
             tempArr.push(task.taskStatus);
             tempArr.push(task.taskPriority);
             tempArr.push(task.taskCategory);
@@ -68,29 +74,35 @@ const Home = () => {
             x: parseDate(date).getDate(),
             y: count
         }));
-        setWeeklyTasks(data);
+        let res = [{x : 0, y : 0}]
+        res = res.concat(data);
+        setWeeklyTasks(res);
     }
 
   return (
       <div className="display-flex pos-fixed">
           <Notifications/>
-          <div className="display-center-col">
+          <div className="display-center-col scroll-div">
               <div className="height-width-auto">
                   <div className="title-font padd-20 margin-top-left-20 font-heading">Statistics</div>
                   <div className="display-center home-graph-cont-1">
-                      <StatsComponent title="Total tasks solved" value={430} className="home-stats-comp-col-1"/>
+                      <StatsComponent title="Total tasks" value={totalTasks} className="home-stats-comp-col-1"/>
                       <StatsComponent title="This week tasks" value={weeklyTasksCount} graphData={weeklyTasks} className="home-stats-comp-col-2"/>
-                      <StatsComponent title="Unsolved tasks" value={430} className="home-stats-comp-col-3"/>
+                      <StatsComponent title="Unsolved tasks" value={0} className="home-stats-comp-col-3"/>
                   </div>
               </div>
               <div className="height-width-auto">
                   <div className="title-font padd-20 margin-top-left-20 font-heading">
                       <div className="padd-20"> My Today's Tasks </div>
-                      <TableComponent
-                          headerRow={["Task Title", "Status", "Priority", "Category", "Recurring"]}
-                          bodyRow={todayTask}
-                          classList="home-tab-dim"
-                      />
+                      {todayTask.length > 0 ?
+                          <TableComponent
+                              headerRow={["Task Title", "Status", "Priority", "Category", "Recurring"]}
+                              bodyRow={todayTask}
+                              classList="home-tab-dim"
+                          />
+                          :
+                          <div className="padd-20 font-sub-heading display-center">No Tasks today !!!</div>
+                      }
                   </div>
               </div>
           </div>

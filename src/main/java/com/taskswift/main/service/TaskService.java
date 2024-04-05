@@ -29,5 +29,7 @@ public interface TaskService {
 	public void saveCategory(TaskCategory taskCategory);
 
 	public List<TaskCategory> getAllTaskCategory();
+
+	public List<Task> getTotalUserTask(Long userId);
 	
 }

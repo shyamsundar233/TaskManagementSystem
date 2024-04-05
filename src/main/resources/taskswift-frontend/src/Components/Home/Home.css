@@ -19,5 +19,5 @@
 }
 
 .home-tab-dim {
-    height: 375px;
+    max-height: 375px;
 }

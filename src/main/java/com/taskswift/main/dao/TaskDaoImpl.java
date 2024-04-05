@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.entity.TaskStatus;
+import com.taskswift.main.entity.User;
 import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.repo.TaskCategoryRepo;
@@ -122,6 +123,13 @@ public class TaskDaoImpl implements TaskDao {
 	@Override
 	public List<TaskCategory> getAllTaskCategory() {
 		return taskCategoryRepo.findAllByCategoryIdIsBetween(TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+	}
+
+	@Override
+	public List<Task> getTotalUserTask(Long userId) {
+		List<Task> tasksList = taskRepo.findAllByUserAndTaskIdIsBetween(UserUtil.getUserById(userId), TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+		logger.info(">>> {} user tasks fetched from DB", userId);
+		return tasksList;
 	}
 
 	private Task getTaskFromTaskCreation(TaskCreation taskCreation){

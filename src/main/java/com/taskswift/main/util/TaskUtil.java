@@ -142,6 +142,12 @@ public class TaskUtil {
 		return response;
 	}
 
+	public static JSONObject getAllTasksForCurrentUser(){
+		JSONObject response = new JSONObject();
+		response.put("totalTasks", constructJsonForTask(taskService.getTotalUserTask(UserUtil.currentUser.getUserid())).get("result"));
+		return response;
+	}
+
 	private static List<LocalDate> getStartAndEndOfCurrentWeek() {
 		LocalDate currentDate = LocalDate.now();
 		LocalDate startDateOfWeek = currentDate.minusDays(currentDate.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue());

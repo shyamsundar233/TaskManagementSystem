@@ -1,6 +1,7 @@
 //$Id$
 package com.taskswift.main.repo;
 
+import com.taskswift.main.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.taskswift.main.entity.Task;
@@ -18,5 +19,7 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
     List<Task> findAllByDueDateBetweenAndTaskIdIsBetween(LocalDate fromDate, LocalDate toDate, Long startRange, Long endRange);
 
     Optional<Task> findByTaskIdAndTaskIdIsBetween(Long taskId, Long startRange, Long endRange);
+
+    List<Task> findAllByUserAndTaskIdIsBetween(User user, Long startRange, Long endRange);
 
 }

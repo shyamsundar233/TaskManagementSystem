@@ -31,5 +31,7 @@ public interface TaskDao {
 	public TaskCategory getTaskCategoryByTitle(String taskTitle);
 
 	public List<TaskCategory> getAllTaskCategory();
+
+	public List<Task> getTotalUserTask(Long userId);
 	
 }
