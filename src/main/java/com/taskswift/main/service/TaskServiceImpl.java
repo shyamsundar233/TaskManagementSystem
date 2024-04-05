@@ -83,4 +83,14 @@ public class TaskServiceImpl implements TaskService {
 		return taskDao.getTotalUserTask(userId);
 	}
 
+	@Override
+	public List<Task> getToDoTasks() {
+		return taskDao.getToDoTasks();
+	}
+
+	@Override
+	public List<Task> getHighPriorityTasks() {
+		return taskDao.getHighPriorityTasks();
+	}
+
 }

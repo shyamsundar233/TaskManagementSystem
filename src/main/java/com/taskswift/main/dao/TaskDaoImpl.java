@@ -113,6 +113,16 @@ public class TaskDaoImpl implements TaskDao {
 		return tasksList;
 	}
 
+	@Override
+	public List<Task> getToDoTasks() {
+		return taskRepo.findByTaskStatusAndTaskIdIsBetween("To Do", TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+	}
+
+	@Override
+	public List<Task> getHighPriorityTasks() {
+		return taskRepo.findByTaskPriorityAndTaskIdIsBetween("High Priority", TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+	}
+
 	private Task getTaskFromTaskCreation(TaskCreation taskCreation){
 		Task task = new Task();
 		task.setTaskId(taskCreation.getTaskId());

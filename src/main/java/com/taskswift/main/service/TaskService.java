@@ -31,5 +31,9 @@ public interface TaskService {
 	public List<TaskCategory> getAllTaskCategory();
 
 	public List<Task> getTotalUserTask(Long userId);
+
+	public List<Task> getToDoTasks();
+
+	public List<Task> getHighPriorityTasks();
 	
 }

@@ -7,38 +7,33 @@ import TableComponent from "../TableComponent/TableComponent";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
-const requestsUrl = [
-    "/v1/api/todayTask",
-    "/v1/api/currentWeekTask",
-    "/v1/api/totalTask"
-]
-
 const Home = () => {
 
     const [todayTask, setTodayTask] = useState([]);
+    const [toDoTasks, setToDoTasks] = useState(0);
     const [weeklyTasksCount, setWeeklyTasksCount] = useState(0);
-    const [totalTasks, setTotalTasks] = useState(0);
     const [weeklyTasks, setWeeklyTasks] = useState([]);
-
-    const requests = requestsUrl.map(url => axios.get(url));
+    const [highPriorityTasks, setHighPriorityTasks] = useState(0);
 
     useEffect(() => {
 
-        Promise.all(requests).then(responses => {
-            if(responses[0].data.todayTask){
-                constructTodayTask(responses[0].data.todayTask);
+        axios.get("/v1/api/homePage").then(resp => {
+            debugger
+            if(resp.data.todayTask){
+                constructTodayTask(resp.data.todayTask);
             }
-            if(responses[1].data.weeklyTasks){
-                setWeeklyTasksCount(responses[1].data.weeklyTasks.length);
-                constructWeeklyTask(responses[1].data.weeklyTasks);
+            if(resp.data.weeklyTasks){
+                setWeeklyTasksCount(resp.data.weeklyTasks.length);
+                constructWeeklyTask(resp.data.weeklyTasks);
             }
-            if(responses[2].data.totalTasks){
-                setTotalTasks(responses[2].data.totalTasks.length > 0 ? responses[2].data.totalTasks.length : 0);
+            if(resp.data.toDoTasks){
+                setToDoTasks(resp.data.toDoTasks.length > 0 ? resp.data.toDoTasks.length : 0);
             }
-        }).catch(
-            error => {
-                console.error('Error:', error);
-            });
+
+            if(resp.data.highPriorityTasks){
+                setHighPriorityTasks(resp.data.highPriorityTasks.length > 0 ? resp.data.highPriorityTasks.length : 0);
+            }
+        })
     }, []);
 
     const constructTodayTask = (tasksList) => {
@@ -86,9 +81,9 @@ const Home = () => {
               <div className="height-width-auto">
                   <div className="title-font padd-20 margin-top-left-20 font-heading">Statistics</div>
                   <div className="display-center home-graph-cont-1">
-                      <StatsComponent title="Total tasks" value={totalTasks} className="home-stats-comp-col-1"/>
-                      <StatsComponent title="This week tasks" value={weeklyTasksCount} graphData={weeklyTasks} className="home-stats-comp-col-2"/>
-                      <StatsComponent title="Unsolved tasks" value={0} className="home-stats-comp-col-3"/>
+                      <StatsComponent title="To Do Tasks" value={toDoTasks} className="home-stats-comp-col-1"/>
+                      <StatsComponent title="This Week Tasks" value={weeklyTasksCount} graphData={weeklyTasks} className="home-stats-comp-col-2"/>
+                      <StatsComponent title="High Priorities" value={highPriorityTasks} className="home-stats-comp-col-3"/>
                   </div>
               </div>
               <div className="height-width-auto">
