@@ -24,8 +24,6 @@ public class TaskCreation {
 
     private String taskStatus;
 
-    private List<String> taskStatusList;
-
     private Long userId;
 
     public Long getTaskId() {
@@ -100,14 +98,6 @@ public class TaskCreation {
         this.taskStatus = taskStatus;
     }
 
-    public List<String> getTaskStatusList() {
-        return taskStatusList;
-    }
-
-    public void setTaskStatusList(List<String> taskStatusList) {
-        this.taskStatusList = taskStatusList;
-    }
-
     public Long getUserId() {
         return userId;
     }
@@ -128,7 +118,6 @@ public class TaskCreation {
                 ", taskAttachment=" + taskAttachment +
                 ", taskRecurring='" + taskRecurring + '\'' +
                 ", taskStatus='" + taskStatus + '\'' +
-                ", taskStatusList=" + taskStatusList +
                 ", userId=" + userId +
                 '}';
     }

@@ -2,17 +2,13 @@
 package com.taskswift.main.dao;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.taskswift.main.entity.TaskCategory;
-import com.taskswift.main.entity.TaskStatus;
-import com.taskswift.main.entity.User;
 import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.repo.TaskCategoryRepo;
-import com.taskswift.main.repo.TaskStatusRepo;
 import com.taskswift.main.util.TenantUtil;
 import com.taskswift.main.util.UserUtil;
 import jakarta.transaction.Transactional;
@@ -32,9 +28,6 @@ public class TaskDaoImpl implements TaskDao {
 	
 	@Autowired
 	private TaskRepo taskRepo;
-
-	@Autowired
-	private TaskStatusRepo taskStatusRepo;
 
 	@Autowired
 	private TaskCategoryRepo taskCategoryRepo;
@@ -60,16 +53,6 @@ public class TaskDaoImpl implements TaskDao {
 		logger.info(">>> " + task.getTaskTitle() + " Task is getting saved to DB");
 		task.setTaskId(TenantUtil.getNextUniqueId());
 		taskRepo.save(task);
-
-		List<TaskStatus> statusList = new ArrayList<>();
-		for(String statusTitle : taskCreation.getTaskStatusList()){
-			TaskStatus taskStatus = saveTaskStatus(statusTitle, task, taskCreation.getTaskStatus());
-			statusList.add(taskStatus);
-		}
-
-		task.setTaskStatusList(statusList);
-		taskRepo.save(task);
-
 		
 		logger.info(">>> " + task.getTaskId() + " Task is saved in DB");
 	}
@@ -82,14 +65,12 @@ public class TaskDaoImpl implements TaskDao {
 			throw new TaskException("Task not found to update :: TaskId: " + taskCreation.getTaskId());
 		}else{
 			Task task = getTaskFromTaskCreation(taskCreation);
-			updateExistingTaskStatus(task, taskCreation);
 			taskRepo.save(task);
 		}
 	}
 
 	@Override
 	public void deleteTask(Task task) {
-		taskStatusRepo.deleteAll(task.getTaskStatusList());
 		taskRepo.delete(task);
 	}
 
@@ -137,6 +118,7 @@ public class TaskDaoImpl implements TaskDao {
 		task.setTaskId(taskCreation.getTaskId());
 		task.setTaskTitle(taskCreation.getTaskTitle());
 		task.setTaskDesc(taskCreation.getTaskDesc());
+		task.setTaskStatus(taskCreation.getTaskStatus());
 		task.setDueDate(taskCreation.getDueDate());
 		task.setTaskPriority(taskCreation.getTaskPriority());
 		task.setTaskRecurring(taskCreation.getTaskRecurring());
@@ -145,48 +127,6 @@ public class TaskDaoImpl implements TaskDao {
 		TaskCategory taskCategory = getTaskCategoryByTitle(taskCreation.getTaskCategory());
 		task.setTaskCategory(taskCategory);
 		return task;
-	}
-
-	private void updateExistingTaskStatus(Task task, TaskCreation taskCreation) {
-		List<TaskStatus> existingTaskStatusList = taskStatusRepo.findAllByTaskAndTaskStatusIdBetween(task, TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
-		List<TaskStatus> updatedTaskStatus = new ArrayList<>();
-		for(String statusTitle : taskCreation.getTaskStatusList()){
-			TaskStatus taskStatus = isPresent(statusTitle, existingTaskStatusList);
-			if(taskStatus != null){
-				if(taskStatus.isSelected() && !(taskStatus.getStatusTitle().equals(taskCreation.getTaskStatus()))){
-					taskStatus.setSelected(false);
-					taskStatusRepo.save(taskStatus);
-				}
-				existingTaskStatusList.remove(taskStatus);
-			}else{
-				TaskStatus newStatus = saveTaskStatus(statusTitle, task, taskCreation.getTaskStatus());
-			}
-			updatedTaskStatus.add(taskStatus);
-		}
-		taskStatusRepo.deleteAll(existingTaskStatusList);
-		task.setTaskStatusList(updatedTaskStatus);
-		taskRepo.save(task);
-	}
-
-	private TaskStatus isPresent(String statusTitle, List<TaskStatus> statusList){
-		for(TaskStatus taskStatus : statusList){
-			if(taskStatus.getStatusTitle().equals(statusTitle)){
-				return taskStatus;
-			}
-		}
-		return null;
-	}
-
-	private TaskStatus saveTaskStatus(String statusTitle, Task task, String selectedStatus){
-		TaskStatus taskStatus = new TaskStatus();
-		taskStatus.setTaskStatusId(TenantUtil.getNextUniqueId());
-		taskStatus.setStatusTitle(statusTitle);
-		taskStatus.setTask(task);
-		if(statusTitle.equals(selectedStatus)){
-			taskStatus.setSelected(true);
-		}
-		taskStatusRepo.save(taskStatus);
-		return taskStatus;
 	}
 
 }

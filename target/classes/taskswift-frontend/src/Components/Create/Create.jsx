@@ -3,7 +3,6 @@ import "./Create.css";
 import axios from 'axios';
 import $ from 'jquery';
 import { useAlert } from '../CustomAlert/CustomAlert';
-import cancelIcon from "../../Assets/xmark.svg";
 import {
     Button,
     Dialog,
@@ -39,13 +38,12 @@ const Create = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState(getTodayDate());
-    const [statusList, setStatusList] = useState([]);
+    const [statusList, setStatusList] = useState(["To Do", "In Progress", "On Hold", "Blocked", "Completed", "Cancelled", "Reinitiated"]);
     const [status, setStatus] = useState('');
     const [priority, setPriority] = useState('Low Priority');
     const [category, setCategory] = useState('');
     const [attachment, setAttachment] = useState(null);
     const [recurring, setRecurring] = useState('Daily');
-    const [statusInput, setStatusInput] = useState('');
     const [categoryTitle, setCategoryTitle] = useState('');
     const [categoryDesc, setCategoryDesc] = useState('');
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -72,7 +70,6 @@ const Create = () => {
                 setTitle(taskData.taskTitle);
                 setDescription(taskData.taskDesc);
                 setDueDate(taskData.dueDate);
-                setStatusList(taskData.taskStatusList);
                 setStatus(taskData.taskStatus);
                 setTimeout(() => {
                     document.getElementById("status_" + taskData.taskStatus).style.backgroundColor = "#00BDD6FF";
@@ -156,44 +153,16 @@ const Create = () => {
         return true;
     }
 
-    const handleStatusAdd = (event) => {
-        if(event.key === "Enter" && event.target.value && event.target.value.length > 0){
-            if(statusList.indexOf(event.target.value) === -1){
-                setStatusList(prevState => [...prevState, event.target.value]);
-                setStatusInput('');
-            }else{
-                showAlert("Duplicate Status Value Found","error")
-            }
-        }
-    }
-
     const handleStatusClick = (event, tempStatus) => {
         if(status === tempStatus){
             setStatus('');
             event.target.style.backgroundColor = "";
         }else{
             if(status !== ''){
-                $("#status_" + status)[0].style.backgroundColor = "";
+                document.getElementById("status_" + status).style.backgroundColor = "";
             }
             setStatus(tempStatus);
             event.target.style.backgroundColor = "#00BDD6FF";
-        }
-    }
-
-    const handleRemoveStatus = (index) => {
-        let tempStatus = statusList[index];
-        if(tempStatus === status){
-            setStatus('');
-            $("#status_" + status)[0].style.backgroundColor = "";
-        }
-        setStatusList(statusList.filter(status1 => status1 !== tempStatus));
-    }
-
-    const handleCancelIcon = (index, isVisible) => {
-        if(isVisible){
-            $("#cancelIcon_" + index)[0].style.display = "block";
-        }else{
-            $("#cancelIcon_" + index)[0].style.display = "none";
         }
     }
 
@@ -223,7 +192,7 @@ const Create = () => {
         setCategory('Food');
         setAttachment(null);
         setRecurring('Daily');
-        setStatusList([]);
+        setStatusList(["To Do", "In Progress", "On Hold", "Blocked", "Completed", "Cancelled", "Reinitiated"]);
         setStatus('');
     }
 
@@ -258,18 +227,10 @@ const Create = () => {
                 <div className="label-spac">
                     <label className="font-sub-heading" htmlFor='status'>Status</label>
                 </div>
-                <input className="input-field" type="text" id="status" value={statusInput}
-                       onChange={(e) => setStatusInput(e.target.value)}
-                       onKeyDown={(e) => handleStatusAdd(e)}/>
                 <div className="display-flex ">
                     {statusList.length > 0 && statusList.map((tempStatus, index) => {
                         return (
-                            <div style={{position: "relative"}} className="cursor-pointer"
-                                 onMouseOver={e => handleCancelIcon(index, true)}
-                                 onMouseLeave={e => handleCancelIcon(index, false)}
-                            >
-                                <img id={`cancelIcon_${index}`} src={cancelIcon} alt="Cancel Icon not found"
-                                     className="cancel-icon" onClick={e => handleRemoveStatus(index)}/>
+                            <div style={{position: "relative"}} className="cursor-pointer">
                                 <div className="margin-10 status-span-cont" id={`status_${tempStatus}`}
                                      onClick={e => handleStatusClick(e, tempStatus)}
                                 >{tempStatus}</div>
