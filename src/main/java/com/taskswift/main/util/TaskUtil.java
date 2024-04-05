@@ -94,9 +94,6 @@ public class TaskUtil {
 		}else if(taskDueDate == null) {
 			logger.info(">>> Task Due Date has null value");
 			throw new TaskException(HttpMethod.POST + " :: Task Due Date is null");
-		}else if(!taskDueDate.isAfter(LocalDate.now()) && !taskDueDate.equals(LocalDate.now())) {
-			logger.info(">>> Task Due Date is invalid");
-			throw new TaskException(HttpMethod.POST + " :: Task Due Date is invalid");
 		}else {
 			String titleRegex = Constants.ONLYALPHANUMERIC;
 			Pattern pattern = Pattern.compile(titleRegex);
