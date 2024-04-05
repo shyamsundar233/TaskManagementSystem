@@ -1,5 +1,5 @@
 import "./ListFilter.css";
-import {Drawer, MenuItem, Select} from "@mui/material";
+import {Button, Drawer, MenuItem, Select} from "@mui/material";
 import CloseIcon from "../../Assets/xmark.svg";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
@@ -14,15 +14,48 @@ const getCategoryList = (categoryList) => {
 
 const ListFilter = ({openDrawer, handleClose}) => {
 
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [dueDate, setDueDate] = useState('');
+    const [status, setStatus] = useState('To Do');
+    const [priority, setPriority] = useState('Low Priority');
+    const [category, setCategory] = useState('');
+    const [recurring, setRecurring] = useState('Daily');
+
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
         if(openDrawer){
             axios.get("/v1/api/taskCategory").then(resp => {
-                setCategoryList(getCategoryList(resp.data.TaskCategory));
+                let categoryList = getCategoryList(resp.data.TaskCategory);
+                setCategory(categoryList[0]);
+                setCategoryList(categoryList);
             })
         }
     }, [openDrawer]);
+
+    const dropDownUpdate = (id, value) => {
+        switch(id) {
+            case 'status':
+                setStatus(value);
+                break;
+            case 'priority':
+                setPriority(value);
+                break;
+            case 'category':
+                setCategory(value);
+                break;
+            case 'recurring':
+                setRecurring(value);
+                break;
+            default:
+                break;
+        }
+    }
+
+    const handleSubmit = () => {
+        handleClose()
+    }
 
     return (
         <Drawer
@@ -42,56 +75,58 @@ const ListFilter = ({openDrawer, handleClose}) => {
                     <div className="label-spac">
                         <label className="font-sub-heading" htmlFor='title'>Title</label>
                     </div>
-                    <input className="input-field" type='text' id='title'/>
+                    <input className="input-field" type='text' id='title' value={title}/>
                 </div>
                 <div className="input-group">
                     <div className="label-spac">
                         <label className="font-sub-heading" htmlFor='description'>Description</label>
                     </div>
-                    <input className="input-field" type='text' id='description'/>
+                    <input className="input-field" type='text' id='description' value={description}/>
                 </div>
                 <div className="input-group">
                     <div className="label-spac">
                         <label className="font-sub-heading" htmlFor='dueDate'>Due Date</label>
                     </div>
-                    <input className="input-field title-font due-field" type='date' id='dueDate'/>
+                    <input className="input-field title-font due-field" type='date' id='dueDate' value={dueDate}/>
                 </div>
                 <div className="input-group">
                     <div className="label-spac">
                         <label className="font-sub-heading" htmlFor='status'>Status</label>
                     </div>
-                    {filterDropDown("status", ["To Do", "In Progress", "On Hold", "Blocked", "Completed", "Cancelled", "Reinitiated"])}
+                    {filterDropDown("status", ["To Do", "In Progress", "On Hold", "Blocked", "Completed", "Cancelled", "Reinitiated"], status, dropDownUpdate)}
                 </div>
                 <div className="input-group">
                     <div className="label-spac">
                         <label className="font-sub-heading" htmlFor='priority'>Priority</label>
                     </div>
-                    {filterDropDown("priority", ["Low Priority", "Medium Priority", "High Priority"])}
+                    {filterDropDown("priority", ["Low Priority", "Medium Priority", "High Priority"], priority, dropDownUpdate)}
                 </div>
                 <div className="input-group">
                     <div className="label-spac">
                         <label className="font-sub-heading" htmlFor='category'>Category</label>
                     </div>
-                    {filterDropDown("category", categoryList)}
+                    {filterDropDown("category", categoryList, category, dropDownUpdate)}
                 </div>
                 <div className="input-group">
                     <div className="label-spac">
                         <label className="font-sub-heading" htmlFor='recurring'>Recurring</label>
                     </div>
-                    {filterDropDown("recurring", ["Daily", "Weekly", "Yearly"])}
+                    {filterDropDown("recurring", ["Daily", "Weekly", "Yearly"], recurring, dropDownUpdate)}
                 </div>
+                <Button variant="contained" className="btn-1" onClick={handleSubmit}> Submit </Button>
             </div>
         </Drawer>
     );
 }
 
-const filterDropDown = (id, options) => {
+const filterDropDown = (id, options, value,dropDownChange) => {
     return (
         <Select
             labelId="demo-simple-select-label"
             id={id}
             className="dropdown-field MuiSelect-filled"
-            value={options[0]}
+            value={value}
+            onChange={event => dropDownChange(id, event.target.value)}
         >
             {options.map(option => {
                 return (
