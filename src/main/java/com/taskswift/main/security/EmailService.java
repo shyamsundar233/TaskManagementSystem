@@ -4,6 +4,8 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -23,6 +25,8 @@ public class EmailService {
 
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
+    private final Logger logger = LoggerFactory.getLogger(EmailService.class);
+
     @Async
     public void sendMail(String to, String subject, String body) {
         executorService.submit(() -> {
@@ -35,7 +39,9 @@ public class EmailService {
                 mimeMessageHelper.setSubject(subject);
                 mimeMessageHelper.setText(body, false);
 
+                logger.info(">>> Email initiated to {}", to);
                 mailSender.send(mimeMessage);
+                logger.info(">>> Email sent to {} successfully", to);
             }catch (Exception exception){
                 throw new RuntimeException(exception.getMessage());
             }
