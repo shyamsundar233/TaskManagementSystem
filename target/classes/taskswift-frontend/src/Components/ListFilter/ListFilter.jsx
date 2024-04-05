@@ -1,148 +1,105 @@
 import "./ListFilter.css";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import {Drawer, MenuItem, Select, TextField} from "@mui/material";
-import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
+import {Drawer, MenuItem, Select} from "@mui/material";
 import CloseIcon from "../../Assets/xmark.svg";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+
+const getCategoryList = (categoryList) => {
+    let resArr = [];
+    categoryList.forEach(category => {
+        resArr.push(category.categoryTitle);
+    })
+    return resArr;
+}
 
 const ListFilter = ({openDrawer, handleClose}) => {
 
-    const handleFilterChange = () =>{
+    const [categoryList, setCategoryList] = useState([]);
 
-    }
+    useEffect(() => {
+        if(openDrawer){
+            axios.get("/v1/api/taskCategory").then(resp => {
+                setCategoryList(getCategoryList(resp.data.TaskCategory));
+            })
+        }
+    }, [openDrawer]);
 
     return (
-        <div style={listFilterParent}>
-            <Drawer
-                open={openDrawer}
-            >
-                <div className="margin-10 display-right">
-                    <img src={CloseIcon} alt="Close Icon not found" className="cursor-pointer" onClick={handleClose}/>
+        <Drawer
+            open={openDrawer}
+            PaperProps={{
+                className: "drawer-dim"
+            }}
+        >
+            <div className="margin-10 display-right">
+                <img src={CloseIcon} alt="Close Icon not found" className="cursor-pointer" onClick={handleClose}/>
+            </div>
+            <div className="font-heading display-center">
+                Filter Records
+            </div>
+            <div className="filter-form-container padd-20">
+                <div className="input-group">
+                    <div className="label-spac">
+                        <label className="font-sub-heading" htmlFor='title'>Title</label>
+                    </div>
+                    <input className="input-field" type='text' id='title'/>
                 </div>
-                <TableContainer component={Paper}>
-                <Table>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell>
-                                    Title
-                                </TableCell>
-                                <TableCell>
-                                    {filterOptionsDropdown(handleFilterChange)}
-                                </TableCell>
-                                <TableCell>
-                                    <TextField id="standard-basic" variant="standard" />
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell>
-                                    Description
-                                </TableCell>
-                                <TableCell>
-                                    {filterOptionsDropdown(handleFilterChange)}
-                                </TableCell>
-                                <TableCell>
-                                    <TextField id="standard-basic" variant="standard" />
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell>
-                                    Due Date
-                                </TableCell>
-                                <TableCell>
-                                    {filterOptionsDropdown(handleFilterChange)}
-                                </TableCell>
-                                <TableCell>
-                                    <input style={dateFieldListFilter} type="date"/>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell>
-                                    Priority
-                                </TableCell>
-                                <TableCell>
-                                    {filterOptionsDropdown(handleFilterChange)}
-                                </TableCell>
-                                <TableCell>
-                                    <select className="select-field" id='priority' value={"Low Priority"}>
-                                        <option value="Low Priority">Low Priority</option>
-                                        <option value="Medium Priority">Medium Priority</option>
-                                        <option value="High Priority">High Priority</option>
-                                    </select>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell>
-                                    Category
-                                </TableCell>
-                                <TableCell>
-                                    {filterOptionsDropdown(handleFilterChange)}
-                                </TableCell>
-                                <TableCell>
-                                    <select className="select-field" id='category' value="Food">
-                                        <option value="Food">Food</option>
-                                        <option value="Fuel">Fuel</option>
-                                        <option value="Party">Party</option>
-                                    </select>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell>
-                                    Recurring
-                                </TableCell>
-                                <TableCell>
-                                    {filterOptionsDropdown(handleFilterChange)}
-                                </TableCell>
-                                <TableCell>
-                                    <select className="select-field" id='recurring' value="Daily">
-                                        <option value="Daily">Daily</option>
-                                        <option value="Weekly">Weekly</option>
-                                        <option value="Yearly">Yearly</option>
-                                    </select>
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Drawer>
-        </div>
+                <div className="input-group">
+                    <div className="label-spac">
+                        <label className="font-sub-heading" htmlFor='description'>Description</label>
+                    </div>
+                    <input className="input-field" type='text' id='description'/>
+                </div>
+                <div className="input-group">
+                    <div className="label-spac">
+                        <label className="font-sub-heading" htmlFor='dueDate'>Due Date</label>
+                    </div>
+                    <input className="input-field title-font due-field" type='date' id='dueDate'/>
+                </div>
+                <div className="input-group">
+                    <div className="label-spac">
+                        <label className="font-sub-heading" htmlFor='status'>Status</label>
+                    </div>
+                    {filterDropDown("status", ["To Do", "In Progress", "On Hold", "Blocked", "Completed", "Cancelled", "Reinitiated"])}
+                </div>
+                <div className="input-group">
+                    <div className="label-spac">
+                        <label className="font-sub-heading" htmlFor='priority'>Priority</label>
+                    </div>
+                    {filterDropDown("priority", ["Low Priority", "Medium Priority", "High Priority"])}
+                </div>
+                <div className="input-group">
+                    <div className="label-spac">
+                        <label className="font-sub-heading" htmlFor='category'>Category</label>
+                    </div>
+                    {filterDropDown("category", categoryList)}
+                </div>
+                <div className="input-group">
+                    <div className="label-spac">
+                        <label className="font-sub-heading" htmlFor='recurring'>Recurring</label>
+                    </div>
+                    {filterDropDown("recurring", ["Daily", "Weekly", "Yearly"])}
+                </div>
+            </div>
+        </Drawer>
     );
 }
 
-const listFilterParent = {
-    marginRight: "1020px",
-    position: "fixed"
-}
-
-const filterOptionsDropdown = ({handleChange}) => {
+const filterDropDown = (id, options) => {
     return (
         <Select
             labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={"is"}
-            sx={filterOptionsSx}
-            onChange={handleChange}
+            id={id}
+            className="dropdown-field MuiSelect-filled"
+            value={options[0]}
         >
-            <MenuItem value={"is"}>Is</MenuItem>
-            <MenuItem value={"isnot"}>Is not</MenuItem>
-            <MenuItem value={"contains"}>Contains</MenuItem>
+            {options.map(option => {
+                return (
+                    <MenuItem value={option}>{option}</MenuItem>
+                );
+            })}
         </Select>
     );
-}
-
-const filterOptionsSx = {
-    height: "30px",
-    fontSize: "15px"
-}
-
-const dateFieldListFilter = {
-    width: "145px",
-    padding: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "5px"
 }
 
 export default ListFilter;
