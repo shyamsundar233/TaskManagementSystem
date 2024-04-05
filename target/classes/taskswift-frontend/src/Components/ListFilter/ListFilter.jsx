@@ -75,19 +75,19 @@ const ListFilter = ({openDrawer, handleClose}) => {
                     <div className="label-spac">
                         <label className="font-sub-heading" htmlFor='title'>Title</label>
                     </div>
-                    <input className="input-field" type='text' id='title' value={title}/>
+                    <input className="input-field" type='text' id='title' value={title} onChange={event => setTitle(event.target.value)}/>
                 </div>
                 <div className="input-group">
                     <div className="label-spac">
                         <label className="font-sub-heading" htmlFor='description'>Description</label>
                     </div>
-                    <input className="input-field" type='text' id='description' value={description}/>
+                    <input className="input-field" type='text' id='description' value={description} onChange={event => setDescription(event.target.value)}/>
                 </div>
                 <div className="input-group">
                     <div className="label-spac">
                         <label className="font-sub-heading" htmlFor='dueDate'>Due Date</label>
                     </div>
-                    <input className="input-field title-font due-field" type='date' id='dueDate' value={dueDate}/>
+                    <input className="input-field title-font due-field" type='date' id='dueDate' value={dueDate} onChange={event => setDueDate(event.target.value)}/>
                 </div>
                 <div className="input-group">
                     <div className="label-spac">
