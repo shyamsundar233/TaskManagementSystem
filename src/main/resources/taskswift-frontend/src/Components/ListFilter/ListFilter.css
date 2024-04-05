@@ -1,3 +1,20 @@
+.parent-div-1 {
+    margin-right: 1020px;
+    position: fixed;
+}
+
+.filter-form-container {
+
+}
+
+.drawer-dim {
+    width: 25%;
+}
+
+.due-field {
+    width: 93%;
+}
+
 .select-field {
     width: 100%;
     padding: 10px;
