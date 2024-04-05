@@ -2,11 +2,14 @@
 package com.taskswift.main.controller;
 
 import com.taskswift.main.model.UserRegistration;
+import com.taskswift.main.security.EmailService;
 import com.taskswift.main.util.UserUtil;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,6 +25,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AuthController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
+	@Autowired
+	private EmailService emailService;
 
 	@GetMapping("/")
 	public String redirectIndex(){
@@ -54,10 +60,11 @@ public class AuthController {
 	}
 	
 	@PostMapping("/register")
-	public String postRegisterUser(@ModelAttribute("User") UserRegistration userRegistration) {
+	public String postRegisterUser(@ModelAttribute("User") UserRegistration userRegistration) throws MessagingException {
 		ResponseEntity<JSONObject> response = UserUtil.saveUser(userRegistration);
 		logger.info(response.getBody().toJSONString());
 		if(response.getStatusCode() == HttpStatus.OK){
+			emailService.sendMail("shyamsundar.vj233@gmail.com", "Sample sub", "Sample body");
 			logger.info(">>> Redirecting to /login as the user is registered");
 			return "redirect:/login";
 		}else{
