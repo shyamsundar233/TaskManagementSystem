@@ -7,13 +7,38 @@ import TableComponent from "../TableComponent/TableComponent";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
+const constructGraphForTask = (tasksList) => {
+    tasksList.sort((task1, task2) => {
+        const dateA = new Date(task1.dueDate);
+        const dateB = new Date(task2.dueDate);
+        return dateA - dateB;
+    })
+
+    const parseDate = dateString => new Date(dateString);
+    const taskCounts = tasksList.reduce((acc, task) => {
+        const dueDate = task.dueDate;
+        acc[dueDate] = (acc[dueDate] || 0) + 1;
+        return acc;
+    }, {});
+
+    const data = Object.entries(taskCounts).map(([date, count]) => ({
+        x: parseDate(date).getDate(),
+        y: count
+    }));
+    let res = [{x : 0, y : 0}]
+    res = res.concat(data);
+    return res;
+}
+
 const Home = () => {
 
     const [todayTask, setTodayTask] = useState([]);
-    const [toDoTasks, setToDoTasks] = useState(0);
+    const [toDoTasksCount, setToDoTasksCount] = useState(0);
+    const [toDoTask, setToDoTask] = useState([]);
     const [weeklyTasksCount, setWeeklyTasksCount] = useState(0);
     const [weeklyTasks, setWeeklyTasks] = useState([]);
-    const [highPriorityTasks, setHighPriorityTasks] = useState(0);
+    const [highPriorityTasksCount, setHighPriorityTasksCount] = useState(0);
+    const [highPriorityTasks, setHighPriorityTasks] = useState([]);
 
     useEffect(() => {
 
@@ -24,14 +49,19 @@ const Home = () => {
             }
             if(resp.data.weeklyTasks){
                 setWeeklyTasksCount(resp.data.weeklyTasks.length);
-                constructWeeklyTask(resp.data.weeklyTasks);
+                let graphArr = constructGraphForTask(resp.data.weeklyTasks);
+                setWeeklyTasks(graphArr);
             }
             if(resp.data.toDoTasks){
-                setToDoTasks(resp.data.toDoTasks.length > 0 ? resp.data.toDoTasks.length : 0);
+                setToDoTasksCount(resp.data.toDoTasks.length > 0 ? resp.data.toDoTasks.length : 0);
+                let graphArr = constructGraphForTask(resp.data.toDoTasks);
+                setToDoTask(graphArr)
             }
 
             if(resp.data.highPriorityTasks){
-                setHighPriorityTasks(resp.data.highPriorityTasks.length > 0 ? resp.data.highPriorityTasks.length : 0);
+                setHighPriorityTasksCount(resp.data.highPriorityTasks.length > 0 ? resp.data.highPriorityTasks.length : 0);
+                let graphArr = constructGraphForTask(resp.data.highPriorityTasks);
+                setHighPriorityTasks(graphArr)
             }
         })
     }, []);
@@ -51,29 +81,6 @@ const Home = () => {
         setTodayTask(tasksArr);
     }
 
-    const constructWeeklyTask = (tasksList) => {
-        tasksList.sort((task1, task2) => {
-            const dateA = new Date(task1.dueDate);
-            const dateB = new Date(task2.dueDate);
-            return dateA - dateB;
-        })
-
-        const parseDate = dateString => new Date(dateString);
-        const taskCounts = tasksList.reduce((acc, task) => {
-            const dueDate = task.dueDate;
-            acc[dueDate] = (acc[dueDate] || 0) + 1;
-            return acc;
-        }, {});
-
-        const data = Object.entries(taskCounts).map(([date, count]) => ({
-            x: parseDate(date).getDate(),
-            y: count
-        }));
-        let res = [{x : 0, y : 0}]
-        res = res.concat(data);
-        setWeeklyTasks(res);
-    }
-
   return (
       <div className="display-flex pos-fixed">
           <Notifications/>
@@ -81,9 +88,9 @@ const Home = () => {
               <div className="height-width-auto">
                   <div className="title-font padd-20 margin-top-left-20 font-heading">Statistics</div>
                   <div className="display-center home-graph-cont-1">
-                      <StatsComponent title="To Do Tasks" value={toDoTasks} className="home-stats-comp-col-1"/>
+                      <StatsComponent title="To Do Tasks" value={toDoTasksCount} graphData={toDoTask} className="home-stats-comp-col-1"/>
                       <StatsComponent title="This Week Tasks" value={weeklyTasksCount} graphData={weeklyTasks} className="home-stats-comp-col-2"/>
-                      <StatsComponent title="High Priorities" value={highPriorityTasks} className="home-stats-comp-col-3"/>
+                      <StatsComponent title="High Priorities" value={highPriorityTasksCount} graphData={highPriorityTasks} className="home-stats-comp-col-3"/>
                   </div>
               </div>
               <div className="height-width-auto">
