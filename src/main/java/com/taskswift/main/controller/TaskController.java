@@ -53,6 +53,11 @@ public class TaskController {
 		return TaskUtil.getAllCurrentWeekTasks();
 	}
 
+	@GetMapping("/totalTask")
+	public JSONObject getTotalTask() {
+		return TaskUtil.getAllTasksForCurrentUser();
+	}
+
 	@GetMapping("/taskCategory")
 	public JSONObject getTaskCategory(){
 		return TaskUtil.getAllTaskCategory();

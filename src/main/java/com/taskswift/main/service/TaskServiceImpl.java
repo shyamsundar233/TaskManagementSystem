@@ -77,4 +77,10 @@ public class TaskServiceImpl implements TaskService {
 		return taskDao.getAllTaskCategory();
 	}
 
+	@Override
+	public List<Task> getTotalUserTask(Long userId) {
+		logger.info(">>> {} tasks fetching from DB", userId);
+		return taskDao.getTotalUserTask(userId);
+	}
+
 }
