@@ -5,7 +5,6 @@ import com.taskswift.main.model.UserRegistration;
 import com.taskswift.main.security.EmailService;
 import com.taskswift.main.util.UserUtil;
 import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +59,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/register")
-	public String postRegisterUser(@ModelAttribute("User") UserRegistration userRegistration) throws MessagingException {
+	public String postRegisterUser(@ModelAttribute("User") UserRegistration userRegistration) {
 		ResponseEntity<JSONObject> response = UserUtil.saveUser(userRegistration);
 		logger.info(response.getBody().toJSONString());
 		if(response.getStatusCode() == HttpStatus.OK){
