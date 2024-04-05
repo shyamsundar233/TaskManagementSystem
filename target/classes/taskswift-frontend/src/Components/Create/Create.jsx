@@ -38,8 +38,7 @@ const Create = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState(getTodayDate());
-    const [statusList, setStatusList] = useState(["To Do", "In Progress", "On Hold", "Blocked", "Completed", "Cancelled", "Reinitiated"]);
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('To Do');
     const [priority, setPriority] = useState('Low Priority');
     const [category, setCategory] = useState('');
     const [attachment, setAttachment] = useState(null);
@@ -96,7 +95,6 @@ const Create = () => {
             "taskAttachment" : attachment,
             "taskRecurring" : recurring,
             "taskStatus" : status,
-            "taskStatusList" : statusList,
             "userId" : userId
         };
         if(taskId){
@@ -192,7 +190,6 @@ const Create = () => {
         setCategory('Food');
         setAttachment(null);
         setRecurring('Daily');
-        setStatusList(["To Do", "In Progress", "On Hold", "Blocked", "Completed", "Cancelled", "Reinitiated"]);
         setStatus('');
     }
 
@@ -227,17 +224,21 @@ const Create = () => {
                 <div className="label-spac">
                     <label className="font-sub-heading" htmlFor='status'>Status</label>
                 </div>
-                <div className="display-flex ">
-                    {statusList.length > 0 && statusList.map((tempStatus, index) => {
-                        return (
-                            <div style={{position: "relative"}} className="cursor-pointer">
-                                <div className="margin-10 status-span-cont" id={`status_${tempStatus}`}
-                                     onClick={e => handleStatusClick(e, tempStatus)}
-                                >{tempStatus}</div>
-                            </div>
-                        );
-                    })}
-                </div>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="status"
+                    value={status}
+                    className="dropdown-field MuiSelect-filled"
+                    onChange={(e) => setStatus(e.target.value)}
+                >
+                    <MenuItem value="To Do">To Do</MenuItem>
+                    <MenuItem value="In Progress">In Progress</MenuItem>
+                    <MenuItem value="On Hold">On Hold</MenuItem>
+                    <MenuItem value="Blocked">Blocked</MenuItem>
+                    <MenuItem value="Completed">Completed</MenuItem>
+                    <MenuItem value="Cancelled">Cancelled</MenuItem>
+                    <MenuItem value="Reinitiated">Reinitiated</MenuItem>
+                </Select>
             </div>
 
             <div className="input-group">
