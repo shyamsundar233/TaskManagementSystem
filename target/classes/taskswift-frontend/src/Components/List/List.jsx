@@ -6,19 +6,16 @@ import FilterIcon from "../../Assets/filter.svg";
 import TableComponent from "../TableComponent/TableComponent";
 import {Link} from "react-router-dom";
 import {Button} from "@mui/material";
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 
-const createData = (id, title, desc, status, dueDate, priority, category, recurring) => {
-    return { id, title, desc, status, dueDate, priority, category, recurring };
+const createData = (id, title, desc, dueDate, priority, category, recurring) => {
+    return { id, title, desc, dueDate, priority, category, recurring };
 }
 
 const constructTasksList = (tasksList) => {
     let taskList = [];
 
     tasksList.forEach(task => {
-        let taskData = createData(task.taskId, task.taskTitle, task.taskDesc, task.taskStatus, task.dueDate, task.taskPriority, task.taskCategory, task.taskRecurring)
+        let taskData = createData(task.taskId, task.taskTitle, task.taskDesc, task.dueDate, task.taskPriority, task.taskCategory, task.taskRecurring)
         taskList.push(taskData)
     })
     return taskList;
@@ -30,7 +27,6 @@ const constructTaskDataForTable = (taskList) => {
         const taskData = [];
         taskData.push(<Link to={`/ts/view/${task.id}`} className="link">{task.title}</Link>);
         taskData.push(task.desc);
-        taskData.push(task.status);
         taskData.push(task.dueDate);
         taskData.push(task.priority);
         taskData.push(task.category);
@@ -40,39 +36,21 @@ const constructTaskDataForTable = (taskList) => {
     return resultArr;
 }
 
-const headerRow = ["Task Title", "Description", "Status" ,"Due Date", "Priority", "Category", "Recurring"];
-
-const getRecordsCount = (page, count) => {
-    let startCount = page * 20 + 1;
-    let endCount = startCount + count - 1;
-    return [startCount, endCount];
-}
+const headerRow = ["Task Title", "Description", "Due Date", "Priority", "Category", "Recurring"];
 
 const List = () => {
 
     const [tasksList, setTasksList] = useState([]);
-    const [page, setPage] = useState(0);
-    const [size, setSize] = useState(20);
-    const [startCount, setStartCount] = useState(1);
-    const [endCount, setEndCount] = useState(20);
-    const [hasMoreRecords, setHasMoreRecords] = useState(true);
     const [openFilter, setOpenFilter] = useState(false);
     const [filterApplied, setFilterApplied] = useState(false);
 
     useEffect(() => {
         fetchRecords();
     }, []);
-    useEffect(() => {
-        fetchRecords();
-    }, [page]);
 
     const fetchRecords = () => {
-        axios.get(`/v1/api/tasks?page=${page}&size=${size}`).then((resp) => {
+        axios.get("/v1/api/tasks").then((resp) => {
             initRecords(resp.data.Task);
-            let recordsCount = getRecordsCount(resp.data.metaData.page, resp.data.metaData.count);
-            setStartCount(recordsCount[0]);
-            setEndCount(recordsCount[1]);
-            setHasMoreRecords(resp.data.metaData.hasMoreRecords);
             setFilterApplied(false);
         })
     }
@@ -98,43 +76,23 @@ const List = () => {
         fetchRecords();
     }
 
-    const handlePageNavigation = (dir) => {
-        let nextPage;
-        if(dir === "left" && page > 0){
-            nextPage = page - 1;
-            setPage(nextPage);
-        }else if(dir === "right" && hasMoreRecords){
-            nextPage = page + 1;
-            setPage(nextPage);
-        }
-    }
-
     return (
         <div>
             <ListFilter openDrawer={openFilter} handleClose={handleFilterClose} handleFilterRecords={filterRecords}></ListFilter>
-            <div className="padd-20 display-flex list-header">
-                <span className="font-heading">Task Records &nbsp;&nbsp;&nbsp;</span>
-                <FilterAltOutlinedIcon className="cursor-pointer nav-list-button" onClick={e => setOpenFilter(true)}/>
+            <div className="font-heading padd-20 display-flex">
+                Task Records &nbsp;&nbsp;&nbsp;
+                <img src={FilterIcon} alt="Filter Icon not found" className="cursor-pointer" onClick={e => setOpenFilter(true)}/>&nbsp;&nbsp;&nbsp;
                 {filterApplied && <Button variant="outlined" className="btn-1-outlined" onClick={resetRecords}>Clear Filter</Button>}
-                <div className="display-flex pagination-div">
-                    <NavigateBeforeIcon className={page === 0 ? "cursor-pointer disabled-button nav-list-button" : "cursor-pointer nav-list-button"} onClick={e => handlePageNavigation("left")}/> &nbsp;
-                    <NavigateNextIcon className={hasMoreRecords ? "cursor-pointer nav-list-button" : "cursor-pointer disabled-button nav-list-button"} onClick={e => handlePageNavigation("right")}/> &nbsp;&nbsp;&nbsp;&nbsp;
-                    <div className="font-bold">
-                        {startCount} &nbsp; - &nbsp; {endCount}
-                    </div>
-                </div>
             </div>
-            <div className="display-center">
-                {tasksList.length > 0 ? (
-                    <TableComponent
-                        headerRow={headerRow}
-                        bodyRow={tasksList}
-                        classList="list-tab-dim"
-                    />
-                ) : (
-                    <div className="padd-20 font-bold">No Data Found</div>
-                )}
-            </div>
+            {tasksList.length > 0 ? (
+                <TableComponent
+                    headerRow={headerRow}
+                    bodyRow={tasksList}
+                    classList="list-tab-dim"
+                />
+            ) : (
+                <div className="padd-20 font-bold">No Data Found</div>
+            )}
         </div>
     );
 }

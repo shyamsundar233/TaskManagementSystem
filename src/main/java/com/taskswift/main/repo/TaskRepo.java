@@ -2,8 +2,6 @@
 package com.taskswift.main.repo;
 
 import com.taskswift.main.entity.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.taskswift.main.entity.Task;
@@ -14,7 +12,7 @@ import java.util.Optional;
 
 public interface TaskRepo extends JpaRepository<Task, Long> {
 
-    Page<Task> findAllByTaskIdIsBetween(Long startRange, Long endRange, Pageable pageable);
+    List<Task> findAllByTaskIdIsBetween(Long startRange, Long endRange);
 
     List<Task> findAllByDueDateAndTaskIdIsBetween(LocalDate date, Long startRange, Long endRange);
 

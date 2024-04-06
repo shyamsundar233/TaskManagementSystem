@@ -21,9 +21,6 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.taskswift.main.entity.Task;
@@ -45,11 +42,9 @@ public class TaskDaoImpl implements TaskDao {
 	private TaskCategoryRepo taskCategoryRepo;
 
 	@Override
-	public Page<Task> getAllTasks(int page, int size) {
+	public List<Task> getAllTasks() {
 		logger.info(">>> Tasks fetched from DB");
-		Pageable pageable = PageRequest.of(page, size);
-		Page<Task> page1 = taskRepo.findAllByTaskIdIsBetween(TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange(), pageable);
-		return page1;
+		return taskRepo.findAllByTaskIdIsBetween(TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
 	}
 
 	@Override
