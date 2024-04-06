@@ -4,6 +4,7 @@ package com.taskswift.main.controller;
 import com.taskswift.main.entity.Task;
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.model.TaskCreation;
+import com.taskswift.main.model.TaskFilter;
 import com.taskswift.main.util.TaskUtil;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -57,6 +58,12 @@ public class TaskController {
 	public JSONObject getAllHomePageElements() {
 		logger.info(">>> In GET endpoint of Home Page Task API");
 		return TaskUtil.getHomePageElements();
+	}
+
+	@PostMapping("/taskFilter")
+	public JSONObject postTaskFilter(@RequestBody TaskFilter taskFilter){
+		logger.info(">>> In POST endpoint of Filter Task API");
+		return TaskUtil.getFilteredTasks(taskFilter);
 	}
 
 	@GetMapping("/totalTask")

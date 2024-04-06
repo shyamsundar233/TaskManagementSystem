@@ -2,7 +2,9 @@
 package com.taskswift.main.util;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Constants {
 	
@@ -18,5 +20,12 @@ public class Constants {
 	public static final String ANONYMOUS_ROLE = "ROLE_ANONYMOUS";
 
 	public static final List<String> STATUS_LIST = Arrays.asList("To Do", "In Progress", "On Hold", "Blocked", "Completed", "Cancelled", "Reinitiated");
+
+	public static final Map<String, String> OPERATORS_MAP = new HashMap<>(){{
+		put("Equals", "=");
+		put("NotEquals", "!=");
+		put("Contains", "LIKE");
+		put("and", "AND");
+	}};
 
 }

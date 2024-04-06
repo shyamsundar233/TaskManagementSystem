@@ -56,11 +56,7 @@ const List = () => {
 
     useEffect(() => {
         axios.get("/v1/api/tasks").then((resp) => {
-            let allTasks = resp.data.Task;
-            let taskList = constructTasksList(allTasks);
-            setPastData(constructTaskDataForTable(taskList[0]));
-            setTodayData(constructTaskDataForTable(taskList[1]));
-            setFutureData(constructTaskDataForTable(taskList[2]));
+            initRecords(resp.data.Task);
         })
     }, []);
 
@@ -68,9 +64,24 @@ const List = () => {
         setOpenFilter(false);
     }
 
+    const filterRecords = (payLoad) => {
+        if(Object.keys(payLoad).length > 0){
+            axios.post("/v1/api/taskFilter", payLoad).then(resp => {
+                initRecords(resp.data.Task);
+            })
+        }
+    }
+
+    const initRecords = (allTasks) => {
+        let taskList = constructTasksList(allTasks);
+        setPastData(constructTaskDataForTable(taskList[0]));
+        setTodayData(constructTaskDataForTable(taskList[1]));
+        setFutureData(constructTaskDataForTable(taskList[2]));
+    }
+
     return (
         <div>
-            <ListFilter openDrawer={openFilter} handleClose={handleFilterClose}></ListFilter>
+            <ListFilter openDrawer={openFilter} handleClose={handleFilterClose} handleFilterRecords={filterRecords}></ListFilter>
             <div className="font-heading padd-20 display-flex">
                 Past Tasks &nbsp;&nbsp;&nbsp;
                 <img src={FilterIcon} alt="Filter Icon not found" className="cursor-pointer" onClick={e => setOpenFilter(true)}/>

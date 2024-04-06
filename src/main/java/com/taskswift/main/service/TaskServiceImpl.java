@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.model.TaskCreation;
+import com.taskswift.main.model.TaskFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,11 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public List<Task> getHighPriorityTasks() {
 		return taskDao.getHighPriorityTasks();
+	}
+
+	@Override
+	public List<Task> filterTask(TaskFilter taskFilter) {
+		return taskDao.filterTask(taskFilter);
 	}
 
 }
