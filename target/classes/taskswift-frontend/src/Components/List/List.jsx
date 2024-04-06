@@ -91,7 +91,7 @@ const List = () => {
     }
 
     const initRecords = (allTasks) => {
-        setTasksList(constructTaskDataForTable(constructTasksList(allTasks)).reverse());
+        setTasksList(constructTaskDataForTable(constructTasksList(allTasks)));
     }
 
     const resetRecords = () => {
