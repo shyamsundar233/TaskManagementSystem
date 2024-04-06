@@ -112,11 +112,11 @@ const List = () => {
     return (
         <div>
             <ListFilter openDrawer={openFilter} handleClose={handleFilterClose} handleFilterRecords={filterRecords}></ListFilter>
-            <div className="padd-20 display-flex list-header">
+            <div className="padd-20 display-flex list-header align-items-center">
                 <span className="font-heading">Task Records &nbsp;&nbsp;&nbsp;</span>
                 <FilterAltOutlinedIcon className="cursor-pointer nav-list-button" onClick={e => setOpenFilter(true)}/>
                 {filterApplied && <Button variant="outlined" className="btn-1-outlined" onClick={resetRecords}>Clear Filter</Button>}
-                <div className="display-flex pagination-div">
+                <div className="display-flex pagination-div align-items-center">
                     <NavigateBeforeIcon className={page === 0 ? "cursor-pointer disabled-button nav-list-button" : "cursor-pointer nav-list-button"} onClick={e => handlePageNavigation("left")}/> &nbsp;
                     <NavigateNextIcon className={hasMoreRecords ? "cursor-pointer nav-list-button" : "cursor-pointer disabled-button nav-list-button"} onClick={e => handlePageNavigation("right")}/> &nbsp;&nbsp;&nbsp;&nbsp;
                     <div className="font-bold">
