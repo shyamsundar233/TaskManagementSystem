@@ -19,9 +19,11 @@ public class TaskController {
 	private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
 
 	@GetMapping("/tasks")
-	public JSONObject getTasks(){
+	public JSONObject getTasks(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size){
 		logger.info(">>> In GET endpoint of Task API for fetching all tasks");
-		return TaskUtil.getAllTasks();
+		return TaskUtil.getAllTasks(page, size);
 	}
 
 	@PostMapping("/tasks")
