@@ -7,6 +7,7 @@ import java.util.List;
 import com.taskswift.main.entity.Task;
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.model.TaskCreation;
+import com.taskswift.main.model.TaskFilter;
 
 public interface TaskDao {
 	
@@ -37,5 +38,7 @@ public interface TaskDao {
 	public List<Task> getToDoTasks();
 
 	public List<Task> getHighPriorityTasks();
+
+	public List<Task> filterTask(TaskFilter taskFilter);
 	
 }

@@ -5,6 +5,7 @@ import com.taskswift.main.entity.Task;
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.model.TaskCreation;
+import com.taskswift.main.model.TaskFilter;
 import com.taskswift.main.service.TaskService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -149,6 +150,12 @@ public class TaskUtil {
 		response.put("weeklyTasks", getAllCurrentWeekTasks().get("weeklyTasks"));
 		response.put("highPriorityTasks", constructJsonForTask(taskService.getHighPriorityTasks()).get("result"));
 		response.put("todayTask", getAllTodayTasksList().get("todayTask"));
+		return response;
+	}
+
+	public static JSONObject getFilteredTasks(TaskFilter taskFilter){
+		JSONObject response = new JSONObject();
+		response.put("Task", constructJsonForTask(taskService.filterTask(taskFilter)).get("result"));
 		return response;
 	}
 

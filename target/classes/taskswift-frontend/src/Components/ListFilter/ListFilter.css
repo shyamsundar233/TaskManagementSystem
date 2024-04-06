@@ -27,3 +27,8 @@
     background-repeat: no-repeat;
     background-position: right 10px center;
 }
+
+.opt-drop {
+    width: 40%;
+    margin-right: 10px;
+}

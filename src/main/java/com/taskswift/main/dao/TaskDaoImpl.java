@@ -2,15 +2,21 @@
 package com.taskswift.main.dao;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.Map.Entry;
 
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.model.TaskCreation;
+import com.taskswift.main.model.TaskFilter;
 import com.taskswift.main.repo.TaskCategoryRepo;
+import com.taskswift.main.util.Constants;
 import com.taskswift.main.util.TenantUtil;
 import com.taskswift.main.util.UserUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +34,9 @@ public class TaskDaoImpl implements TaskDao {
 	
 	@Autowired
 	private TaskRepo taskRepo;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Autowired
 	private TaskCategoryRepo taskCategoryRepo;
@@ -121,6 +130,90 @@ public class TaskDaoImpl implements TaskDao {
 	@Override
 	public List<Task> getHighPriorityTasks() {
 		return taskRepo.findByTaskPriorityAndTaskIdIsBetween("High Priority", TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+	}
+
+	@Override
+	public List<Task> filterTask(TaskFilter taskFilter) {
+		String queryStr = "SELECT task FROM Task task WHERE ";
+		Map<String, String> filterParams = new HashMap<>();
+		boolean flag = false;
+
+		if(!taskFilter.getTitle().isEmpty()){
+			queryStr = queryStr + "task.taskTitle " + Constants.OPERATORS_MAP.get(taskFilter.getTitle().get(0)) + " :taskTitle";
+			filterParams.put("taskTitle", taskFilter.getTitle().get(0).equals("Contains") ? "%" + taskFilter.getTitle().get(1) + "%" : taskFilter.getTitle().get(1));
+			flag = true;
+		}
+
+		if(!taskFilter.getDescription().isEmpty()){
+			if(flag){
+				queryStr = queryStr + " " + Constants.OPERATORS_MAP.get("and") + " ";
+			}
+			queryStr = queryStr + "task.taskDesc " + Constants.OPERATORS_MAP.get(taskFilter.getDescription().get(0)) + " :taskDesc";
+			filterParams.put("taskDesc", taskFilter.getDescription().get(0).equals("Contains") ? "%" + taskFilter.getDescription().get(1) + "%" : taskFilter.getDescription().get(1));
+			flag = true;
+		}
+
+		if(!taskFilter.getDueDate().isEmpty()){
+			if(flag){
+				queryStr = queryStr + " " + Constants.OPERATORS_MAP.get("and") + " ";
+			}
+			queryStr = queryStr + "task.dueDate " + Constants.OPERATORS_MAP.get(taskFilter.getDueDate().get(0)) + " :dueDate";
+			filterParams.put("dueDate", taskFilter.getDueDate().get(0).equals("Contains") ? "%" + taskFilter.getDueDate().get(1) + "%" : taskFilter.getDueDate().get(1));
+			flag = true;
+		}
+
+		if(!taskFilter.getStatus().isEmpty()){
+			if(flag){
+				queryStr = queryStr + " " + Constants.OPERATORS_MAP.get("and") + " ";
+			}
+			queryStr = queryStr + "task.taskStatus " + Constants.OPERATORS_MAP.get(taskFilter.getStatus().get(0)) + " :taskStatus";
+			filterParams.put("taskStatus", taskFilter.getStatus().get(0).equals("Contains") ? "%" + taskFilter.getStatus().get(1) + "%" : taskFilter.getStatus().get(1));
+			flag = true;
+		}
+
+		if(!taskFilter.getPriority().isEmpty()){
+			if(flag){
+				queryStr = queryStr + " " + Constants.OPERATORS_MAP.get("and") + " ";
+			}
+			queryStr = queryStr + "task.taskPriority " + Constants.OPERATORS_MAP.get(taskFilter.getPriority().get(0)) + " :taskPriority";
+			filterParams.put("taskPriority", taskFilter.getPriority().get(0).equals("Contains") ? "%" + taskFilter.getPriority().get(1) + "%" : taskFilter.getPriority().get(1));
+			flag = true;
+		}
+
+		if(!taskFilter.getCategory().isEmpty()){
+			if(flag){
+				queryStr = queryStr + " " + Constants.OPERATORS_MAP.get("and") + " ";
+			}
+			queryStr = queryStr + "task.taskCategory " + Constants.OPERATORS_MAP.get(taskFilter.getCategory().get(0)) + " :taskCategory";
+			filterParams.put("taskCategory", taskFilter.getCategory().get(0).equals("Contains") ? "%" + taskFilter.getCategory().get(1) + "%" : taskFilter.getCategory().get(1));
+			flag = true;
+		}
+
+		if(!taskFilter.getRecurring().isEmpty()){
+			if(flag){
+				queryStr = queryStr + " " + Constants.OPERATORS_MAP.get("and") + " ";
+			}
+			queryStr = queryStr + "task.taskRecurring " + Constants.OPERATORS_MAP.get(taskFilter.getRecurring().get(0)) + " :taskRecurring";
+			filterParams.put("taskRecurring", taskFilter.getRecurring().get(0).equals("Contains") ? "%" + taskFilter.getRecurring().get(1) + "%" : taskFilter.getRecurring().get(1));
+		}
+
+
+		Query query = entityManager.createQuery(queryStr);
+		for(Entry<String, String> entry : filterParams.entrySet()){
+			if(entry.getKey().equals("dueDate")){
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				LocalDate date = LocalDate.parse(entry.getValue(), formatter);
+				query.setParameter(entry.getKey(), date);
+			}else if(entry.getKey().equals("taskCategory")){
+				TaskCategory taskCategory = taskCategoryRepo.findByCategoryTitleAndCategoryIdRange(entry.getValue(), TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+				query.setParameter(entry.getKey(), taskCategory);
+			}
+			else{
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+		}
+
+        return query.getResultList();
 	}
 
 	private Task getTaskFromTaskCreation(TaskCreation taskCreation){
