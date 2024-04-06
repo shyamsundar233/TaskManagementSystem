@@ -11,23 +11,13 @@ const createData = (id, title, desc, dueDate, priority, category, recurring) => 
 }
 
 const constructTasksList = (tasksList) => {
-    let currentDate = new Date().toJSON().slice(0, 10);
-    let pastTasks = [];
-    let todayTasks = [];
-    let futureTasks = [];
+    let taskList = [];
 
     tasksList.forEach(task => {
         let taskData = createData(task.taskId, task.taskTitle, task.taskDesc, task.dueDate, task.taskPriority, task.taskCategory, task.taskRecurring)
-
-        if(currentDate > taskData.dueDate){
-            pastTasks.push(taskData);
-        }else if(currentDate < taskData.dueDate){
-            futureTasks.push(taskData);
-        }else{
-            todayTasks.push(taskData);
-        }
+        taskList.push(taskData)
     })
-    return [pastTasks, todayTasks, futureTasks];
+    return taskList;
 }
 
 const constructTaskDataForTable = (taskList) => {
@@ -49,9 +39,7 @@ const headerRow = ["Task Title", "Description", "Due Date", "Priority", "Categor
 
 const List = () => {
 
-    const [pastData, setPastData] = useState([]);
-    const [todayData, setTodayData] = useState([]);
-    const [futureData, setFutureData] = useState([]);
+    const [tasksList, setTasksList] = useState([]);
     const [openFilter, setOpenFilter] = useState(false);
 
     useEffect(() => {
@@ -73,49 +61,20 @@ const List = () => {
     }
 
     const initRecords = (allTasks) => {
-        let taskList = constructTasksList(allTasks);
-        setPastData(constructTaskDataForTable(taskList[0]));
-        setTodayData(constructTaskDataForTable(taskList[1]));
-        setFutureData(constructTaskDataForTable(taskList[2]));
+        setTasksList(constructTaskDataForTable(constructTasksList(allTasks)).reverse());
     }
 
     return (
         <div>
             <ListFilter openDrawer={openFilter} handleClose={handleFilterClose} handleFilterRecords={filterRecords}></ListFilter>
             <div className="font-heading padd-20 display-flex">
-                Past Tasks &nbsp;&nbsp;&nbsp;
+                Task Records &nbsp;&nbsp;&nbsp;
                 <img src={FilterIcon} alt="Filter Icon not found" className="cursor-pointer" onClick={e => setOpenFilter(true)}/>
             </div>
-            {pastData.length > 0 ? (
+            {tasksList.length > 0 ? (
                 <TableComponent
                     headerRow={headerRow}
-                    bodyRow={pastData}
-                    classList="list-tab-dim"
-                />
-            ) : (
-                <div className="padd-20 font-bold">No Data Found</div>
-            )}
-            <div className="font-heading padd-20 display-flex">
-                Today Tasks &nbsp;&nbsp;&nbsp;
-                <img src={FilterIcon} alt="Filter Icon not found" className="cursor-pointer" onClick={e => setOpenFilter(!openFilter)}/>
-            </div>
-            {todayData.length > 0 ? (
-                <TableComponent
-                    headerRow={headerRow}
-                    bodyRow={todayData}
-                    classList="list-tab-dim"
-                />
-            ) : (
-                <div className="padd-20 font-bold">No Data Found</div>
-            )}
-            <div className="font-heading padd-20 display-flex">
-                Future Tasks &nbsp;&nbsp;&nbsp;
-                <img src={FilterIcon} alt="Filter Icon not found" className="cursor-pointer" onClick={e => setOpenFilter(!openFilter)}/>
-            </div>
-            {futureData.length > 0 ? (
-                <TableComponent
-                    headerRow={headerRow}
-                    bodyRow={futureData}
+                    bodyRow={tasksList}
                     classList="list-tab-dim"
                 />
             ) : (
