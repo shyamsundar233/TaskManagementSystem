@@ -1,10 +1,11 @@
 import "./List.css";
 import axios from "axios";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ListFilter from "../ListFilter/ListFilter";
 import FilterIcon from "../../Assets/filter.svg";
 import TableComponent from "../TableComponent/TableComponent";
 import {Link} from "react-router-dom";
+import {Button} from "@mui/material";
 
 const createData = (id, title, desc, dueDate, priority, category, recurring) => {
     return { id, title, desc, dueDate, priority, category, recurring };
@@ -41,12 +42,18 @@ const List = () => {
 
     const [tasksList, setTasksList] = useState([]);
     const [openFilter, setOpenFilter] = useState(false);
+    const [filterApplied, setFilterApplied] = useState(false);
 
     useEffect(() => {
+        fetchRecords();
+    }, []);
+
+    const fetchRecords = () => {
         axios.get("/v1/api/tasks").then((resp) => {
             initRecords(resp.data.Task);
+            setFilterApplied(false);
         })
-    }, []);
+    }
 
     const handleFilterClose = () => {
         setOpenFilter(false);
@@ -56,6 +63,7 @@ const List = () => {
         if(Object.keys(payLoad).length > 0){
             axios.post("/v1/api/taskFilter", payLoad).then(resp => {
                 initRecords(resp.data.Task);
+                setFilterApplied(true);
             })
         }
     }
@@ -64,12 +72,17 @@ const List = () => {
         setTasksList(constructTaskDataForTable(constructTasksList(allTasks)).reverse());
     }
 
+    const resetRecords = () => {
+        fetchRecords();
+    }
+
     return (
         <div>
             <ListFilter openDrawer={openFilter} handleClose={handleFilterClose} handleFilterRecords={filterRecords}></ListFilter>
             <div className="font-heading padd-20 display-flex">
                 Task Records &nbsp;&nbsp;&nbsp;
-                <img src={FilterIcon} alt="Filter Icon not found" className="cursor-pointer" onClick={e => setOpenFilter(true)}/>
+                <img src={FilterIcon} alt="Filter Icon not found" className="cursor-pointer" onClick={e => setOpenFilter(true)}/>&nbsp;&nbsp;&nbsp;
+                {filterApplied && <Button variant="outlined" className="btn-1-outlined" onClick={resetRecords}>Clear Filter</Button>}
             </div>
             {tasksList.length > 0 ? (
                 <TableComponent

@@ -18,6 +18,7 @@
 .display-flex {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .display-grid {
@@ -119,4 +120,9 @@
 .btn-1 {
   background-color: #00BDD6FF !important;
   color: white !important;
+}
+
+.btn-1-outlined {
+  color: #00BDD6FF !important;
+  border-color: #00BDD6FF !important;
 }
