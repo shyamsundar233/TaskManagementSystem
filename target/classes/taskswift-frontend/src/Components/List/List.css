@@ -1,4 +1,22 @@
 .list-tab-dim {
     width: 90% !important;
-    margin-left: 5%;
+    margin: 2%;
+}
+
+.list-header {
+    margin-top: 1%;
+}
+
+.pagination-div {
+    margin-left: 73%;
+}
+
+.nav-list-button {
+    padding: 3px;
+}
+
+.nav-list-button:hover {
+    background-color: #00BDD6FF;
+    border-radius: 10px;
+    color: white;
 }

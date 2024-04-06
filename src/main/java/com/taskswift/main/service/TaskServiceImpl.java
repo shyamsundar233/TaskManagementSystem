@@ -10,6 +10,7 @@ import com.taskswift.main.model.TaskFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.taskswift.main.dao.TaskDao;
@@ -24,9 +25,9 @@ public class TaskServiceImpl implements TaskService {
 	private TaskDao taskDao;
 
 	@Override
-	public List<Task> getAllTasks() {
+	public Page<Task> getAllTasks(int page, int size) {
 		logger.info(">>> All tasks are getting fetched from DB");
-		return taskDao.getAllTasks();
+		return taskDao.getAllTasks(page, size);
 	}
 
 	@Override
