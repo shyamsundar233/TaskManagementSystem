@@ -8,10 +8,11 @@ import com.taskswift.main.entity.Task;
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.model.TaskFilter;
+import org.springframework.data.domain.Page;
 
 public interface TaskDao {
 	
-	public List<Task> getAllTasks();
+	public Page<Task> getAllTasks(int page, int size);
 	
 	public Task getTaskById(Long taskId);
 	

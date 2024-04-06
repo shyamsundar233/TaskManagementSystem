@@ -11,6 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -34,9 +35,17 @@ public class TaskUtil {
 		TaskUtil.taskService = taskService;
 	}
 
-	public static JSONObject getAllTasks(){
+	public static JSONObject getAllTasks(int page, int size){
 		JSONObject response = new JSONObject();
-		response.put("Task", constructJsonForTask(taskService.getAllTasks()).get("result"));
+		Page<Task> tasksPage = taskService.getAllTasks(page, size);
+		List<Task> tasksList = tasksPage.getContent();
+		response.put("Task", constructJsonForTask(tasksList).get("result"));
+		JSONObject metaData = new JSONObject();
+		metaData.put("page", page);
+		metaData.put("size", size);
+		metaData.put("count", tasksList.size());
+		metaData.put("hasMoreRecords", tasksPage.hasNext());
+		response.put("metaData", metaData);
 		return response;
 	}
 

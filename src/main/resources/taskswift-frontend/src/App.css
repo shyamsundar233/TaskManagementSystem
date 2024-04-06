@@ -126,3 +126,8 @@
   color: #00BDD6FF !important;
   border-color: #00BDD6FF !important;
 }
+
+.disabled-button {
+  opacity: 0.5;
+  pointer-events: none;
+}
