@@ -48,7 +48,7 @@ public class TaskDaoImpl implements TaskDao {
 	public Page<Task> getAllTasks(int page, int size) {
 		logger.info(">>> Tasks fetched from DB");
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Task> page1 = taskRepo.findAllByTaskIdIsBetween(TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange(), pageable);
+		Page<Task> page1 = taskRepo.findAllByTaskIdIsBetweenOrderByTaskIdDesc(TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange(), pageable);
 		return page1;
 	}
 

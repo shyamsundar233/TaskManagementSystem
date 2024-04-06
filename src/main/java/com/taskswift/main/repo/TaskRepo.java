@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface TaskRepo extends JpaRepository<Task, Long> {
 
-    Page<Task> findAllByTaskIdIsBetween(Long startRange, Long endRange, Pageable pageable);
+    Page<Task> findAllByTaskIdIsBetweenOrderByTaskIdDesc(Long startRange, Long endRange, Pageable pageable);
 
     List<Task> findAllByDueDateAndTaskIdIsBetween(LocalDate date, Long startRange, Long endRange);
 
