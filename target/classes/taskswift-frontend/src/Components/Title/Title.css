@@ -24,7 +24,7 @@
 
 /* Create New Button */
 .create-new-button {
-    width: 125px;
+    width: auto;
     height: 35px;
     padding: 0 16px;
     display: flex;

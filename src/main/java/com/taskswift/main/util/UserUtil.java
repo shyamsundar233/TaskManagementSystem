@@ -85,13 +85,14 @@ public class UserUtil {
 
 			Authority authority = new Authority();
 			authority.setUsername(userRegistration.getUsername());
-			authority.setAuthority(userRegistration.getAuthority());
 
 			if(isUserLoggedIn){
 				user.setUserid(TenantUtil.getNextUniqueId());
 				authority.setId(TenantUtil.getNextUniqueId());
+				authority.setAuthority(userRegistration.getAuthority());
 			}else{
 				user.setUserid(tenant.getCurrentUniqueId());
+				authority.setAuthority(Constants.ADMINISTRATOR_ROLE);
 				authority.setId(tenant.getCurrentUniqueId() + 1);
 				tenant.setCurrentUniqueId(tenant.getCurrentUniqueId() + 2);
 				tenant.setActive(false);

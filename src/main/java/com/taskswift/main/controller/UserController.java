@@ -31,4 +31,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/existingUsers")
+    public JSONObject getExistingUsers() {
+        JSONObject response = new JSONObject();
+        response.put("User", UserUtil.getExistingUsers());
+        return response;
+    }
+
 }

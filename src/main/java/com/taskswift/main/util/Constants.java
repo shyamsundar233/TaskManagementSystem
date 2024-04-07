@@ -19,6 +19,8 @@ public class Constants {
 
 	public static final String ANONYMOUS_ROLE = "ROLE_ANONYMOUS";
 
+	public static final String ADMINISTRATOR_ROLE = "ROLE_ADMINISTRATOR";
+
 	public static final List<String> STATUS_LIST = Arrays.asList("To Do", "In Progress", "On Hold", "Blocked", "Completed", "Cancelled", "Reinitiated");
 
 	public static final Map<String, String> OPERATORS_MAP = new HashMap<>(){{

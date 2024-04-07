@@ -4,7 +4,6 @@ package com.taskswift.main.controller;
 import com.taskswift.main.model.UserRegistration;
 import com.taskswift.main.security.EmailService;
 import com.taskswift.main.util.UserUtil;
-import jakarta.mail.MessagingException;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

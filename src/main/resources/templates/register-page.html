@@ -113,12 +113,6 @@
             <input type="password" id="confirmPassword" placeholder="Confirm Password"/>
             <span class="toggle-password" onclick="handleViewPassword(this)"><i id="confPassIcon"class="far fa-eye"></i></span>
         </div>
-        <div>
-            <select th:field="*{authority}">
-                <option value="" disabled selected hidden>Select Authority</option>
-                <option th:each="authority : ${Authorities}" th:value="${authority}" th:text="${authority}"></option>
-            </select>
-        </div>
         
         <input type="submit" value="Register"/>
     </form>    
