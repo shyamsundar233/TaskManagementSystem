@@ -35,8 +35,8 @@ const ListUser = () =>{
     return (
         <div className="parent-div-table">
             <div className="font-heading display-flex pa-1">
-                Users
-                <button className="create-new-button add-new-button-pos cursor-pointer" onClick={handleCreate}> + ADD USER</button>
+                Team Members
+                <button className="create-new-button add-new-button-pos cursor-pointer" onClick={handleCreate}> + ADD TEAM MEMBER</button>
             </div>
             <div className="padd-20 display-flex">
                 {users.length > 0 && users.map(user => {

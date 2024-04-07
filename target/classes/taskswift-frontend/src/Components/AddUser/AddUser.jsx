@@ -18,11 +18,16 @@ const AddUser = ({updateUsersList, closeAddUser}) => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [authorities, setAuthorities] = useState([]);
+    const [existingUsers, setExistingUsers] = useState([]);
 
     useEffect(() => {
         axios.get("/v1/api/getAuthorities").then(resp => {
             setAuthorities(resp.data.Authorities);
             setAuthority(resp.data.Authorities[0]);
+        })
+        axios.get("/v1/api/existingUsers").then(resp => {
+            debugger
+            setExistingUsers(resp.data.User);
         })
     }, []);
 
@@ -62,24 +67,35 @@ const AddUser = ({updateUsersList, closeAddUser}) => {
         const inputRegex = /^[^\s]+[a-zA-Z0-9]+$/;
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+\\|\[\]{};:'",.<>?]).{8,}$/;
 
+        let isErrorPresent = false;
+
         if (username.length < 1 || username.length > 20) {
             setErrorMessage('Please check the Username length');
+            isErrorPresent = true;
+        } else if(existingUsers.indexOf(username) > -1){
+            setErrorMessage('Username already taken');
+            isErrorPresent = true;
         } else if (password.length < 1 || password.length > 20) {
             setErrorMessage('Please check the Password length');
+            isErrorPresent = true;
         } else if (password !== confirmPassword) {
             setErrorMessage('Password mismatch');
+            isErrorPresent = true;
         } else if (!inputRegex.test(username) || !inputRegex.test(password)) {
             setErrorMessage('Invalid Username');
+            isErrorPresent = true;
         } else if (!passwordRegex.test(password)) {
             setErrorMessage('Invalid Password');
+            isErrorPresent = true;
         } else if(email === ""){
             setErrorMessage('Please enter a valid email');
+            isErrorPresent = true;
         }
         else {
             setErrorMessage('');
         }
 
-        if(errorMessage.length < 1){
+        if(!isErrorPresent){
             saveUser();
         }
     };
@@ -87,7 +103,7 @@ const AddUser = ({updateUsersList, closeAddUser}) => {
     return (
         <div className="registration-container-1">
             <div className="registration-container">
-                <h1>Add User</h1>
+                <h1>Add Team Member</h1>
                 <ClearTwoToneIcon className="add-user-cancel-icon cursor-pointer" onClick={closeAddUser}/>
                 <form onSubmit={validateForm}>
                     <div className={`errorDiv ${errorMessage ? '' : 'dN'}`} id="customErrorDiv">{errorMessage}</div>
