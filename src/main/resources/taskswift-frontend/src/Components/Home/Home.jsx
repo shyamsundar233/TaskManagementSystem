@@ -43,7 +43,6 @@ const Home = () => {
     useEffect(() => {
 
         axios.get("/v1/api/homePage").then(resp => {
-            debugger
             if(resp.data.todayTask){
                 constructTodayTask(resp.data.todayTask);
             }
