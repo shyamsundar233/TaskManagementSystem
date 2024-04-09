@@ -1,7 +1,6 @@
 import "./Home.css";
 
 import React, {useEffect, useState} from 'react'
-import Notifications from "../Notifications/Notifications";
 import StatsComponent from "../StatsComponent/StatsComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import axios from "axios";
@@ -43,7 +42,6 @@ const Home = () => {
     useEffect(() => {
 
         axios.get("/v1/api/homePage").then(resp => {
-            debugger
             if(resp.data.todayTask){
                 constructTodayTask(resp.data.todayTask);
             }
@@ -82,8 +80,7 @@ const Home = () => {
     }
 
   return (
-      <div className="display-flex pos-fixed">
-          <Notifications/>
+      <div className="">
           <div className="display-center-col scroll-div">
               <div className="height-width-auto">
                   <div className="title-font padd-20 margin-top-left-20 font-heading">Statistics</div>

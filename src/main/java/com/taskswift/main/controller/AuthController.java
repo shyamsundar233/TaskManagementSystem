@@ -2,7 +2,7 @@
 package com.taskswift.main.controller;
 
 import com.taskswift.main.model.UserRegistration;
-import com.taskswift.main.security.EmailService;
+import com.taskswift.main.config.EmailService;
 import com.taskswift.main.util.UserUtil;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;

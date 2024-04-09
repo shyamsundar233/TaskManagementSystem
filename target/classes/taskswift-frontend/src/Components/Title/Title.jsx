@@ -8,6 +8,9 @@ import noUser from "../../Assets/user.svg";
 import {Link, useNavigate} from "react-router-dom";
 import {Menu, MenuItem} from "@mui/material";
 import axios from "axios";
+import TsDrawer from "../../TemplateComponents/TsDrawer/TsDrawer";
+import Notifications from "../Notifications/Notifications";
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const Title = () => {
 
@@ -16,6 +19,7 @@ const Title = () => {
     const [userImage, setUserImage] = useState(noUser);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [openNotf, setOpenNotf] = useState(false);
 
     const handleCreate = () => {
         navigate("/ts/create");
@@ -36,16 +40,30 @@ const Title = () => {
         setUserMenuOpen(false);
     }
 
+    const handleOpenNotf = () => {
+        setOpenNotf(!openNotf);
+    }
+
     return (
         <div className="title-container-1">
             <Link to="/ts" className="link"><div className="title-text title-font">Task Swift</div></Link>
             <button className="create-new-button create-new-button-pos cursor-pointer" onClick={handleCreate}> + CREATE NEW</button>
             <img src={searchIcon} className="search-button search-btn-pos cursor-pointer" alt="Search Icon not found"/>
             <img src={callIcon} className="search-button call-btn-pos cursor-pointer" alt="Call Icon not found"/>
-            <img src={notificationIcon} className="search-button not-btn-pos cursor-pointer" alt="Notification Icon not found"/>
+            <img src={notificationIcon} className="search-button not-btn-pos cursor-pointer" alt="Notification Icon not found" onClick={handleOpenNotf}/>
             <img src={messageIcon} className="search-button mess-btn-pos cursor-pointer" alt="Message Icon not found"/>
             <img src={userImage} id="user_image" className="search-button prof-frame prof-btn-pos cursor-pointer" alt={messageIcon} onClick={handleUserMenuOpen}/>
             <UserMenu open={userMenuOpen} handleClose={handleUserMenuClose} anchorEl={anchorEl}/>
+            <TsDrawer
+                open={openNotf}
+                anchor="right"
+                body={
+                    <div>
+                        <KeyboardArrowRightIcon className="cursor-pointer close-icon-notf" onClick={handleOpenNotf}/>
+                        <Notifications/>
+                    </div>
+                }
+            />
         </div>
     );
 }
