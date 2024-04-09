@@ -6,3 +6,4 @@ npm install chart.js react-chartjs-2
 npm install jquery
 npm install @mui/icons-material
 npm install @mui/styles
+npm install stomp-websocket
