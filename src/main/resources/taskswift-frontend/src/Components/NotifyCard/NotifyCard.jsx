@@ -1,21 +1,15 @@
 import "./NotifyCard.css";
-import dummyUser from "../../Assets/user.svg";
 
-const NotifyCard = ({user, status, title, body, userImage}) => {
-
-    if(!userImage){
-        userImage = dummyUser;
-    }
+const NotifyCard = ({title, subject, body}) => {
 
     return (
         <div className="notify-card-cont-1">
             <div className="notify-card-cont-2">
                 <div className="notify-card-user-cont">
-                    <img src={userImage} alt="User Not Found"/>&nbsp;&nbsp;
-                    <span className="notify-card-user-text"> {user} </span> &nbsp; {status}
+                    <span className="notify-card-user-text"> {title} </span> &nbsp;
                 </div>
                 <div className="notify-card-title-cont">
-                    <span className="notify-card-user-text">{title}</span>
+                    <span className="notify-card-user-text">{subject}</span>
                 </div>
                 <div className="notify-card-title-cont">
                     <span>{body}</span>

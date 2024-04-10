@@ -151,3 +151,7 @@
 .close-icon-notf:hover {
     background-color: #c3c8c6;
 }
+
+.notf-drawer-cont {
+    width: 30% !important;
+}

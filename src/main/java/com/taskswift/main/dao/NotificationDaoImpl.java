@@ -22,7 +22,7 @@ public class NotificationDaoImpl implements NotificationDao{
 
     @Override
     public List<Notification> getAllNotificationForUser(User user) {
-        return notificationRepo.findAllByNotificationIdIsBetweenAndNotfForAllIsTrueOrUser(TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange(), user);
+        return notificationRepo.findAllByNotificationIdIsBetweenAndIsNotfForAllIsTrueOrUser(TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange(), user);
     }
 
     @Override
