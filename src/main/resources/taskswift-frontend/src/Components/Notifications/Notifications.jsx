@@ -1,54 +1,8 @@
 import "./Notifications.css";
 import pinIcon from "../../Assets/pin-tack.svg";
-import updateIcon from  "../../Assets/notification.svg";
 import NotifyCard from "../NotifyCard/NotifyCard";
-import {useEffect, useState} from "react";
-import initWebSocket, {privateStompClient, stompClient} from "../../websocket";
-import axios from "axios";
 
-const constructMessage = (notfList) => {
-    let resultList = [];
-    notfList.forEach(notf => {
-        let messageObj = JSON.parse(notf.message)
-        let message = {
-            title : messageObj.title,
-            subject : messageObj.subject,
-            body : messageObj.body
-        }
-        resultList.push(message);
-    })
-    return resultList;
-}
-
-const Notifications = () => {
-
-    const [messagesList, setMessagesList] = useState([]);
-
-    useEffect(() => {
-        axios.get("/v1/api/notification").then(resp => {
-            setMessagesList(constructMessage(resp.data.Notification))
-        })
-        initWebSocket().then(() => {
-            stompClient.subscribe('/all/messages', function(result) {
-                let messageObj = JSON.parse(result.body);
-                let message = {
-                    title : messageObj.title,
-                    subject: messageObj.subject,
-                    body: messageObj.body
-                }
-                setMessagesList([...messagesList].push(message))
-            });
-            privateStompClient.subscribe('/user/specific', function(result) {
-                let messageObj = JSON.parse(result.body);
-                let message = {
-                    title : messageObj.title,
-                    subject: messageObj.subject,
-                    body: messageObj.body
-                }
-                setMessagesList([...messagesList].push(message))
-            });
-        })
-    }, []);
+const Notifications = ({messagesList}) => {
 
     return (
         <div className="notf-parent-cont-1">
