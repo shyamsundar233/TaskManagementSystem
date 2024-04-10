@@ -19,10 +19,9 @@ public class Notification {
 
     private String message;
 
-    private boolean notfForAll;
+    private boolean isNotfForAll;
 
     @ManyToOne
     @JoinColumn(name = "user_name")
     private User user;
-
 }

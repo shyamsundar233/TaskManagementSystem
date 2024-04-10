@@ -63,6 +63,7 @@ const Title = () => {
                         <Notifications/>
                     </div>
                 }
+                paperProps="notf-drawer-cont"
             />
         </div>
     );

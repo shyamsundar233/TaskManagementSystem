@@ -4,8 +4,11 @@ import com.taskswift.main.controller.MessagingController;
 import com.taskswift.main.entity.Notification;
 import com.taskswift.main.model.Message;
 import com.taskswift.main.service.NotificationService;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class NotificationUtil {
@@ -30,7 +33,21 @@ public class NotificationUtil {
 
     public static JSONObject getAllNotifications() {
         JSONObject response = new JSONObject();
-        response.put("Notification", notificationService.getAllNotificationForUser(UserUtil.currentUser));
+        response.put("Notification", constructJsonForNotf(notificationService.getAllNotificationForUser(UserUtil.currentUser)).get("result"));
+        return response;
+    }
+
+    private static JSONObject constructJsonForNotf(List<Notification> notfList) {
+        JSONObject response = new JSONObject();
+        JSONArray notfArray = new JSONArray();
+        for(Notification notification : notfList) {
+            JSONObject notfObj = new JSONObject();
+            notfObj.put("message", notification.getMessage());
+            notfObj.put("notificationId", notification.getNotificationId());
+            notfObj.put("notfForAll", notification.isNotfForAll());
+            notfArray.add(notfObj);
+        }
+        response.put("result", notfArray);
         return response;
     }
 
