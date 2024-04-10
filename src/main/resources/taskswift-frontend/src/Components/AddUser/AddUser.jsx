@@ -26,7 +26,6 @@ const AddUser = ({updateUsersList, closeAddUser}) => {
             setAuthority(resp.data.Authorities[0]);
         })
         axios.get("/v1/api/existingUsers").then(resp => {
-            debugger
             setExistingUsers(resp.data.User);
         })
     }, []);

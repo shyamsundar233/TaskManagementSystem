@@ -2,8 +2,25 @@ import "./Notifications.css";
 import pinIcon from "../../Assets/pin-tack.svg";
 import updateIcon from  "../../Assets/notification.svg";
 import NotifyCard from "../NotifyCard/NotifyCard";
+import {useEffect, useState} from "react";
+import initWebSocket, {privateStompClient, stompClient} from "../../websocket";
 
 const Notifications = () => {
+
+    const [publicMessage, setPublicMessage] = useState('');
+    const [privateMessage, setPrivateMessage] = useState('');
+
+    useEffect(() => {
+        initWebSocket().then(() => {
+            stompClient.subscribe('/all/messages', function(result) {
+                setPublicMessage(JSON.parse(result.body));
+            });
+            privateStompClient.subscribe('/user/specific', function(result) {
+                setPrivateMessage(JSON.parse(result.body));
+            });
+        })
+    }, []);
+
     return (
         <div className="notf-parent-cont-1">
             <div className="notf-parent-cont-2 scroll-div">
