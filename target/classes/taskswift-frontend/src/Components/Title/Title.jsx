@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./Title.css";
 import searchIcon from "../../Assets/magnifier.svg";
 import callIcon from "../../Assets/phone.svg";
@@ -11,6 +11,21 @@ import axios from "axios";
 import TsDrawer from "../../TemplateComponents/TsDrawer/TsDrawer";
 import Notifications from "../Notifications/Notifications";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import initWebSocket, {privateStompClient, stompClient} from "../../websocket";
+
+const constructMessage = (notfList) => {
+    let resultList = [];
+    notfList.forEach(notf => {
+        let messageObj = JSON.parse(notf.message)
+        let message = {
+            title : messageObj.title,
+            subject : messageObj.subject,
+            body : messageObj.body
+        }
+        resultList.push(message);
+    })
+    return resultList;
+}
 
 const Title = () => {
 
@@ -20,6 +35,33 @@ const Title = () => {
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [openNotf, setOpenNotf] = useState(false);
+    const [messagesList, setMessagesList] = useState([]);
+
+    useEffect(() => {
+        axios.get("/v1/api/notification").then(resp => {
+            setMessagesList(constructMessage(resp.data.Notification))
+        })
+        initWebSocket().then(() => {
+            stompClient.subscribe('/all/messages', function(result) {
+                let messageObj = JSON.parse(result.body).messageBody;
+                let message = {
+                    title : messageObj.title,
+                    subject: messageObj.subject,
+                    body: messageObj.body
+                }
+                setMessagesList(prevMessages => [...prevMessages, message])
+            });
+            privateStompClient.subscribe('/user/specific', function(result) {
+                let messageObj = JSON.parse(result.body).messageBody;
+                let message = {
+                    title : messageObj.title,
+                    subject: messageObj.subject,
+                    body: messageObj.body
+                }
+                setMessagesList(prevMessages => [...prevMessages, message])
+            });
+        })
+    }, []);
 
     const handleCreate = () => {
         navigate("/ts/create");
@@ -60,7 +102,7 @@ const Title = () => {
                 body={
                     <div>
                         <KeyboardArrowRightIcon className="cursor-pointer close-icon-notf" onClick={handleOpenNotf}/>
-                        <Notifications/>
+                        <Notifications messagesList={messagesList}/>
                     </div>
                 }
                 paperProps="notf-drawer-cont"
