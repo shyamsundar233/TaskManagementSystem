@@ -63,7 +63,6 @@ const ListFilter = ({openDrawer, handleClose, handleFilterRecords}) => {
     }
 
     const optDropDownUpdate = (id, value) => {
-        debugger
         switch(id) {
             case 'titleOpt':
                 setTitleOpt(value);
