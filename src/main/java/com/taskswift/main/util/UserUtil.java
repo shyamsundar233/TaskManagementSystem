@@ -189,5 +189,9 @@ public class UserUtil {
 	public static User getUserById(Long userId){
 		return userService.getUserById(userId);
 	}
+
+	public static User getUserByName(String username){
+		return userService.getUserByName(username);
+	}
 	
 }

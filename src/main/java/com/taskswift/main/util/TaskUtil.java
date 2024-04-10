@@ -4,6 +4,7 @@ package com.taskswift.main.util;
 import com.taskswift.main.entity.Task;
 import com.taskswift.main.entity.TaskCategory;
 import com.taskswift.main.exception.TaskException;
+import com.taskswift.main.model.Message;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.model.TaskFilter;
 import com.taskswift.main.service.TaskService;
@@ -73,6 +74,8 @@ public class TaskUtil {
 				taskService.updateTask(taskCreation);
 				response.put("Task", "Task Updated Successfully!!!");
 			}
+
+			NotificationUtil.sendPrivateMessage(getTaskCreationNotf(taskCreation));
 			
 		}catch(Exception e) {
 			response.put("Task", e.getMessage());
@@ -166,6 +169,17 @@ public class TaskUtil {
 		JSONObject response = new JSONObject();
 		response.put("Task", constructJsonForTask(taskService.filterTask(taskFilter)).get("result"));
 		return response;
+	}
+
+	private static Message getTaskCreationNotf(TaskCreation taskCreation) {
+		Message message = new Message();
+		JSONObject response = new JSONObject();
+		response.put("title", "Task Created for you");
+		response.put("subject", taskCreation.getTaskTitle());
+		response.put("body", taskCreation.getTaskDesc());
+		message.setMessageBody(response);
+		message.setTo(UserUtil.getUserById(taskCreation.getUserId()).getUsername());
+		return message;
 	}
 
 	private static List<LocalDate> getStartAndEndOfCurrentWeek() {
