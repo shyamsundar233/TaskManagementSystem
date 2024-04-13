@@ -141,16 +141,6 @@
     background-color: #00bdd6;
 }
 
-.close-icon-notf {
-    position: absolute;
-    width: 30px !important;
-    height: 35px !important;
-}
-
-.close-icon-notf:hover {
-    background-color: #c3c8c6;
-}
-
 .notf-drawer-cont {
     width: 30% !important;
 }

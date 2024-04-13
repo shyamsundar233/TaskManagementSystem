@@ -25,6 +25,11 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
+    public Notification getNotificationById(Long notificationId) {
+        return notificationDao.getNotificationById(notificationId);
+    }
+
+    @Override
     public void saveNotification(Notification notification) {
         notificationDao.saveNotification(notification);
     }

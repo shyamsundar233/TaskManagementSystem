@@ -21,6 +21,8 @@ public class Notification {
 
     private boolean isNotfForAll;
 
+    private boolean isRead;
+
     @ManyToOne
     @JoinColumn(name = "user_name")
     private User user;

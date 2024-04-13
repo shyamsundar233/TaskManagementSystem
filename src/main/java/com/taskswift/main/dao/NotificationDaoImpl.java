@@ -26,6 +26,11 @@ public class NotificationDaoImpl implements NotificationDao{
     }
 
     @Override
+    public Notification getNotificationById(Long notificationId) {
+        return notificationRepo.findByNotificationIdAndNotificationIdIsBetween(notificationId, TenantUtil.currentTenant.getStartRange(), TenantUtil.currentTenant.getEndRange());
+    }
+
+    @Override
     public void saveNotification(Notification notification) {
         notificationRepo.save(notification);
     }

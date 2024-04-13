@@ -11,6 +11,8 @@ public interface NotificationDao {
 
     public List<Notification> getAllNotificationForUser(User user);
 
+    public Notification getNotificationById(Long notificationId);
+
     public void saveNotification(Notification notification);
 
 
