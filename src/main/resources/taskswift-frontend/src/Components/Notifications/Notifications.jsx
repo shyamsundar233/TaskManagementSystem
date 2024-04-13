@@ -2,13 +2,12 @@ import "./Notifications.css";
 import pinIcon from "../../Assets/pin-tack.svg";
 import NotifyCard from "../NotifyCard/NotifyCard";
 import axios from "axios";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import CloseIcon from '@mui/icons-material/Close';
 import React from "react";
 
 const Notifications = ({messagesList, updateMessagesList, handleOpenNotf}) => {
 
     const handleMarkAsRead = (id) => {
-        debugger
         axios.post("/v1/api/markAsRead", [id]).then(resp => {
             updateMessagesList("markAsRead", id);
         })
@@ -18,7 +17,7 @@ const Notifications = ({messagesList, updateMessagesList, handleOpenNotf}) => {
         <div className="notf-parent-cont-1">
             <div className="notf-parent-cont-2">
                 <div className="notf-body-1">
-                    <KeyboardArrowRightIcon className="cursor-pointer close-icon-notf" onClick={handleOpenNotf}/>
+                    <CloseIcon className="cursor-pointer close-icon-notf" onClick={handleOpenNotf}/>
                     <div className="title-font notf-title-cont">
                         <img src={pinIcon} alt="Pin Icon is missing"/>&nbsp;
                         Notifications
