@@ -8,6 +8,7 @@ import Notifications from "../Notifications/Notifications";
 import initWebSocket, {privateStompClient, stompClient} from "../../websocket";
 import TsPopover from "../../TemplateComponents/TsPopover/TsPopover";
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import SearchIcon from '@mui/icons-material/Search';
 import CallIcon from '@mui/icons-material/Call';
 import PersonIcon from '@mui/icons-material/Person';
@@ -37,6 +38,7 @@ const Title = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [openNotf, setOpenNotf] = useState(false);
     const [messagesList, setMessagesList] = useState([]);
+    const [hasUnread, setHasUnread] = useState(false);
     const [popoverEl, setPopoverEl] = useState(null);
 
     useEffect(() => {
@@ -67,17 +69,27 @@ const Title = () => {
         })
     }, []);
 
+    useEffect(() => {
+        let hasUnread = false;
+        for (let index = 0; index < messagesList.length; index++) {
+            let message = messagesList[index];
+            if(!message.isRead){
+                setHasUnread(true);
+                hasUnread = true;
+                break;
+            }
+        }
+        if(!hasUnread) {
+            setHasUnread(false);
+        }
+    }, [messagesList]);
+
     const updateMessageList = (operation, id) => {
         if(operation === "markAsRead"){
             debugger
-            const updatedMessagesList = messagesList.map(msg => {
-                if (msg.notificationId === id) {
-                    return { ...msg, isRead: true };
-                } else {
-                    return msg;
-                }
-            });
-            
+            let updatedMessagesList = [...messagesList];
+            let index = updatedMessagesList.findIndex(msg => msg.notificationId === id);
+            updatedMessagesList[index].isRead = true;
             setMessagesList(updatedMessagesList);
         }
     }
@@ -114,7 +126,11 @@ const Title = () => {
                 <div className="title-options-div">
                     <SearchIcon className="title-icon-pos cursor-pointer"/>
                     <CallIcon className="title-icon-pos cursor-pointer"/>
-                    <NotificationsIcon className="title-icon-pos cursor-pointer"  onClick={e => handleOpenNotf(e)}/>
+                    {hasUnread ?
+                        <NotificationsActiveIcon className="title-icon-pos cursor-pointer"  onClick={e => handleOpenNotf(e)}/>
+                        :
+                        <NotificationsIcon className="title-icon-pos cursor-pointer"  onClick={e => handleOpenNotf(e)}/>
+                    }
                     <PersonIcon className="title-icon-pos cursor-pointer" onClick={handleUserMenuOpen}/>
                 </div>
             </div>

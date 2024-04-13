@@ -27,7 +27,8 @@ public class NotificationUtil {
     }
 
     public static void sendPrivateMessage(Message message) {
-        saveNotification(message);
+        Notification notification = saveNotification(message);
+        message.getMessageBody().put("notificationId", notification.getNotificationId());
         messagingController.sendToSpecificUser(message);
     }
 
@@ -61,7 +62,7 @@ public class NotificationUtil {
         return response;
     }
 
-    private static void saveNotification(Message message) {
+    private static Notification saveNotification(Message message) {
         Notification notification = new Notification();
         notification.setNotificationId(TenantUtil.getNextUniqueId());
         notification.setMessage(String.valueOf(message.getMessageBody()));
@@ -69,6 +70,7 @@ public class NotificationUtil {
         notification.setRead(false);
         notification.setUser(UserUtil.getUserByName(message.getTo()));
         notificationService.saveNotification(notification);
+        return notification;
     }
 
     private static void markAsRead(Long notfId) {
