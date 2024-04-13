@@ -1,9 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import "./Title.css";
-import searchIcon from "../../Assets/magnifier.svg";
-import callIcon from "../../Assets/phone.svg";
-import notificationIcon from "../../Assets/bell.svg";
-import messageIcon from "../../Assets/msg-writing.svg";
 import noUser from "../../Assets/user.svg";
 import {Link, useNavigate} from "react-router-dom";
 import {Menu, MenuItem} from "@mui/material";
@@ -11,6 +7,10 @@ import axios from "axios";
 import Notifications from "../Notifications/Notifications";
 import initWebSocket, {privateStompClient, stompClient} from "../../websocket";
 import TsPopover from "../../TemplateComponents/TsPopover/TsPopover";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import SearchIcon from '@mui/icons-material/Search';
+import CallIcon from '@mui/icons-material/Call';
+import PersonIcon from '@mui/icons-material/Person';
 
 const constructMessage = (notfList) => {
     let resultList = [];
@@ -109,12 +109,15 @@ const Title = () => {
     return (
         <div className="title-container-1">
             <Link to="/ts" className="link"><div className="title-text title-font">Task Swift</div></Link>
-            <button className="create-new-button create-new-button-pos cursor-pointer" onClick={handleCreate}> + CREATE NEW</button>
-            <img src={searchIcon} className="search-button search-btn-pos cursor-pointer" alt="Search Icon not found"/>
-            <img src={callIcon} className="search-button call-btn-pos cursor-pointer" alt="Call Icon not found"/>
-            <img src={notificationIcon} id="notf-icon" className="search-button not-btn-pos cursor-pointer" alt="Notification Icon not found" onClick={e => handleOpenNotf(e)}/>
-            <img src={messageIcon} className="search-button mess-btn-pos cursor-pointer" alt="Message Icon not found"/>
-            <img src={userImage} id="user_image" className="search-button prof-frame prof-btn-pos cursor-pointer" alt={messageIcon} onClick={handleUserMenuOpen}/>
+            <div className="title-actions-div">
+                <button className="btn-1 cursor-pointer" onClick={handleCreate}> + CREATE NEW</button>
+                <div className="title-options-div">
+                    <SearchIcon className="title-icon-pos cursor-pointer"/>
+                    <CallIcon className="title-icon-pos cursor-pointer"/>
+                    <NotificationsIcon className="title-icon-pos cursor-pointer"  onClick={e => handleOpenNotf(e)}/>
+                    <PersonIcon className="title-icon-pos cursor-pointer" onClick={handleUserMenuOpen}/>
+                </div>
+            </div>
             <UserMenu open={userMenuOpen} handleClose={handleUserMenuClose} anchorEl={anchorEl}/>
             <TsPopover
                 open={openNotf}
@@ -132,7 +135,7 @@ const Title = () => {
                         width: '30%',
                         maxHeight: '500px',
                         marginTop: '15px',
-                        marginLeft: '160px'
+                        marginLeft: '90px'
                     },
                 }}
                 body={

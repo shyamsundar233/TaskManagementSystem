@@ -1,4 +1,6 @@
 .title-container-1 {
+    display: flex;
+    align-items: center;
     position: fixed;
     z-index: 1;
     width: 96%;
@@ -143,4 +145,27 @@
 
 .notf-drawer-cont {
     width: 30% !important;
+}
+
+.title-actions-div {
+    margin-left: calc(100% - 36%);
+    display: flex;
+    align-items: center;
+}
+
+.title-icon-pos {
+    margin-left: 20px;
+    padding: 5px;
+}
+
+.title-icon-pos:hover {
+    background-color: #00BDD6FF;
+    color: white;
+    border-radius: 5px;
+}
+
+.title-options-div {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
 }
