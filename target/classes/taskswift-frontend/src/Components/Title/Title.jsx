@@ -8,10 +8,9 @@ import noUser from "../../Assets/user.svg";
 import {Link, useNavigate} from "react-router-dom";
 import {Menu, MenuItem} from "@mui/material";
 import axios from "axios";
-import TsDrawer from "../../TemplateComponents/TsDrawer/TsDrawer";
 import Notifications from "../Notifications/Notifications";
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import initWebSocket, {privateStompClient, stompClient} from "../../websocket";
+import TsPopover from "../../TemplateComponents/TsPopover/TsPopover";
 
 const constructMessage = (notfList) => {
     let resultList = [];
@@ -38,6 +37,7 @@ const Title = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [openNotf, setOpenNotf] = useState(false);
     const [messagesList, setMessagesList] = useState([]);
+    const [popoverEl, setPopoverEl] = useState(null);
 
     useEffect(() => {
         axios.get("/v1/api/notification").then(resp => {
@@ -101,8 +101,9 @@ const Title = () => {
         setUserMenuOpen(false);
     }
 
-    const handleOpenNotf = () => {
+    const handleOpenNotf = (event) => {
         setOpenNotf(!openNotf);
+        setPopoverEl(event.currentTarget);
     }
 
     return (
@@ -111,19 +112,34 @@ const Title = () => {
             <button className="create-new-button create-new-button-pos cursor-pointer" onClick={handleCreate}> + CREATE NEW</button>
             <img src={searchIcon} className="search-button search-btn-pos cursor-pointer" alt="Search Icon not found"/>
             <img src={callIcon} className="search-button call-btn-pos cursor-pointer" alt="Call Icon not found"/>
-            <img src={notificationIcon} className="search-button not-btn-pos cursor-pointer" alt="Notification Icon not found" onClick={handleOpenNotf}/>
+            <img src={notificationIcon} id="notf-icon" className="search-button not-btn-pos cursor-pointer" alt="Notification Icon not found" onClick={e => handleOpenNotf(e)}/>
             <img src={messageIcon} className="search-button mess-btn-pos cursor-pointer" alt="Message Icon not found"/>
             <img src={userImage} id="user_image" className="search-button prof-frame prof-btn-pos cursor-pointer" alt={messageIcon} onClick={handleUserMenuOpen}/>
             <UserMenu open={userMenuOpen} handleClose={handleUserMenuClose} anchorEl={anchorEl}/>
-            <TsDrawer
+            <TsPopover
                 open={openNotf}
-                anchor="right"
+                anchorEl={popoverEl}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left'
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                paperProps={{
+                    style: {
+                        width: '30%',
+                        maxHeight: '500px',
+                        marginTop: '15px',
+                        marginLeft: '160px'
+                    },
+                }}
                 body={
                     <div>
                         <Notifications messagesList={messagesList} updateMessagesList={updateMessageList} handleOpenNotf={handleOpenNotf}/>
                     </div>
                 }
-                paperProps="notf-drawer-cont"
             />
         </div>
     );

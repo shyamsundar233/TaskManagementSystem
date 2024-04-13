@@ -10,7 +10,7 @@
 }
 
 .notf-body-1 {
-    position: fixed;
+
     padding: 20px;
     width: -webkit-fill-available;
 }
@@ -37,8 +37,9 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 30px !important;
-    height: 35px !important;
+    width: 20px !important;
+    height: 20px !important;
+    padding: 5px;
 }
 
 .close-icon-notf:hover {
