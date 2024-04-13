@@ -37,6 +37,15 @@ public class NotificationUtil {
         return response;
     }
 
+    public static JSONObject markAsRead(List<Long> notificationIds) {
+        JSONObject response = new JSONObject();
+        for(Long notificationId : notificationIds){
+            markAsRead(notificationId);
+        }
+        response.put("Notification", "Notifications marked as read successfully");
+        return response;
+    }
+
     private static JSONObject constructJsonForNotf(List<Notification> notfList) {
         JSONObject response = new JSONObject();
         JSONArray notfArray = new JSONArray();
@@ -45,6 +54,7 @@ public class NotificationUtil {
             notfObj.put("message", notification.getMessage());
             notfObj.put("notificationId", notification.getNotificationId());
             notfObj.put("notfForAll", notification.isNotfForAll());
+            notfObj.put("isRead", notification.isRead());
             notfArray.add(notfObj);
         }
         response.put("result", notfArray);
@@ -56,8 +66,17 @@ public class NotificationUtil {
         notification.setNotificationId(TenantUtil.getNextUniqueId());
         notification.setMessage(String.valueOf(message.getMessageBody()));
         notification.setNotfForAll(false);
+        notification.setRead(false);
         notification.setUser(UserUtil.getUserByName(message.getTo()));
         notificationService.saveNotification(notification);
+    }
+
+    private static void markAsRead(Long notfId) {
+        Notification notification = notificationService.getNotificationById(notfId);
+        if(notification != null){
+            notification.setRead(true);
+            notificationService.saveNotification(notification);
+        }
     }
 
 }

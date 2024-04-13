@@ -10,7 +10,9 @@
 }
 
 .notf-body-1 {
+    position: fixed;
     padding: 20px;
+    width: -webkit-fill-available;
 }
 
 .notf-title-cont {
@@ -25,4 +27,20 @@
 .notf-card-cont {
     margin-left: 5px;
     margin-top: 20px;
+}
+
+.notf-card-bg-read {
+    background-color: #c2c2c2;
+}
+
+.close-icon-notf {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30px !important;
+    height: 35px !important;
+}
+
+.close-icon-notf:hover {
+    background-color: #c3c8c6;
 }

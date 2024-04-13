@@ -13,4 +13,6 @@ public interface NotificationRepo extends JpaRepository<Notification, Long> {
 
     List<Notification> findAllByNotificationIdIsBetweenAndIsNotfForAllIsTrueOrUser(Long startRange, Long endRange, User user);
 
+    Notification findByNotificationIdAndNotificationIdIsBetween(Long notificationId, Long startRange, Long endRange);
+
 }

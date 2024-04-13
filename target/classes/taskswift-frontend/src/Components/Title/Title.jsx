@@ -20,11 +20,13 @@ const constructMessage = (notfList) => {
         let message = {
             title : messageObj.title,
             subject : messageObj.subject,
-            body : messageObj.body
+            body : messageObj.body,
+            isRead : notf.isRead,
+            notificationId : notf.notificationId
         }
         resultList.push(message);
     })
-    return resultList;
+    return resultList.reverse();
 }
 
 const Title = () => {
@@ -47,21 +49,38 @@ const Title = () => {
                 let message = {
                     title : messageObj.title,
                     subject: messageObj.subject,
-                    body: messageObj.body
+                    body: messageObj.body,
+                    isRead: false
                 }
-                setMessagesList(prevMessages => [...prevMessages, message])
+                setMessagesList(prevMessages => [message, ...prevMessages])
             });
             privateStompClient.subscribe('/user/specific', function(result) {
                 let messageObj = JSON.parse(result.body).messageBody;
                 let message = {
                     title : messageObj.title,
                     subject: messageObj.subject,
-                    body: messageObj.body
+                    body: messageObj.body,
+                    isRead: false
                 }
-                setMessagesList(prevMessages => [...prevMessages, message])
+                setMessagesList(prevMessages => [message, ...prevMessages])
             });
         })
     }, []);
+
+    const updateMessageList = (operation, id) => {
+        if(operation === "markAsRead"){
+            debugger
+            const updatedMessagesList = messagesList.map(msg => {
+                if (msg.notificationId === id) {
+                    return { ...msg, isRead: true };
+                } else {
+                    return msg;
+                }
+            });
+            
+            setMessagesList(updatedMessagesList);
+        }
+    }
 
     const handleCreate = () => {
         navigate("/ts/create");
@@ -101,8 +120,7 @@ const Title = () => {
                 anchor="right"
                 body={
                     <div>
-                        <KeyboardArrowRightIcon className="cursor-pointer close-icon-notf" onClick={handleOpenNotf}/>
-                        <Notifications messagesList={messagesList}/>
+                        <Notifications messagesList={messagesList} updateMessagesList={updateMessageList} handleOpenNotf={handleOpenNotf}/>
                     </div>
                 }
                 paperProps="notf-drawer-cont"
