@@ -1,16 +1,13 @@
 .notf-parent-cont-1 {
-    height: 100vh;
     background-color: #F8F9FAFF;
     box-shadow: 3px 0 5px -5px rgba(0, 0, 0, 0.5);
 }
 
 .notf-parent-cont-2 {
-    height: 100vh;
-    /*max-height: calc(100vh - 50px);*/
 }
 
 .notf-body-1 {
-
+    max-height: 460px;
     padding: 20px;
     width: -webkit-fill-available;
 }
@@ -25,6 +22,7 @@
 }
 
 .notf-card-cont {
+    max-height: 410px;
     margin-left: 5px;
     margin-top: 20px;
 }
