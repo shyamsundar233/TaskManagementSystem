@@ -203,7 +203,11 @@ public class TaskUtil {
 			taskObj.put("taskAttachment", task.getTaskAttachment());
 			taskObj.put("taskRecurring", task.getTaskRecurring());
 			taskObj.put("taskStatus", task.getTaskStatus());
-			taskObj.put("userId", task.getUser().getUserid());
+			JSONObject userJson = new JSONObject();
+			userJson.put("username", task.getUser().getUsername());
+			userJson.put("email", task.getUser().getEmail());
+			userJson.put("userId", task.getUser().getUserid());
+			taskObj.put("user", userJson);
 			taskArrJson.add(taskObj);
 		}
 		resultTaskJson.put("result", taskArrJson);

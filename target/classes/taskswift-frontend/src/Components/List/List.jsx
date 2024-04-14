@@ -10,15 +10,15 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 
-const createData = (id, title, desc, status, dueDate, priority, category, recurring) => {
-    return { id, title, desc, status, dueDate, priority, category, recurring };
+const createData = (id, title, desc, status, dueDate, priority, category, recurring, user) => {
+    return { id, title, desc, status, dueDate, priority, category, recurring, user };
 }
 
 const constructTasksList = (tasksList) => {
     let taskList = [];
 
     tasksList.forEach(task => {
-        let taskData = createData(task.taskId, task.taskTitle, task.taskDesc, task.taskStatus, task.dueDate, task.taskPriority, task.taskCategory, task.taskRecurring)
+        let taskData = createData(task.taskId, task.taskTitle, task.taskDesc, task.taskStatus, task.dueDate, task.taskPriority, task.taskCategory, task.taskRecurring, task.user.username)
         taskList.push(taskData)
     })
     return taskList;
@@ -35,12 +35,13 @@ const constructTaskDataForTable = (taskList) => {
         taskData.push(task.priority);
         taskData.push(task.category);
         taskData.push(task.recurring);
+        taskData.push(task.user);
         resultArr.push(taskData);
     })
     return resultArr;
 }
 
-const headerRow = ["Task Title", "Description", "Status" ,"Due Date", "Priority", "Category", "Recurring"];
+const headerRow = ["Task Title", "Description", "Status" ,"Due Date", "Priority", "Category", "Recurring", "User"];
 
 const getRecordsCount = (page, count) => {
     let startCount = page * 20 + 1;
