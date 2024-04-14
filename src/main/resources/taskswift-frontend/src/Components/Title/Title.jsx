@@ -84,6 +84,15 @@ const Title = () => {
         }
     }, [messagesList]);
 
+    useEffect(() => {
+        debugger
+        if(hasUnread){
+            setPopoverEl(document.getElementById("notf-active-icon"));
+        }else{
+            setPopoverEl(document.getElementById("notf-icon"));
+        }
+    }, [hasUnread]);
+
     const updateMessageList = (operation, id) => {
         if(operation === "markAsRead"){
             debugger
@@ -127,9 +136,9 @@ const Title = () => {
                     <SearchIcon className="title-icon-pos cursor-pointer"/>
                     <CallIcon className="title-icon-pos cursor-pointer"/>
                     {hasUnread ?
-                        <NotificationsActiveIcon className="title-icon-pos cursor-pointer"  onClick={e => handleOpenNotf(e)}/>
+                        <NotificationsActiveIcon id="notf-active-icon" className="title-icon-pos cursor-pointer"  onClick={e => handleOpenNotf(e)}/>
                         :
-                        <NotificationsIcon className="title-icon-pos cursor-pointer"  onClick={e => handleOpenNotf(e)}/>
+                        <NotificationsIcon id="notf-icon" className="title-icon-pos cursor-pointer"  onClick={e => handleOpenNotf(e)}/>
                     }
                     <PersonIcon className="title-icon-pos cursor-pointer" onClick={handleUserMenuOpen}/>
                 </div>
