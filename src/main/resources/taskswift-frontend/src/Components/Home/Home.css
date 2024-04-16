@@ -19,7 +19,7 @@
 }
 
 .home-tab-dim {
-    max-height: 375px;
+
 }
 
 .home-section-1 {
@@ -39,6 +39,10 @@
     padding-top: 10px;
 }
 
+.task-tab-cont {
+    height: 90%;
+}
+
 .stats-cont {
     margin-left: 10px;
     margin-right: 10px;
@@ -56,7 +60,7 @@
 }
 
 .home-users-tab-dim {
-    max-height: 322px;
+
 }
 
 .leading-list-cont {
