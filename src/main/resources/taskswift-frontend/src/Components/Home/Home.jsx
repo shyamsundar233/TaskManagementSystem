@@ -105,13 +105,14 @@ const Home = () => {
                   </div>
               </div>
               <div className="height-width-auto task-cont">
-                  <div className="title-font font-heading">
+                  <div className="title-font font-heading task-tab-cont">
                       <div className="padd-20"> My Today's Tasks </div>
                       {todayTask.length > 0 ?
                           <TableComponent
                               headerRow={["Task Title", "Status", "Priority", "Category", "Recurring"]}
                               bodyRow={todayTask}
-                              classList="home-tab-dim"
+                              classList="height-width-auto scroll-div home-tab-dim"
+                              height="calc(100% - 5%)"
                           />
                           :
                           <div className="padd-20 font-sub-heading display-center">No Tasks today !!!</div>
@@ -126,7 +127,8 @@ const Home = () => {
                       <TableComponent
                           headerRow={["Username"]}
                           bodyRow={usersList}
-                          classList="height-width-auto scroll-div home-users-tab-dim"
+                          classList="scroll-div home-users-tab-dim"
+                          height="calc(100% - 20%)"
                       />
                       :
                       <div className="padd-20 font-sub-heading display-center">No team members !!!</div>
