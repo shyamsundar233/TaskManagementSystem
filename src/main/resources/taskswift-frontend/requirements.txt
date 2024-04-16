@@ -7,3 +7,4 @@ npm install jquery
 npm install @mui/icons-material
 npm install @mui/styles
 npm install stomp-websocket
+npm install @mui/x-charts

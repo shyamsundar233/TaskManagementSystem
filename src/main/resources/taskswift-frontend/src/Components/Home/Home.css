@@ -21,3 +21,47 @@
 .home-tab-dim {
     max-height: 375px;
 }
+
+.home-section-1 {
+    width: 70%;
+    height: 100vh;
+    border-right: 1px solid #c2c2c2;
+}
+
+.home-section-2 {
+    width: 30%;
+}
+
+.task-cont {
+    border-top: 1px solid #c2c2c2;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-top: 10px;
+}
+
+.stats-cont {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    padding-top: 10px;
+}
+
+.users-list-cont {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    height: 50%;
+    border-bottom: 1px solid #c2c2c2;
+}
+
+.home-users-tab-dim {
+    max-height: 322px;
+}
+
+.leading-list-cont {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    padding-top: 10px;
+}
