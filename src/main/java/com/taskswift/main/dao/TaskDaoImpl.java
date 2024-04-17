@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.taskswift.main.entity.TaskCategory;
+import com.taskswift.main.entity.User;
 import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.model.TaskFilter;
@@ -17,6 +18,7 @@ import com.taskswift.main.util.UserUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -219,6 +221,32 @@ public class TaskDaoImpl implements TaskDao {
 		}
 
         return query.getResultList();
+	}
+
+	@Override
+	public Map<Integer, List<User>> getTopContributors(int count) {
+		String queryStr = "SELECT t.user, COUNT(t) as taskCount " +
+							"FROM Task t " +
+							"GROUP BY t.user " +
+							"ORDER BY taskCount DESC";
+		TypedQuery<Object[]> query = entityManager.createQuery(queryStr, Object[].class);
+		query.setMaxResults(5);
+		List<Object[]> results = query.getResultList();
+
+		Map<Integer, List<User>> topContributors = new HashMap<>();
+		for(Object[] result : results){
+			int taskCount = Integer.parseInt(result[1].toString());
+			User taskUser = (User) result[0];
+			if(topContributors.containsKey(taskCount)){
+				topContributors.get(taskCount).add(taskUser);
+			}else{
+				List<User> contributors = new ArrayList<>();
+				contributors.add(taskUser);
+				topContributors.put(taskCount, contributors);
+			}
+			logger.info(topContributors.toString());
+		}
+		return topContributors;
 	}
 
 	private Task getTaskFromTaskCreation(TaskCreation taskCreation){

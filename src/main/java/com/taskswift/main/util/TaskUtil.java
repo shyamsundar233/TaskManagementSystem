@@ -3,6 +3,7 @@ package com.taskswift.main.util;
 
 import com.taskswift.main.entity.Task;
 import com.taskswift.main.entity.TaskCategory;
+import com.taskswift.main.entity.User;
 import com.taskswift.main.exception.TaskException;
 import com.taskswift.main.model.Message;
 import com.taskswift.main.model.TaskCreation;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -168,6 +170,35 @@ public class TaskUtil {
 	public static JSONObject getFilteredTasks(TaskFilter taskFilter){
 		JSONObject response = new JSONObject();
 		response.put("Task", constructJsonForTask(taskService.filterTask(taskFilter)).get("result"));
+		return response;
+	}
+
+	public static JSONObject getTopFiveContributors() {
+		JSONObject response = new JSONObject();
+		JSONArray usersList = new JSONArray();
+		taskService.getTopContributors(5);
+		Map<Integer, List<User>> usersMap = taskService.getTopContributors(5);
+		for(Map.Entry<Integer, List<User>> entry : usersMap.entrySet()) {
+			JSONObject countJson = new JSONObject();
+			countJson.put("count", entry.getKey());
+			countJson.put("user", constructJsonForUser(entry.getValue()).get("result"));
+			usersList.add(countJson);
+		}
+		response.put("topContributors", usersList);
+		return response;
+	}
+
+	private static JSONObject constructJsonForUser(List<User> userList) {
+		JSONObject response = new JSONObject();
+		JSONArray usersJsonArray = new JSONArray();
+		for(User user : userList) {
+			JSONObject userJson = new JSONObject();
+			userJson.put("userId", user.getUserid());
+			userJson.put("username", user.getUsername());
+			userJson.put("email", user.getEmail());
+			usersJsonArray.add(userJson);
+		}
+		response.put("result", usersJsonArray);
 		return response;
 	}
 

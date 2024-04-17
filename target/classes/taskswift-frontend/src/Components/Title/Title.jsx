@@ -85,7 +85,6 @@ const Title = () => {
     }, [messagesList]);
 
     useEffect(() => {
-        debugger
         if(hasUnread){
             setPopoverEl(document.getElementById("notf-active-icon"));
         }else{
@@ -95,7 +94,6 @@ const Title = () => {
 
     const updateMessageList = (operation, id) => {
         if(operation === "markAsRead"){
-            debugger
             let updatedMessagesList = [...messagesList];
             let index = updatedMessagesList.findIndex(msg => msg.notificationId === id);
             updatedMessagesList[index].isRead = true;
