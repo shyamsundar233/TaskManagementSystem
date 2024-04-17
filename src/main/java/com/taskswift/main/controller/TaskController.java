@@ -83,4 +83,10 @@ public class TaskController {
 		return TaskUtil.saveTaskCategory(taskCategory);
 	}
 
+	@GetMapping("/leadingContributors")
+	public JSONObject getLeadingContributors(){
+		logger.info(">>> In GET endpoint of Leading Contributors Task API");
+		return TaskUtil.getTopFiveContributors();
+	}
+
 }

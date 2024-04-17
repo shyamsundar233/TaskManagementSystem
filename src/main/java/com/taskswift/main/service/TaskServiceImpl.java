@@ -3,8 +3,10 @@ package com.taskswift.main.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.taskswift.main.entity.TaskCategory;
+import com.taskswift.main.entity.User;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.model.TaskFilter;
 import org.slf4j.Logger;
@@ -98,6 +100,11 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public List<Task> filterTask(TaskFilter taskFilter) {
 		return taskDao.filterTask(taskFilter);
+	}
+
+	@Override
+	public Map<Integer, List<User>> getTopContributors(int count) {
+		return taskDao.getTopContributors(count);
 	}
 
 }

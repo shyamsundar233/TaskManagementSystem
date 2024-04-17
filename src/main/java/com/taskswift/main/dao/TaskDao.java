@@ -3,9 +3,11 @@ package com.taskswift.main.dao;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.taskswift.main.entity.Task;
 import com.taskswift.main.entity.TaskCategory;
+import com.taskswift.main.entity.User;
 import com.taskswift.main.model.TaskCreation;
 import com.taskswift.main.model.TaskFilter;
 import org.springframework.data.domain.Page;
@@ -41,5 +43,7 @@ public interface TaskDao {
 	public List<Task> getHighPriorityTasks();
 
 	public List<Task> filterTask(TaskFilter taskFilter);
+
+	public Map<Integer, List<User>> getTopContributors(int count);
 	
 }

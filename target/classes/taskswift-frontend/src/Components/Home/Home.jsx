@@ -40,6 +40,7 @@ const Home = () => {
     const [highPriorityTasksCount, setHighPriorityTasksCount] = useState(0);
     const [highPriorityTasks, setHighPriorityTasks] = useState([]);
     const [usersList, setUsersList] = useState([]);
+    const [contributorsList, setContributorsList] = useState([]);
 
     useEffect(() => {
 
@@ -68,7 +69,30 @@ const Home = () => {
         axios.get("/v1/api/users").then(resp => {
             constructUsersList(resp.data.Users)
         })
+
+        axios.get("/v1/api/leadingContributors").then(resp => {
+            constructContributors(resp.data.topContributors);
+        })
     }, []);
+
+    const constructContributors = (usersList) => {
+        let id = 0;
+        let resultArr = [];
+        for (let index = 0; index < usersList.length; index++) {
+            let userObj = usersList[index];
+            let count = userObj.count;
+            let usersArr = userObj.user;
+            for (let index2 = 0; index2 < usersArr.length; index2++) {
+                let userDetailsObj = usersArr[index2];
+                resultArr.push({
+                    id : id++,
+                    label : userDetailsObj.username,
+                    value : count
+                })
+            }
+        }
+        setContributorsList(resultArr);
+    }
 
     const constructTodayTask = (tasksList) => {
         let tasksArr = [];
@@ -136,25 +160,24 @@ const Home = () => {
               </div>
               <div className="leading-list-cont">
                   <div className="title-font font-heading padd-20">Leading Contributors</div>
-                  <PieChart
-                      series={[
-                          {
-                              data: [
-                                  { id: 0, value: 20, label: 'Shyam' },
-                                  { id: 1, value: 40, label: 'Archana' },
-                                  { id: 2, value: 15, label: 'Dinesh' },
-                                  { id: 3, value: 20, label: 'Kumar' },
-                                  { id: 4, value: 5, label: 'Nakul' },
-                              ],
-                              innerRadius: 20,
-                              outerRadius: 100,
-                              paddingAngle: 5,
-                              cornerRadius: 5
-                          },
-                      ]}
-                      width={400}
-                      height={200}
-                  />
+                  {contributorsList.length > 0 ?
+                      <PieChart
+                          series={[
+                              {
+                                  data: contributorsList,
+                                  innerRadius: 20,
+                                  outerRadius: 100,
+                                  paddingAngle: 5,
+                                  cornerRadius: 5
+                              },
+                          ]}
+                          width={400}
+                          height={200}
+                      />
+                      :
+                      <div>No Contributors So Far !!!</div>
+                  }
+
               </div>
           </div>
       </div>
