@@ -33,10 +33,13 @@ public class AuthController {
 	}
 
 	@GetMapping("/login")
-	public String getLogin(Authentication auth) {
+	public String getLogin(Model theModel, Authentication auth) {
 		if(auth == null) {
 			logger.info(">>> Redirecting to login page");
-			return "login-page";
+			theModel.addAttribute("User", new UserRegistration());
+			theModel.addAttribute("Authorities", UserUtil.getAllRoles());
+			theModel.addAttribute("ExistingUsers", UserUtil.getExistingUsers());
+			return "login-page-update";
 		}else {
 			logger.info(">>> Redirecting to index page");
 			return "redirect:/";

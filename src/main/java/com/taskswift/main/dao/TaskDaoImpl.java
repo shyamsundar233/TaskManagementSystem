@@ -227,9 +227,12 @@ public class TaskDaoImpl implements TaskDao {
 	public Map<Integer, List<User>> getTopContributors(int count) {
 		String queryStr = "SELECT t.user, COUNT(t) as taskCount " +
 							"FROM Task t " +
+							"WHERE t.taskId BETWEEN :startRange AND :endRange " +
 							"GROUP BY t.user " +
 							"ORDER BY taskCount DESC";
 		TypedQuery<Object[]> query = entityManager.createQuery(queryStr, Object[].class);
+		query.setParameter("startRange", TenantUtil.currentTenant.getStartRange());
+		query.setParameter("endRange", TenantUtil.currentTenant.getEndRange());
 		query.setMaxResults(5);
 		List<Object[]> results = query.getResultList();
 

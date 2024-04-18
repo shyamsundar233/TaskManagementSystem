@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Task Swift</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" ></link>
+</head>
+<body>
+
+<div class="app-title">
+    Task Swift
+</div>
+
+<div th:if="${param.error}" class="error-ts">
+    Invalid username and password.
+</div>
+<div th:if="${param.logout}" class="error-ts">
+    You have been logged out.
+</div>
+
+<div class="main">
+    <input type="checkbox" id="chk" aria-hidden="true">
+    <div class="signup">
+        <form th:action="@{/register}" method="post" th:object="${User}" onsubmit="return validateForm()">
+            <div class="errorDiv dN" id="customErrorDiv"></div>
+            <label for="chk" aria-hidden="true">Sign Up</label>
+            <input type="text" id="username" name="username" th:field="*{username}" placeholder="User name" required="">
+            <input type="email" id="email" name="email" th:field="*{email}" placeholder="Email" required="">
+            <input type="password" id="password" name="password" th:field="*{password}" placeholder="Password" required="">
+            <button>Sign up</button>
+        </form>
+    </div>
+
+    <div class="login">
+        <form th:action="@{/login}" method="post">
+            <label for="chk" aria-hidden="true">Login</label>
+            <input type="text" name="username" placeholder="Email" required="">
+            <input type="password" name="password" placeholder="Password" required="">
+            <button>Login</button>
+        </form>
+    </div>
+</div>
+</body>
+
+<script th:inline="javascript">
+    function validateForm(){
+
+        const errorDiv = $("#customErrorDiv")[0];
+
+        const inputRegex = /^[^\s]+[a-zA-Z0-9\s]+$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[^\s]{8,}$/;
+
+        const toggleErrorDiv = (isVisible) => {
+            if(isVisible){
+                errorDiv.classList.remove("dN");
+            }else{
+                errorDiv.classList.add("dN");
+            }
+        }
+
+        const validateInputs = (input) => {
+            return inputRegex.test(input);
+        }
+
+        const passwordValidation = (password_1) => {
+            return passwordRegex.test(password_1);
+        }
+
+        const showAlert = (message) => {
+            errorDiv.innerHTML = message;
+            if(message.length > 0){
+                toggleErrorDiv(true);
+            }else{
+                toggleErrorDiv(false);
+            }
+        }
+
+        let userName = document.getElementById("username").value;
+        let password = document.getElementById("password").value;
+        var existingUsers = /*[[${ExistingUsers}]]*/ '';
+
+        if(userName.length < 1 || userName.length > 20 ){
+            showAlert("Please check the Username length");
+            return false;
+        }
+        else if(existingUsers.indexOf(userName) > -1){
+            showAlert("Username already taken");
+            return false;
+        }
+        else if(password.length < 1 || password.length > 20){
+            showAlert("Please check the Password length");
+            return false;
+        }else if(!validateInputs(userName)){
+            showAlert("Invalid Username");
+            return false;
+        }else if(!passwordValidation(password)){
+            showAlert("Invalid Password");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+</html>

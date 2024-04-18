@@ -37,6 +37,7 @@ public class SecurityConfig {
 					.requestMatchers(new AntPathRequestMatcher("/register")).permitAll()
 					.requestMatchers(new AntPathRequestMatcher("/test")).permitAll()
 					.requestMatchers(new AntPathRequestMatcher("/ws/**")).permitAll()
+					.requestMatchers(new AntPathRequestMatcher("/style.css")).permitAll()
 					.anyRequest().authenticated()
 			)
 			.formLogin(form -> form
