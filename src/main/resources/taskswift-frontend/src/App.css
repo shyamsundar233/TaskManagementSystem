@@ -1,13 +1,12 @@
 .app-outer-div{
   display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .outlet-div{
-  position: fixed;
-  margin-top : 60px;
-  margin-left: 59px;
-  width: 96%;
-  height: 100vh;
+  overflow-y: auto;
+  flex-grow: 1;
 }
 
 .display-center {
@@ -152,4 +151,16 @@
 
 .ts-btn {
 
+}
+
+.app-color {
+  color: #00BDD6FF;
+}
+
+.app-bg-color {
+  background-color: #00BDD6FF !important;
+}
+
+.app-font {
+  font-family: Epilogue, sans-serif;
 }
