@@ -10,9 +10,8 @@ function App() {
   return (
       <div className="app-outer-div">
           <TitleBar/>
-          <NavBar/>
           <CustomAlert>
-              <div className="outlet-div scroll-div">
+              <div className="outlet-div">
                   <Outlet/>
               </div>
           </CustomAlert>
