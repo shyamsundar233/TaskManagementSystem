@@ -8,7 +8,7 @@
 }
 
 .pagination-div {
-    margin-left: 73%;
+    margin-left: 64%;
 }
 
 .nav-list-button {
@@ -19,4 +19,8 @@
     background-color: #00BDD6FF;
     border-radius: 10px;
     color: white;
+}
+
+.list-btn-create {
+    margin-left: 15px;
 }

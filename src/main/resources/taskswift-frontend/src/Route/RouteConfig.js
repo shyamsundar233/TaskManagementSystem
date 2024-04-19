@@ -7,13 +7,14 @@ import List from "../Components/List/List";
 import AddUser from "../Components/AddUser/AddUser";
 import ListUser from "../Components/ListUser/ListUser";
 import View from "../Components/View/View";
+import HomePage from "../Components/HomePage/HomePage";
 
 const RouteConfig = () => {
   return (
     <BrowserRouter>
         <Routes>
             <Route path="/ts" element={<App/>}>
-                <Route index element={<Home/>}/>
+                <Route index element={<HomePage/>}/>
                 <Route path="create" element={<Create/>}/>
                 <Route path="edit/:taskId" element={<Create/>}/>
                 <Route path="list" element={<List/>}/>
