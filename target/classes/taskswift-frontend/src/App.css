@@ -158,9 +158,9 @@
 }
 
 .app-bg-color {
-  background-color: #00BDD6FF !important;
+  background-color: #3b3c3e !important;
 }
 
 .app-font {
-  font-family: Epilogue, sans-serif;
+  font-family: Epilogue, sans-serif !important;
 }

@@ -32,7 +32,7 @@ const GraphComponent = ({data, options, classList}) => {
             >
                 <VictoryLine
                     style={{
-                        data: { stroke: "transparent", fill: "#00BDD6FF", opacity: 0.9 },
+                        data: { stroke: "transparent", fill: "white", opacity: 0.9 },
                         grid: {stroke: "transparent"}
                     }}
                     data={data}

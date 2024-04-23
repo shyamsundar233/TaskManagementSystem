@@ -14,7 +14,7 @@ const RouteConfig = () => {
     <BrowserRouter>
         <Routes>
             <Route path="/ts" element={<App/>}>
-                <Route index element={<Home/>}/>
+                <Route index element={<HomePage/>}/>
                 <Route path="create" element={<Create/>}/>
                 <Route path="edit/:taskId" element={<Create/>}/>
                 <Route path="list" element={<List/>}/>
