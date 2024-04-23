@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 
 const TableComponent = ({headerRow, bodyRow, classList, width, height}) => {
-    classList = classList + " table-comp-cont-1 height-width-100";
   return (
       <TableContainer component={Paper} className={classList} style={{height : height, width : width}}>
           <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
