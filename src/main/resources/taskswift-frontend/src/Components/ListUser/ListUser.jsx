@@ -47,7 +47,7 @@ const ListUser = () =>{
                     <Button className="ts-btn" sx={{height: "40px", width: "120px", marginLeft: "50px"}} onClick={handleCreate}>+ Add User</Button>
                 </Box>
             </Container>
-            <Grid container spacing={3} sx={{marginTop: "30px"}}>
+            <Grid container spacing={3} sx={{marginTop: "30px", justifyContent: "center"}}>
                 {users.length > 0 ?
                     users.map((user) => {
                         return userCard(user.username, user.authority, user.email, "+91-98764-98456", "Chennai");

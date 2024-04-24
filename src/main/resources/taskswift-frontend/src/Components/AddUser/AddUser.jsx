@@ -5,6 +5,7 @@ import './AddUser.css';
 import axios from "axios";
 import {useAlert} from "../CustomAlert/CustomAlert";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
+import {Button} from "@mui/material";
 
 const AddUser = ({updateUsersList, closeAddUser}) => {
     const {showAlert} = useAlert();
@@ -132,7 +133,7 @@ const AddUser = ({updateUsersList, closeAddUser}) => {
                             })}
                         </select>
                     </div>
-                    <input className="btn-1" type="submit" value="Add User"/>
+                    <Button className="ts-btn" sx={{width: "100%"}} type="submit">Add User</Button>
                 </form>
             </div>
         </div>
