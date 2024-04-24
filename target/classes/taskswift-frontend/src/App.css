@@ -150,7 +150,9 @@
 }
 
 .ts-btn {
-
+  background-color: #3b3c3e !important;
+  color: white !important;
+  padding: 5px !important;
 }
 
 .app-color {
