@@ -2,10 +2,17 @@ import "./ListUser.css";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import TsCard from "../../TemplateComponents/TsCard/TsCard";
-import {Avatar} from "@mui/material";
-import TsDrawer from "../../TemplateComponents/TsDrawer/TsDrawer";
+import {Avatar, Button, Grid, styled} from "@mui/material";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Paper from "@mui/material/Paper";
 import AddUser from "../AddUser/AddUser";
+import TsDrawer from "../../TemplateComponents/TsDrawer/TsDrawer";
+
 
 const ListUser = () =>{
 
@@ -33,65 +40,22 @@ const ListUser = () =>{
     }
 
     return (
-        <div className="parent-div-table">
-            <div className="font-heading display-flex pa-1">
-                Team Members
-                <button className="create-new-button add-new-button-pos cursor-pointer" onClick={handleCreate}> + ADD TEAM MEMBER</button>
-            </div>
-            <div className="padd-20 display-flex">
-                {users.length > 0 && users.map(user => {
-                    return (
-                        <TsCard
-                            header={
-                                <div className="font-sub-heading">{user.username}</div>
-                            }
-                            headerAvatar={
-                                <Avatar sx={{bgcolor : "#00BDD6FF", marginLeft: "15px"}} aria-label="recipe">
-                                    {user.username.charAt(0)}
-                                </Avatar>
-                            }
-                            content={
-                                <div>
-                                    <div className="margin-10 display-flex left-row-1">
-                                        <div className="left-col-1">
-                                            <label className="font-bold" htmlFor="userEmail">Email: </label>
-                                        </div>
-                                        <div id="userEmail" className="left-col-2"> {user.email} </div>
-                                    </div>
-                                    <div className="margin-10 display-flex left-row-1">
-                                        <div className="left-col-1">
-                                            <label className="font-bold" htmlFor="userAuth">Authority: </label>
-                                        </div>
-                                        <div id="userAuth" className="left-col-2"> {user.authority} </div>
-                                    </div>
-                                    <div className="margin-10 display-flex left-row-1">
-                                        <div className="left-col-1">
-                                            <label className="font-bold" htmlFor="userPhone">Phone: </label>
-                                        </div>
-                                        <div id="userPhone" className="left-col-2"> +91-99988-22233</div>
-                                    </div>
-                                    <div className="margin-10 display-flex left-row-1">
-                                        <div className="left-col-1">
-                                            <label className="font-bold" htmlFor="userLoc">Location: </label>
-                                        </div>
-                                        <div id="userLoc" className="left-col-2"> Chennai</div>
-                                    </div>
-                                    <div className="margin-10 display-flex left-row-1">
-                                        <div className="left-col-1">
-                                            <label className="font-bold" htmlFor="userCreatedOn">Created On: </label>
-                                        </div>
-                                        <div id="userCreatedOn" className="left-col-2"> 20-03-2024 07:23:09 AM</div>
-                                    </div>
-                                </div>
-                            }
-
-                            cardClass="user-card-dim"
-                            headerClass="user-card-header-1"
-                            contentClass="user-card-cont-1"
-                        />
-                    );
-                })}
-            </div>
+        <Container maxWidth="xl" sx={{marginTop: "50px"}}>
+            <Container maxWidth="xl">
+                <Box sx={{display: 'flex', alignItems: 'center'}}>
+                    <Typography className="app-font font-heading">Team Members</Typography>
+                    <Button className="ts-btn" sx={{height: "40px", width: "120px", marginLeft: "50px"}} onClick={handleCreate}>+ Add User</Button>
+                </Box>
+            </Container>
+            <Grid container spacing={3} sx={{marginTop: "30px"}}>
+                {users.length > 0 ?
+                    users.map((user) => {
+                        return userCard(user.username, user.authority, user.email, "+91-98764-98456", "Chennai");
+                    })
+                    :
+                    <Box>No Users Found!!!</Box>
+                }
+            </Grid>
             <TsDrawer
                 open={openAddUser}
                 anchor="top"
@@ -100,9 +64,42 @@ const ListUser = () =>{
                 }
                 drawerClass="add-user-drawer"
             />
-        </div>
+        </Container>
     );
 
+}
+
+const userCard = (username, profile, email, phone, loc) => {
+    return (
+        <Grid item xs={12} md={3.5}>
+            <Card sx={{ maxWidth: 500, maxHeight: 300, backgroundColor: "#D8D9DA", color: "black", margin: "10px"}} className="app-font">
+                <CardContent sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <Box>
+                        <Avatar alt={username} src="/static/images/avatar/2.jpg" sx={{width: "80px", height: "80px", backgroundColor: "white", color: "#B99470"}}/>
+                    </Box>
+                    <Box sx={{marginLeft: '40px'}}>
+                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            {profile}
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                            {username}
+                        </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                            {email}
+                        </Typography>
+                        <Typography variant="body2">
+                            {phone}, {loc}
+                        </Typography>
+                    </Box>
+                </CardContent>
+                <CardActions sx={{marginLeft: "15px"}}>
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        Created On: 15/04/2024
+                    </Typography>
+                </CardActions>
+            </Card>
+        </Grid>
+    )
 }
 
 export default ListUser;

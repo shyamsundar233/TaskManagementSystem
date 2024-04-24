@@ -126,7 +126,7 @@ const HomePage = () => {
     }
 
     return (
-        <Container maxWidth="xl" sx={{marginTop: "20px", display: 'block'}}>
+        <Container maxWidth="xl" sx={{marginTop: "50px", display: 'block'}}>
             <Container maxWidth="xl">
                 <Box sx={{display: {xs : 'block', md : 'flex'}, justifyContent: {xs: 'none', md: 'center'}}}>
                     <Box sx={{marginRight: {xs : '0', md: '50px'}}}>
