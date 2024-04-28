@@ -153,6 +153,12 @@
   background-color: #3b3c3e !important;
   color: white !important;
   padding: 5px !important;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ts-btn:hover {
+  background-color: #505152 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .app-color {

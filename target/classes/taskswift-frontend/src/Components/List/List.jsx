@@ -125,7 +125,7 @@ const List = () => {
                 <FilterAltOutlinedIcon className="cursor-pointer nav-list-button" onClick={e => setOpenFilter(true)}/>
                 {filterApplied &&
                     <Button variant="outlined" className="btn-1-outlined" onClick={resetRecords}>Clear Filter</Button>}
-                <button className="btn-1 cursor-pointer list-btn-create" onClick={handleCreateNav}> + CREATE NEW</button>
+                <Button className="ts-btn list-btn-create" onClick={handleCreateNav}> + CREATE NEW</Button>
                 <div className="display-flex pagination-div align-items-center">
                     <NavigateBeforeIcon
                         className={page === 0 ? "cursor-pointer disabled-button nav-list-button" : "cursor-pointer nav-list-button"}
@@ -144,6 +144,7 @@ const List = () => {
                         headerRow={headerRow}
                         bodyRow={tasksList}
                         classList="list-tab-dim"
+                        maxHeight={650}
                     />
                 ) : (
                     <div className="padd-20 font-bold">No Data Found</div>

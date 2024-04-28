@@ -7,10 +7,10 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 
-const TableComponent = ({headerRow, bodyRow, classList, width, height}) => {
+const TableComponent = ({headerRow, bodyRow, classList, width, height, maxWidth, maxHeight}) => {
   return (
-      <TableContainer component={Paper} className={classList} style={{height : height, width : width}}>
-          <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer component={Paper} className={classList} sx={{maxHeight: maxHeight, maxWidth: maxWidth}} style={{height : height, width : width}}>
+          <Table stickyHeader="true" sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                   <TableRow>
                       {headerRow && headerRow.length > 0 && headerRow.map(row => {

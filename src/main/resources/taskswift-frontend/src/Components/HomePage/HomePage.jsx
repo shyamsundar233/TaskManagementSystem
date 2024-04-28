@@ -14,6 +14,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {PieChart} from "@mui/x-charts/PieChart";
+import {Avatar} from "@mui/material";
 
 const constructGraphForTask = (tasksList) => {
     tasksList.sort((task1, task2) => {
@@ -120,7 +121,11 @@ const HomePage = () => {
     const constructUsersList = (usersList) => {
         let usersArr = [];
         for (let index in usersList) {
-            usersArr.push({username : [usersList[index].username]});
+            usersArr.push({
+                username : [usersList[index].username],
+                authority : [usersList[index].authority],
+                email : [usersList[index].email]
+            });
         }
         setUsersList(usersArr);
     }
@@ -228,8 +233,8 @@ const HomePage = () => {
                         </Box>
                         <Box className="margin-10">
                             {usersList.length > 0 ?
-                                <TableContainer component={Paper}>
-                                    <Table sx={{minWidth: 500}} aria-label="simple table">
+                                <TableContainer component={Paper} sx={{maxHeight: 400, maxWidth: 400}}>
+                                    <Table stickyHeader="true" aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
                                                 <TableCell>Username</TableCell>
@@ -241,8 +246,13 @@ const HomePage = () => {
                                                     key={row.name}
                                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                                 >
-                                                    <TableCell component="th" scope="row">
-                                                        {row.username}
+                                                    <TableCell component="th" scope="row" sx={{display: 'flex', alignItems: 'center'}}>
+                                                        <Avatar alt={row.username + ` user`} src="/static/images/avatar/2.jpg"/>
+                                                        <Box sx={{marginLeft: "20px"}}>
+                                                            <span style={{fontWeight: 'bolder', fontSize: '16px'}}>{row.username}</span><br/>
+                                                            <span style={{opacity: '0.7'}}>{row.email}<br/>
+                                                                {row.authority}</span>
+                                                        </Box>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
